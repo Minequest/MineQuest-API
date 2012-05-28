@@ -1,4 +1,5 @@
-<h1>MineQuest-2-API</h1>
+<h1>MineQuest-2-API</h1> [![Build Status](http://build.lincomlinux.org/jenkins/job/MineQuest-API/badge/icon)](http://build.lincomlinux.org/jenkins/job/MineQuest-API/)
+
 **What is MineQuest?**
 MineQuest is a full featured MMORPG system. It allows custom quests, classes, and more!
 
@@ -9,7 +10,6 @@ MineQuest is a full featured MMORPG system. It allows custom quests, classes, an
 
 <hr/>
 
-    This code is considered as stable as Spout is at the moment. (read: unstable!)
     This repository only contains APIs, and as such, requires MineQuest-2-Core to function with other plugins.
     
 <h3>License</h3>
@@ -28,6 +28,6 @@ Eclipse has some handy guides to using m2e - Google is your friend.
 
 <h3>Forking/Pulling</h3>
 * Please follow the general Java coding standards.
-* If you want to use this API, you should read the *Javadocs*.
+* If you want to use this API, you should read the [Javadoc](http://build.lincomlinux.org/jenkins/job/MineQuest-API/javadoc).
 
 Feel free to fork and submit pull requests to this repository. Please remember that by submitting your code you hereby release it under the project's license.
