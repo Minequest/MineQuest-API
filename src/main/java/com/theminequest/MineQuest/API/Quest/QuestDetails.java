@@ -12,6 +12,11 @@ import java.io.Serializable;
 public interface QuestDetails extends Serializable, Comparable<QuestDetails> {
 	
 	/**
+	 * Associated file with this QuestDetails.<br>
+	 * Returns a {@link java.io.File}.
+	 */
+	static final String QUEST_FILE = "mq.file";
+	/**
 	 * The property that contains the Quest Name
 	 * (typically the filename without the ".quest")<br>
 	 * Returns a {@link java.lang.String}.
