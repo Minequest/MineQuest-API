@@ -35,12 +35,14 @@ public abstract class TargetQuestEvent extends DelayedQuestEvent {
 	
 	/**
 	 * Retrieve the targets with this event.
-	 * @return list of LivingEntites (empty if disabled)
+	 * @return list of LivingEntites (empty if disabled, or null if no associated quest)
 	 */
 	public List<LivingEntity> getTargets(){
 		if (!enableTargets())
 			return new ArrayList<LivingEntity>();
 		Quest quest = getQuest();
+		if (quest==null)
+			return null;
 		@SuppressWarnings("unchecked")
 		TargetDetails details = ((Map<Integer,TargetDetails>) getQuest().getDetails().getProperty(QuestDetails.QUEST_TARGETS)).get(getTargetId());
 		return Managers.getTargetManager().processTargetDetails(quest,details);

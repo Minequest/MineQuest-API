@@ -58,7 +58,7 @@ public class QuestParser {
 		methods.remove(name.toLowerCase());
 	}
 	
-	protected void parseDefinition(QuestDetails questDetails) throws FileNotFoundException{
+	public void parseDefinition(QuestDetails questDetails) throws FileNotFoundException{
 		questDetails.setProperty(QuestDetails.QUEST_TASKS,new LinkedHashMap<Integer,Integer[]>(0));
 		questDetails.setProperty(QuestDetails.QUEST_EVENTS,new LinkedHashMap<Integer, String>(0));
 		questDetails.setProperty(QuestDetails.QUEST_TARGETS,new LinkedHashMap<Integer, TargetDetails>(0));
