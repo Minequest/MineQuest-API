@@ -10,17 +10,32 @@ import com.theminequest.MineQuest.API.Events.EventManager;
 import com.theminequest.MineQuest.API.Group.GroupManager;
 import com.theminequest.MineQuest.API.Target.TargetManager;
 import com.theminequest.MineQuest.API.Task.TaskManager;
+import com.theminequest.MineQuest.API.Utils.UtilManager;
 
 public class Managers {
 	
 	private static JavaPlugin activePlugin = null;
 	
+	private static EditManager editManager = null;
 	private static EventManager eventManager = null;
 	private static GroupManager groupManager = null;
-	private static EditManager editManager = null;
 	private static TargetManager targetManager = null;
 	private static TaskManager taskManager = null;
+	private static UtilManager utilManager = null;
 	
+	public static JavaPlugin getActivePlugin() {
+		return activePlugin;
+	}
+	public static void setActivePlugin(JavaPlugin activePlugin) {
+		Managers.activePlugin = activePlugin;
+	}
+	
+	public static EditManager getEditManager() {
+		return editManager;
+	}
+	public static void setEditManager(EditManager editManager) {
+		Managers.editManager = editManager;
+	}
 	public static EventManager getEventManager() {
 		return eventManager;
 	}
@@ -32,12 +47,6 @@ public class Managers {
 	}
 	public static void setGroupManager(GroupManager groupManager) {
 		Managers.groupManager = groupManager;
-	}
-	public static EditManager getEditManager() {
-		return editManager;
-	}
-	public static void setEditManager(EditManager editManager) {
-		Managers.editManager = editManager;
 	}
 	public static TargetManager getTargetManager() {
 		return targetManager;
@@ -51,12 +60,11 @@ public class Managers {
 	public static void setTaskManager(TaskManager taskManager) {
 		Managers.taskManager = taskManager;
 	}
-	
-	public static JavaPlugin getActivePlugin() {
-		return activePlugin;
+	public static UtilManager getUtilManager() {
+		return utilManager;
 	}
-	public static void setActivePlugin(JavaPlugin activePlugin) {
-		Managers.activePlugin = activePlugin;
+	public static void setUtilManager(UtilManager utilManager) {
+		Managers.utilManager = utilManager;
 	}
 	
 	/**
