@@ -34,6 +34,13 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.alta189</groupId>
+			<artifactId>simplesave</artifactId>
+			<version>LATEST</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.10</version>
@@ -66,6 +73,10 @@
 		<repository>
 			<id>spout-repo</id>
 			<url>http://repo.spout.org/</url>
+		</repository>
+		<repository>
+			<id>lincom-repo</id>
+			<url>http://build.lincomlinux.org/nexus/content/groups/public/</url>
 		</repository>
 	</repositories>
 
