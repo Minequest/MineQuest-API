@@ -36,7 +36,7 @@
 		<dependency>
 			<groupId>com.alta189</groupId>
 			<artifactId>simplesave</artifactId>
-			<version>LATEST</version>
+			<version>1.0.0</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>

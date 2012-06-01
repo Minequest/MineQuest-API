@@ -9,7 +9,7 @@ import com.alta189.simplesave.Table;
 import com.theminequest.MineQuest.API.Managers;
 import com.theminequest.MineQuest.API.Tracker.StatisticManager.Statistic;
 
-@Table(name = "minequest_Quests")
+@Table("minequest_Quests")
 public class QuestStatistic implements Comparable<QuestStatistic>, Statistic {
 	
 	@Id
