@@ -12,6 +12,11 @@ public class ManagerException extends Exception {
 		super(arg0.name());
 		managerReason = arg0;
 	}
+	
+	public ManagerException(ManagerReason arg0, String addlinfo){
+		super(addlinfo);
+		managerReason = arg0;
+	}
 
 	public ManagerException(Throwable arg0) {
 		super(arg0);
@@ -28,7 +33,7 @@ public class ManagerException extends Exception {
 	}
 	
 	public enum ManagerReason {
-		NOTIMPLEMENTED, FAILED, INVALIDARGS, EXTERNALEXCEPTION;
+		INTERNAL, NOTIMPLEMENTED, FAILED, INVALIDARGS, EXTERNALEXCEPTION;
 	}
 
 }
