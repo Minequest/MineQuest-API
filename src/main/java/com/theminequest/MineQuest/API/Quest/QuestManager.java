@@ -11,6 +11,8 @@ import com.theminequest.MineQuest.API.BukkitEvents.QuestCompleteEvent;
 import com.theminequest.MineQuest.API.BukkitEvents.TaskCompleteEvent;
 
 public interface QuestManager extends Listener {
+	
+	QuestParser getParser();
 
 	void reloadQuests();
 	void reloadQuest(String name);

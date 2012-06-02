@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.theminequest.MineQuest.API.Edit.EditManager;
 import com.theminequest.MineQuest.API.Events.EventManager;
 import com.theminequest.MineQuest.API.Group.GroupManager;
+import com.theminequest.MineQuest.API.Quest.QuestManager;
 import com.theminequest.MineQuest.API.Target.TargetManager;
 import com.theminequest.MineQuest.API.Task.TaskManager;
 import com.theminequest.MineQuest.API.Tracker.StatisticManager;
@@ -20,6 +21,7 @@ public class Managers {
 	private static EditManager editManager = null;
 	private static EventManager eventManager = null;
 	private static GroupManager groupManager = null;
+	private static QuestManager questManager = null;
 	private static StatisticManager statisticManager = null;
 	private static TargetManager targetManager = null;
 	private static TaskManager taskManager = null;
@@ -49,6 +51,12 @@ public class Managers {
 	}
 	public static void setGroupManager(GroupManager groupManager) {
 		Managers.groupManager = groupManager;
+	}
+	public static QuestManager getQuestManager() {
+		return questManager;
+	}
+	public static void setQuestManager(QuestManager questManager) {
+		Managers.questManager = questManager;
 	}
 	public static StatisticManager getStatisticManager() {
 		return statisticManager;
