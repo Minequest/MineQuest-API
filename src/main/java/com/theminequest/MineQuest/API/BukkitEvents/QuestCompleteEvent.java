@@ -24,6 +24,7 @@ import org.bukkit.event.HandlerList;
 
 import com.theminequest.MineQuest.API.CompleteStatus;
 import com.theminequest.MineQuest.API.Group.QuestGroup;
+import com.theminequest.MineQuest.API.Quest.Quest;
 
 public class QuestCompleteEvent extends Event {
 
@@ -33,18 +34,18 @@ public class QuestCompleteEvent extends Event {
 	    return handlers;
 	}
 	
-	private long questid;
+	private Quest quest;
 	private CompleteStatus status;
 	private QuestGroup questgroup;
 
-	public QuestCompleteEvent(long questid, CompleteStatus c, QuestGroup g) {
-		this.questid = questid;
+	public QuestCompleteEvent(Quest quest, CompleteStatus c, QuestGroup g) {
+		this.quest = quest;
 		status = c;
 		questgroup = g;
 	}
 	
-	public long getQuestId(){
-		return questid;
+	public Quest getQuest(){
+		return quest;
 	}
 	
 	public CompleteStatus getResult(){

@@ -60,7 +60,7 @@ public interface QuestDetails extends Serializable, Comparable<QuestDetails> {
 	 * The property that contains the tasks this quest has.<br>
 	 * Returns a {@link java.util.LinkedHashMap} containing
 	 * keys of {@link java.lang.Integer} and values of
-	 * {@link java.lang.Integer} arrays.
+	 * {@link java.lang.String} arrays.
 	 */
 	static final String QUEST_TASKS = "mq.tasks";
 	/**
@@ -99,7 +99,7 @@ public interface QuestDetails extends Serializable, Comparable<QuestDetails> {
 	/**
 	 * The property that determines the quest spawn point in
 	 * the world.<br>
-	 * Returns a {@link java.util.List} of {@link java.util.Double}s.
+	 * Returns an array of <code>double</code> (3 length).
 	 */
 	static final String QUEST_SPAWNPOINT = "mq.spawnpoint";
 	// FIXME

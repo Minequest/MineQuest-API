@@ -19,7 +19,9 @@
  **/
 package com.theminequest.MineQuest.API;
 
-public enum CompleteStatus {
+import java.io.Serializable;
+
+public enum CompleteStatus implements Serializable {
 
 	SUCCESS,WARNING,FAILURE,IGNORE,CANCELED;
 	

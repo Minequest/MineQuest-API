@@ -19,6 +19,11 @@ public class QuestDetailsUtils {
 	 * methods. In particular, this method is used by classes implementing
 	 * {@link com.theminequest.MineQuest.API.Quest.QuestManager}
 	 * to retrieve a mutable object for every quest started.
+	 * <br>
+	 * <b>Note that this implementation is not synchronized.</b>
+	 * As such, you must be aware of threads that may modify this object
+	 * while copying it.
+	 * @param d Details to copy
 	 * @return completely independent copy of the object
 	 * @throws IOException if object could not be copied
 	 */

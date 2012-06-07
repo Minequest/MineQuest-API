@@ -19,6 +19,8 @@
  **/
 package com.theminequest.MineQuest.API.Events;
 
+import java.io.Serializable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -30,8 +32,9 @@ import com.theminequest.MineQuest.API.Managers;
 import com.theminequest.MineQuest.API.BukkitEvents.EventCompleteEvent;
 import com.theminequest.MineQuest.API.Quest.Quest;
 
-public abstract class QuestEvent{
+public abstract class QuestEvent implements Serializable {
 
+	private static final long serialVersionUID = 5703576630785488346L;
 	private Quest quest;
 	private int eventid;
 	private volatile CompleteStatus complete;

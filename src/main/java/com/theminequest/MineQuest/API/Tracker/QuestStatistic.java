@@ -1,5 +1,6 @@
 package com.theminequest.MineQuest.API.Tracker;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import com.theminequest.MineQuest.API.Tracker.StatisticManager.Statistic;
 public class QuestStatistic implements Comparable<QuestStatistic>, Statistic {
 	
 	@Id
-	private int id;
+	private long uuid;
 	
 	@Field
 	private String playerName;
@@ -27,10 +28,18 @@ public class QuestStatistic implements Comparable<QuestStatistic>, Statistic {
 	@Field
 	private String questsCompleted;
 	
+	@Field
+	private String questsMWSaved;
+	
 	// NON-PERSISTENT DATA
 	private List<String> availableQuests;
 	private List<String> acceptedQuests;
 	private List<String> completedQuests;
+	private List<String> savedMWQuests;
+	
+	public long getUUID(){
+		return uuid;
+	}
 	
 	public String getPlayerName(){
 		return playerName;
@@ -91,6 +100,29 @@ public class QuestStatistic implements Comparable<QuestStatistic>, Statistic {
 		save();
 	}
 	
+	public void setMainWorldQuest(String quest_name, int currentTask){
+		setup();
+		for (int i=0; i<savedMWQuests.size(); i++){
+			if (savedMWQuests.get(i).split("/")[0].equals(quest_name)){
+				savedMWQuests.remove(i);
+				i = savedMWQuests.size();
+			}
+		}
+		savedMWQuests.add(quest_name + "/" + currentTask);
+		save();
+	}
+	
+	public void removeMainWorldQuest(String quest_name){
+		setup();
+		for (int i=0; i<savedMWQuests.size(); i++){
+			if (savedMWQuests.get(i).split("/")[0].equals(quest_name)){
+				savedMWQuests.remove(i);
+				i = savedMWQuests.size();
+			}
+		}
+		save();
+	}
+	
 	private void setup(){
 		if (availableQuests==null)
 			availableQuests = Arrays.asList(questsAvailable.split("/"));
@@ -98,6 +130,15 @@ public class QuestStatistic implements Comparable<QuestStatistic>, Statistic {
 			acceptedQuests = Arrays.asList(questsAccepted.split("/"));
 		if (completedQuests==null)
 			completedQuests = Arrays.asList(questsCompleted.split("/"));
+		if (savedMWQuests==null){
+			String[] split = questsMWSaved.split("/");
+			savedMWQuests = new ArrayList<String>();
+			if (split.length%2==0){
+				for (int i=0; i<split.length; i+=2){
+					savedMWQuests.add(split[i] + "/" + split[i+1]);
+				}
+			}
+		}
 	}
 	
 	private void save(){
@@ -118,6 +159,12 @@ public class QuestStatistic implements Comparable<QuestStatistic>, Statistic {
 			questsCompleted += s + "/";
 		}
 		questsCompleted = questsCompleted.substring(0,questsCompleted.length()-1);
+		
+		questsMWSaved = "";
+		for (String s : savedMWQuests){
+			questsMWSaved += s + "/";
+		}
+		questsMWSaved = questsMWSaved.substring(0,questsMWSaved.length()-1);
 
 		Managers.getStatisticManager().setStatistic(this, getClass());
 	}
