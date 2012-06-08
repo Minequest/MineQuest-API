@@ -18,10 +18,7 @@ public class QuestStatistic implements Comparable<QuestStatistic>, Statistic {
 	
 	@Field
 	private String playerName;
-	
-	@Field
-	private String questsAvailable;
-	
+		
 	@Field
 	private String questsAccepted;
 	
@@ -32,7 +29,6 @@ public class QuestStatistic implements Comparable<QuestStatistic>, Statistic {
 	private String questsMWSaved;
 	
 	// NON-PERSISTENT DATA
-	private List<String> availableQuests;
 	private List<String> acceptedQuests;
 	private List<String> completedQuests;
 	private List<String> savedMWQuests;
@@ -49,11 +45,6 @@ public class QuestStatistic implements Comparable<QuestStatistic>, Statistic {
 		this.playerName = playerName;
 	}
 	
-	public String[] getAvailableQuests(){
-		setup();
-		return availableQuests.toArray(new String[availableQuests.size()]);
-	}
-	
 	public String[] getAcceptedQuests(){
 		setup();
 		return acceptedQuests.toArray(new String[acceptedQuests.size()]);
@@ -62,18 +53,6 @@ public class QuestStatistic implements Comparable<QuestStatistic>, Statistic {
 	public String[] getCompletedQuests(){
 		setup();
 		return completedQuests.toArray(new String[completedQuests.size()]);
-	}
-	
-	public void addAvailableQuest(String questName){
-		setup();
-		availableQuests.add(questName);
-		save();
-	}
-	
-	public void removeAvailableQuest(String questName){
-		setup();
-		availableQuests.remove(questName);
-		save();
 	}
 	
 	public void addAcceptedQuest(String questName){
@@ -124,8 +103,6 @@ public class QuestStatistic implements Comparable<QuestStatistic>, Statistic {
 	}
 	
 	private void setup(){
-		if (availableQuests==null)
-			availableQuests = Arrays.asList(questsAvailable.split("/"));
 		if (acceptedQuests==null)
 			acceptedQuests = Arrays.asList(questsAccepted.split("/"));
 		if (completedQuests==null)
@@ -141,13 +118,7 @@ public class QuestStatistic implements Comparable<QuestStatistic>, Statistic {
 		}
 	}
 	
-	private void save(){
-		questsAvailable = "";
-		for (String s : availableQuests){
-			questsAvailable += s + "/";
-		}
-		questsAvailable = questsAvailable.substring(0,questsAvailable.length()-1);
-		
+	private void save(){		
 		questsAccepted = "";
 		for (String s : acceptedQuests){
 			questsAccepted += s + "/";
