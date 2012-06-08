@@ -3,6 +3,9 @@ package com.theminequest.MineQuest.API.Quest;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.List;
+
+import org.bukkit.entity.Player;
 
 import com.theminequest.MineQuest.API.Utils.ChatUtils;
 import com.theminequest.MineQuest.API.Utils.FastByteArrayOutputStream;
@@ -56,6 +59,22 @@ public class QuestDetailsUtils {
 		tr+=ChatUtils.formatHeader((String) d.getProperty(QuestDetails.QUEST_DISPLAYNAME))+"\n";
 		tr+=ChatUtils.chatify((String) d.getProperty(QuestDetails.QUEST_DESCRIPTION))+"\n";
 		return tr;
+	}
+	
+	/**
+	 * Check to see if a player meets the requirements for this
+	 * quest to be made available to the player.
+	 * @param d Quest to retrieve requirements from
+	 * @param p Player to check (Leader usually)
+	 * @return true if requirements are met
+	 */
+	public static boolean requirementsMet(QuestDetails d, Player p){
+		List<QuestRequirement> requirements = d.getProperty(QuestDetails.QUEST_REQUIREMENTS);
+		for (QuestRequirement q : requirements){
+			if (!q.isSatisfied(p))
+				return false;
+		}
+		return true;
 	}
 
 }

@@ -71,6 +71,12 @@ public interface QuestRequirement {
 	String getDetails();
 	
 	/**
+	 * Retrieve the quest associated with this requirement
+	 * @return quest
+	 */
+	QuestDetails getQuest();
+	
+	/**
 	 * Check to see if this requirement is satisfied by the player.
 	 * @param player Player to check
 	 * @return
