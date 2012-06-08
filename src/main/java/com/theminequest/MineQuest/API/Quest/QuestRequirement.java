@@ -9,6 +9,10 @@ public interface QuestRequirement {
 	 */
 	static enum Type {
 		/**
+		 * Must have never performed this quest before
+		 */
+		NEVERDONE,
+		/**
 		 * Specific player must be in group
 		 */
 		PLAYER,

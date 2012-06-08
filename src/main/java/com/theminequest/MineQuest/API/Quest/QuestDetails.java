@@ -85,11 +85,6 @@ public interface QuestDetails extends Serializable, Comparable<QuestDetails> {
 	 */
 	static final String QUEST_EDITS = "mq.edits";
 	/**
-	 * The property that determines whether a quest is repeatable.<br>
-	 * Returns a {@link java.lang.Boolean}.
-	 */
-	static final String QUEST_REPEATABLE = "mq.repeatable";
-	/**
 	 * The property that determines whether players participating
 	 * in the quest are sent back to their original locations
 	 * after the quest has been completed or aborted.<br>
