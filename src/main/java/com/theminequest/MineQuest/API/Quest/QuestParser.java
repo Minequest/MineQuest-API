@@ -59,10 +59,6 @@ public class QuestParser {
 	}
 	
 	public void parseDefinition(QuestDetails questDetails) throws FileNotFoundException{
-		questDetails.setProperty(QuestDetails.QUEST_TASKS,new LinkedHashMap<Integer,Integer[]>(0));
-		questDetails.setProperty(QuestDetails.QUEST_EVENTS,new LinkedHashMap<Integer, String>(0));
-		questDetails.setProperty(QuestDetails.QUEST_TARGETS,new LinkedHashMap<Integer, TargetDetails>(0));
-		questDetails.setProperty(QuestDetails.QUEST_EDITS,new LinkedHashMap<Integer,Edit>(0));
 		File f = questDetails.getProperty(QuestDetails.QUEST_FILE);
 		Scanner filereader = new Scanner(f);
 		while (filereader.hasNextLine()) {

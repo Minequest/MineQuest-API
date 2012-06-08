@@ -131,12 +131,13 @@ public interface QuestDetails extends Serializable, Comparable<QuestDetails> {
 	 */
 	static final String QUEST_NETHERWORLD = "mq.netherworld";
 	/**
-	 * The property that limits the size of the group participating
-	 * in this quest, in order to ensure no cheating and no
-	 * advantages.<br>
-	 * Returns a {@link java.lang.Integer}.
+	 * The property that represents what requirements this quest
+	 * has, and what the leader must fulfill before starting the
+	 * quest.<br>
+	 * Returns a {@link java.util.List} of
+	 * {@link com.theminequest.MineQuest.API.Quest.QuestRequirement}s.
 	 */
-	static final String QUEST_QUESTGROUPLIMIT = "mq.questgrouplimit";
+	static final String QUEST_REQUIREMENTS = "mq.requirements";
 	
 	/**
 	 * Retrieve the property associated with the key.
