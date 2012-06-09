@@ -1,5 +1,5 @@
 /*
- * This file, QuestAvailableEvent.java, is part of MineQuest:
+ * This file, QuestGivenEvent.java, is part of MineQuest:
  * A full featured and customizable quest/mission system.
  * Copyright (C) 2012 The MineQuest Party
  * 
@@ -22,8 +22,9 @@ package com.theminequest.MineQuest.API.BukkitEvents;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.Cancellable;
 
-public class QuestAvailableEvent extends Event {
+public class QuestGivenEvent extends Event {
 	
 	private static final HandlerList handlers = new HandlerList();
 	
@@ -34,7 +35,7 @@ public class QuestAvailableEvent extends Event {
 	private String questname;
 	private Player player;
 	
-	public QuestAvailableEvent(String questname, Player p){
+	public QuestGivenEvent(String questname, Player p){
 		this.questname = questname;
 		this.player = p;
 	}
@@ -49,7 +50,6 @@ public class QuestAvailableEvent extends Event {
 
 	@Override
 	public HandlerList getHandlers() {
-		// TODO Auto-generated method stub
 		return handlers;
 	}
 

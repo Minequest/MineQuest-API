@@ -1,6 +1,8 @@
 package com.theminequest.MineQuest.API.Tracker;
 
 import com.alta189.simplesave.Database;
+import com.alta189.simplesave.Field;
+import com.alta189.simplesave.Id;
 
 /**
  * StatisticManager keeps track of
@@ -44,9 +46,26 @@ public interface StatisticManager {
 	/**
 	 * Represents a statistic of a player.
 	 */
-	public static interface Statistic {
-		String getPlayerName();
-		void setPlayerName(String playerName);
+	public static class Statistic {
+		
+		@Id
+		private long uuid;
+		
+		@Field
+		private String playerName;
+		
+		public long getUUID(){
+			return uuid;
+		}
+		
+		public String getPlayerName(){
+			return playerName;
+		}
+		
+		public void setPlayerName(String playerName){
+			this.playerName = playerName;
+		}
+		
 	}
 	
 }

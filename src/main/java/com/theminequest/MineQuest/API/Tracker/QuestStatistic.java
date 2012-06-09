@@ -4,20 +4,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.Bukkit;
+
 import com.alta189.simplesave.Field;
 import com.alta189.simplesave.Id;
 import com.alta189.simplesave.Table;
 import com.theminequest.MineQuest.API.Managers;
+import com.theminequest.MineQuest.API.BukkitEvents.QuestGivenEvent;
 import com.theminequest.MineQuest.API.Tracker.StatisticManager.Statistic;
 
 @Table("minequest_Quests")
-public class QuestStatistic implements Comparable<QuestStatistic>, Statistic {
-	
-	@Id
-	private long uuid;
-	
-	@Field
-	private String playerName;
+public class QuestStatistic extends Statistic implements Comparable<QuestStatistic> {
 		
 	@Field
 	private String questsAccepted;
@@ -33,18 +30,6 @@ public class QuestStatistic implements Comparable<QuestStatistic>, Statistic {
 	private List<String> completedQuests;
 	private List<String> savedMWQuests;
 	
-	public long getUUID(){
-		return uuid;
-	}
-	
-	public String getPlayerName(){
-		return playerName;
-	}
-	
-	public void setPlayerName(String playerName){
-		this.playerName = playerName;
-	}
-	
 	public String[] getAcceptedQuests(){
 		setup();
 		return acceptedQuests.toArray(new String[acceptedQuests.size()]);
@@ -59,6 +44,8 @@ public class QuestStatistic implements Comparable<QuestStatistic>, Statistic {
 		setup();
 		acceptedQuests.add(questName);
 		save();
+		QuestGivenEvent e = new QuestGivenEvent(questName,Bukkit.getPlayer(getPlayerName()));
+		Bukkit.getPluginManager().callEvent(e);
 	}
 	
 	public void removeAcceptedQuest(String questName){
@@ -144,12 +131,12 @@ public class QuestStatistic implements Comparable<QuestStatistic>, Statistic {
 	public boolean equals(Object obj) {
 		if (!(obj instanceof QuestStatistic))
 			return false;
-		return playerName.equals(((QuestStatistic)obj).playerName);
+		return getPlayerName().equals(((QuestStatistic)obj).getPlayerName());
 	}
 
 	@Override
 	public int compareTo(QuestStatistic other) {
-		return playerName.compareTo(other.playerName);
+		return getPlayerName().compareTo(other.getPlayerName());
 	}
 
 }

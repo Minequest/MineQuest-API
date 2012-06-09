@@ -6,7 +6,7 @@ import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-import com.theminequest.MineQuest.API.BukkitEvents.QuestAvailableEvent;
+import com.theminequest.MineQuest.API.BukkitEvents.QuestGivenEvent;
 import com.theminequest.MineQuest.API.BukkitEvents.QuestCompleteEvent;
 import com.theminequest.MineQuest.API.BukkitEvents.TaskCompleteEvent;
 
@@ -34,8 +34,5 @@ public interface QuestManager extends Listener {
 
 	@EventHandler
 	void onPlayerRespawnEvent(PlayerRespawnEvent e);
-
-	@EventHandler
-	void onQuestAvailableEvent(QuestAvailableEvent e);
 	
 }
