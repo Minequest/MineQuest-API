@@ -10,7 +10,7 @@ public interface QuestTask extends Serializable {
 
 	void start();
 	void cancelTask();
-	void finishEvent(int eventid, CompleteStatus completeStatus);
+	void finishEvent(QuestEvent questEvent, CompleteStatus completeStatus);
 	CompleteStatus isComplete();
 	long getQuestID();
 	int getTaskID();

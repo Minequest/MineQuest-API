@@ -38,9 +38,14 @@ public class QuestUtils {
 	 * 
 	 * @return all possible events (# association)
 	 */
-	public Set<Integer> getEventNums(Quest q) {
+	public static Set<Integer> getEventNums(Quest q) {
 		Map<Integer,String> events = q.getDetails().getProperty(QUEST_EVENTS);
 		return events.keySet();
+	}
+	
+	public static String getEvent(Quest q, int eventid){
+		Map<Integer,String> events = q.getDetails().getProperty(QUEST_EVENTS);
+		return events.get(eventid);
 	}
 	
 	public static Location getSpawnLocation(Quest q){
