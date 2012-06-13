@@ -56,7 +56,8 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 	
 	public void addCompletedQuest(String questName){
 		setup();
-		completedQuests.add(questName);
+		if (!completedQuests.contains(questName))
+			completedQuests.add(questName);
 		save();
 	}
 	
