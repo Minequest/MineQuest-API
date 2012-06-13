@@ -16,6 +16,7 @@ public interface QuestGroupManager extends GroupManager {
 	QuestGroup createNewGroup(List<Player> members) throws ManagerException;
 	QuestGroup get(long id);
 	QuestGroup get(Quest activeQuest);
+	QuestGroup get(Player player);
 	long indexOf(Quest activeQuest);
 	void onPlayerQuit(PlayerQuitEvent e);
 	void onPlayerKick(PlayerKickEvent e);

@@ -17,7 +17,7 @@ import com.theminequest.MineQuest.API.Tracker.StatisticManager.Statistic;
 public class QuestStatistic extends Statistic implements Comparable<QuestStatistic> {
 		
 	@Field
-	private String questsAccepted;
+	private String questsGiven;
 	
 	@Field
 	private String questsCompleted;
@@ -26,13 +26,13 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 	private String questsMWSaved;
 	
 	// NON-PERSISTENT DATA
-	private List<String> acceptedQuests;
+	private List<String> givenQuests;
 	private List<String> completedQuests;
 	private List<String> savedMWQuests;
 	
-	public String[] getAcceptedQuests(){
+	public String[] getGivenQuests(){
 		setup();
-		return acceptedQuests.toArray(new String[acceptedQuests.size()]);
+		return givenQuests.toArray(new String[givenQuests.size()]);
 	}
 	
 	public String[] getCompletedQuests(){
@@ -40,17 +40,17 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 		return completedQuests.toArray(new String[completedQuests.size()]);
 	}
 	
-	public void addAcceptedQuest(String questName){
+	public void addGivenQuest(String questName){
 		setup();
-		acceptedQuests.add(questName);
+		givenQuests.add(questName);
 		save();
 		QuestGivenEvent e = new QuestGivenEvent(questName,Bukkit.getPlayer(getPlayerName()));
 		Bukkit.getPluginManager().callEvent(e);
 	}
 	
-	public void removeAcceptedQuest(String questName){
+	public void removeGivenQuest(String questName){
 		setup();
-		acceptedQuests.remove(questName);
+		givenQuests.remove(questName);
 		save();
 	}
 	
@@ -90,8 +90,8 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 	}
 	
 	private void setup(){
-		if (acceptedQuests==null)
-			acceptedQuests = Arrays.asList(questsAccepted.split("/"));
+		if (givenQuests==null)
+			givenQuests = Arrays.asList(questsGiven.split("/"));
 		if (completedQuests==null)
 			completedQuests = Arrays.asList(questsCompleted.split("/"));
 		if (savedMWQuests==null){
@@ -106,11 +106,11 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 	}
 	
 	private void save(){		
-		questsAccepted = "";
-		for (String s : acceptedQuests){
-			questsAccepted += s + "/";
+		questsGiven = "";
+		for (String s : givenQuests){
+			questsGiven += s + "/";
 		}
-		questsAccepted = questsAccepted.substring(0,questsAccepted.length()-1);
+		questsGiven = questsGiven.substring(0,questsGiven.length()-1);
 
 		questsCompleted = "";
 		for (String s : completedQuests){

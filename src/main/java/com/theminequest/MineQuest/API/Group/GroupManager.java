@@ -44,6 +44,19 @@ public interface GroupManager extends Listener {
 	Group get(long id);
 	
 	/**
+	 * Retrieve the group.
+	 * @param p Player in group
+	 * @return Group
+	 */
+	Group get(Player p);
+	
+	/**
+	 * Remove all players from this group and null it
+	 * @param group Group to dispose
+	 */
+	void disposeGroup(Group group);
+	
+	/**
 	 * Trigger an invite accepted by a player and add
 	 * them to the respective group
 	 * @param player Player that accepted invite
@@ -66,6 +79,13 @@ public interface GroupManager extends Listener {
 	 * @throws ManagerException if the player is already in a group
 	 */
 	void invite(Player player, Group group) throws ManagerException;
+	
+	/**
+	 * Check to see if a player has a pending invite to a group.
+	 * @param player Player to check
+	 * @return true if player has a pending invite
+	 */
+	boolean hasInvite(Player player);
 	
 	/**
 	 * Handle player joining group events
