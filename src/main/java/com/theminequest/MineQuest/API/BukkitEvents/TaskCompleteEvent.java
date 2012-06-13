@@ -23,6 +23,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import com.theminequest.MineQuest.API.CompleteStatus;
+import com.theminequest.MineQuest.API.Quest.Quest;
 
 public class TaskCompleteEvent extends Event {
 
@@ -32,18 +33,18 @@ public class TaskCompleteEvent extends Event {
 	    return handlers;
 	}
 	
-	private long questid;
+	private Quest quest;
 	private int id;
 	private CompleteStatus result;
 	
-	public TaskCompleteEvent(long questid, int id, CompleteStatus t) {
-		this.questid = questid;
+	public TaskCompleteEvent(Quest quest, int id, CompleteStatus t) {
+		this.quest = quest;
 		this.id = id;
 		this.result = t;
 	}
 	
-	public long getQuestID(){
-		return questid;
+	public Quest getQuest(){
+		return quest;
 	}
 	
 	public int getID(){
