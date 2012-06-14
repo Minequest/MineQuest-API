@@ -120,19 +120,22 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 		for (String s : givenQuests){
 			questsGiven += s + "/";
 		}
-		questsGiven = questsGiven.substring(0,questsGiven.length()-1);
+		if (questsGiven.length()!=0)
+			questsGiven = questsGiven.substring(0,questsGiven.length()-1);
 
 		questsCompleted = "";
 		for (String s : completedQuests){
 			questsCompleted += s + "/";
 		}
-		questsCompleted = questsCompleted.substring(0,questsCompleted.length()-1);
+		if (questsCompleted.length()!=0)
+			questsCompleted = questsCompleted.substring(0,questsCompleted.length()-1);
 		
 		questsMWSaved = "";
 		for (String s : savedMWQuests){
 			questsMWSaved += s + "/";
 		}
-		questsMWSaved = questsMWSaved.substring(0,questsMWSaved.length()-1);
+		if (questsMWSaved.length()!=0)
+			questsMWSaved = questsMWSaved.substring(0,questsMWSaved.length()-1);
 
 		Managers.getStatisticManager().setStatistic(this, getClass());
 	}
