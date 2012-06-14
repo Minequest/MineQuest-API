@@ -15,6 +15,9 @@ import com.theminequest.MineQuest.API.Tracker.StatisticManager.Statistic;
 
 @Table("minequest_Quests")
 public class QuestStatistic extends Statistic implements Comparable<QuestStatistic> {
+	
+	@Id
+	private long uuid;
 		
 	@Field
 	private String questsGiven;

@@ -3,6 +3,7 @@ package com.theminequest.MineQuest.API.Tracker;
 import com.alta189.simplesave.Database;
 import com.alta189.simplesave.Field;
 import com.alta189.simplesave.Id;
+import com.alta189.simplesave.exceptions.ConnectionException;
 
 /**
  * StatisticManager keeps track of
@@ -20,6 +21,13 @@ public interface StatisticManager {
 	 * @return storage backend
 	 */
 	Database getStorageBackend();
+	
+	/**
+	 * Connect to the server (or disconnect)
+	 * @param connect true for connecting
+	 * @throws ConnectionException if connection could not be made or discarded
+	 */
+	void connect(boolean connect) throws ConnectionException;
 	
 	/**
 	 * Retrieve the specified statistic
@@ -48,15 +56,8 @@ public interface StatisticManager {
 	 */
 	public static class Statistic {
 		
-		@Id
-		private long uuid;
-		
 		@Field
 		private String playerName;
-		
-		public long getUUID(){
-			return uuid;
-		}
 		
 		public String getPlayerName(){
 			return playerName;
