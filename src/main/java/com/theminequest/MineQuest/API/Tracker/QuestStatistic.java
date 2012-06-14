@@ -94,6 +94,12 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 	}
 	
 	private void setup(){
+		if (questsGiven==null)
+			questsGiven = "";
+		if (questsCompleted==null)
+			questsCompleted = "";
+		if (questsMWSaved==null)
+			questsMWSaved = "";
 		if (givenQuests==null)
 			givenQuests = Arrays.asList(questsGiven.split("/"));
 		if (completedQuests==null)
