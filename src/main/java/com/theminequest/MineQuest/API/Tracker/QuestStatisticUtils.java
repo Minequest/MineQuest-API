@@ -86,7 +86,7 @@ public class QuestStatisticUtils {
 			return;
 		} else if (qS==Status.COMPLETED)
 			throw new QSException("Player already completed this quest!");
-		if (!Managers.getGroupManager().get(player).getLeader().equals(player))
+		if (!Managers.getQuestGroupManager().get(player).getQuest().getQuestOwner().equalsIgnoreCase(player.getName()))
 			player.sendMessage(ChatColor.GRAY + "Since you were given this quest, you will get credit for this as well.");
 		s.removeGivenQuest(questName);	
 		s.addCompletedQuest(questName);

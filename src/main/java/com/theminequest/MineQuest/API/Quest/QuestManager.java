@@ -18,7 +18,7 @@ public interface QuestManager extends Listener {
 	void reloadQuest(String name);
 	QuestDetails getDetails(String name);
 	Quest getQuest(long currentquest);
-	long startQuest(QuestDetails d);
+	long startQuest(QuestDetails d, String ownerName);
 	
 	@EventHandler
 	void taskCompletion(TaskCompleteEvent e);
