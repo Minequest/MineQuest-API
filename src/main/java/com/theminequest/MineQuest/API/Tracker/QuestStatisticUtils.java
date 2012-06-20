@@ -1,9 +1,13 @@
 package com.theminequest.MineQuest.API.Tracker;
 
+import java.util.NoSuchElementException;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.theminequest.MineQuest.API.Managers;
+import com.theminequest.MineQuest.API.Quest.Quest;
+import com.theminequest.MineQuest.API.Quest.QuestDetails;
 
 public class QuestStatisticUtils {
 	
@@ -34,7 +38,22 @@ public class QuestStatisticUtils {
 	}
 	
 	public static enum Status {
-		GIVEN, COMPLETED, UNKNOWN;
+		/**
+		 * Given Quests (Instanced)
+		 */
+		GIVEN,
+		/**
+		 * Completed Quests
+		 */
+		COMPLETED,
+		/**
+		 * Active Main World Quests
+		 */
+		INPROGRESS,
+		/**
+		 * Unknown
+		 */
+		UNKNOWN;
 	}
 	
 	public static String[] getQuests(Player player, Status status){
@@ -44,9 +63,24 @@ public class QuestStatisticUtils {
 			return s.getGivenQuests();
 		case COMPLETED:
 			return s.getCompletedQuests();
+		case INPROGRESS:
+			Quest[] q = s.getMainWorldQuests();
+			String[] a = new String[q.length];
+			for (int i=0; i<q.length; i++)
+				a[i] = q[i].getDetails().getProperty(QuestDetails.QUEST_NAME);
+			return a;
 		default:
 			throw new IllegalArgumentException("Cannot be unknown!");
 		}
+	}
+	
+	public static Quest getMainWorldQuest(Player player, String questName){
+		QuestStatistic s = Managers.getStatisticManager().getStatistic(player.getName(), QuestStatistic.class);
+		for (Quest q : s.getMainWorldQuests()){
+			if (q.getDetails().getProperty(QuestDetails.QUEST_NAME).equals(questName))
+				return q;
+		}
+		throw new NoSuchElementException("No such quest!");
 	}
 	
 	public static Status hasQuest(Player player, String questName){
@@ -59,15 +93,28 @@ public class QuestStatisticUtils {
 			if (questName.equals(c))
 				return Status.COMPLETED;
 		}
+		for (Quest q : s.getMainWorldQuests()){
+			if (questName.equals(q.getDetails().getProperty(QuestDetails.QUEST_NAME)))
+				return Status.INPROGRESS;
+		}
 		return Status.UNKNOWN;
 	}
 	
 	public static void giveQuest(Player player, String questName) throws QSException{
 		QuestStatistic s = Managers.getStatisticManager().getStatistic(player.getName(), QuestStatistic.class);
 		Status qS = hasQuest(player,questName);
-		if (qS==Status.GIVEN)
+		if (qS==Status.GIVEN || qS==Status.INPROGRESS)
 			throw new QSException("Player already has this quest!");
-		s.addGivenQuest(questName);
+		QuestDetails d = Managers.getQuestManager().getDetails(questName);
+		if (d==null)
+			throw new QSException("No such quest available on system!");
+		if (d.getProperty(QuestDetails.QUEST_LOADWORLD))
+			s.addGivenQuest(questName);
+		else {
+			Quest q = Managers.getQuestManager().startQuest(d, player.getName());
+			q.startQuest();
+			s.saveMainWorldQuest(q);
+		}
 	}
 	
 	public static void degiveQuest(Player player, String questName) throws QSException{
@@ -81,15 +128,34 @@ public class QuestStatisticUtils {
 	public static void completeQuest(Player player, String questName) throws QSException{
 		QuestStatistic s = Managers.getStatisticManager().getStatistic(player.getName(), QuestStatistic.class);
 		Status qS = hasQuest(player,questName);
-		if (qS==Status.UNKNOWN){ // people who don't have this quest don't get it completed
+		switch(qS){
+		case COMPLETED:
+			throw new QSException("Player already completed this quest!");
+		case GIVEN:
+			if (!Managers.getQuestGroupManager().get(player).getQuest().getQuestOwner().equalsIgnoreCase(player.getName()))
+				player.sendMessage(ChatColor.GRAY + "Since you were given this quest, you will get credit for this as well.");
+			s.removeGivenQuest(questName);
+			s.addCompletedQuest(questName);
+			break;
+		case INPROGRESS:
+			Quest[] mwq = s.getMainWorldQuests();
+			for (int i=0; i<mwq.length; i++){
+				Quest q = mwq[i];
+				if (q.getDetails().getProperty(QuestDetails.QUEST_NAME).equals(questName)){
+					if (q.isFinished()==null)
+						throw new QSException("Quest not finished!");
+					q.cleanupQuest();
+					s.removeMainWorldQuest(q);
+					i=mwq.length;
+				}
+			}
+			break;
+		case UNKNOWN:
 			player.sendMessage(ChatColor.GRAY + "Since you were not given this quest, you do not get credit. :|");
 			return;
-		} else if (qS==Status.COMPLETED)
-			throw new QSException("Player already completed this quest!");
-		if (!Managers.getQuestGroupManager().get(player).getQuest().getQuestOwner().equalsIgnoreCase(player.getName()))
-			player.sendMessage(ChatColor.GRAY + "Since you were given this quest, you will get credit for this as well.");
-		s.removeGivenQuest(questName);	
-		s.addCompletedQuest(questName);
+		default:
+			break;
+		}
 	}
 
 }

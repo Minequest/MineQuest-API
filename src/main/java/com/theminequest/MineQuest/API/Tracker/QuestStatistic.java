@@ -11,6 +11,7 @@ import com.alta189.simplesave.Id;
 import com.alta189.simplesave.Table;
 import com.theminequest.MineQuest.API.Managers;
 import com.theminequest.MineQuest.API.BukkitEvents.QuestGivenEvent;
+import com.theminequest.MineQuest.API.Quest.Quest;
 import com.theminequest.MineQuest.API.Tracker.StatisticManager.Statistic;
 
 @Table("minequest_Quests")
@@ -26,12 +27,11 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 	private String questsCompleted;
 	
 	@Field
-	private String questsMWSaved;
+	private ArrayList<Quest> questsMWSaved;
 	
 	// NON-PERSISTENT DATA
 	private List<String> givenQuests;
 	private List<String> completedQuests;
-	private List<String> savedMWQuests;
 	
 	public String[] getGivenQuests(){
 		setup();
@@ -41,6 +41,11 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 	public String[] getCompletedQuests(){
 		setup();
 		return completedQuests.toArray(new String[completedQuests.size()]);
+	}
+	
+	public Quest[] getMainWorldQuests(){
+		setup();
+		return questsMWSaved.toArray(new Quest[questsMWSaved.size()]);
 	}
 	
 	public void addGivenQuest(String questName){
@@ -70,26 +75,17 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 		save();
 	}
 	
-	public void setMainWorldQuest(String quest_name, int currentTask){
+	public void saveMainWorldQuest(Quest quest){
 		setup();
-		for (int i=0; i<savedMWQuests.size(); i++){
-			if (savedMWQuests.get(i).split("/")[0].equals(quest_name)){
-				savedMWQuests.remove(i);
-				i = savedMWQuests.size();
-			}
-		}
-		savedMWQuests.add(quest_name + "/" + currentTask);
+		if (questsMWSaved.contains(quest))
+			questsMWSaved.remove(quest);
+		questsMWSaved.add(quest);
 		save();
 	}
 	
-	public void removeMainWorldQuest(String quest_name){
+	public void removeMainWorldQuest(Quest quest){
 		setup();
-		for (int i=0; i<savedMWQuests.size(); i++){
-			if (savedMWQuests.get(i).split("/")[0].equals(quest_name)){
-				savedMWQuests.remove(i);
-				i = savedMWQuests.size();
-			}
-		}
+		questsMWSaved.remove(quest);
 		save();
 	}
 	
@@ -99,20 +95,11 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 		if (questsCompleted==null)
 			questsCompleted = "";
 		if (questsMWSaved==null)
-			questsMWSaved = "";
+			questsMWSaved = new ArrayList<Quest>();
 		if (givenQuests==null)
 			givenQuests = new ArrayList<String>(Arrays.asList(questsGiven.split("/")));
 		if (completedQuests==null)
 			completedQuests = new ArrayList<String>(Arrays.asList(questsCompleted.split("/")));
-		if (savedMWQuests==null){
-			String[] split = questsMWSaved.split("/");
-			savedMWQuests = new ArrayList<String>();
-			if (split.length%2==0){
-				for (int i=0; i<split.length; i+=2){
-					savedMWQuests.add(split[i] + "/" + split[i+1]);
-				}
-			}
-		}
 	}
 	
 	private void save(){		
@@ -129,13 +116,6 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 		}
 		if (questsCompleted.length()!=0)
 			questsCompleted = questsCompleted.substring(0,questsCompleted.length()-1);
-		
-		questsMWSaved = "";
-		for (String s : savedMWQuests){
-			questsMWSaved += s + "/";
-		}
-		if (questsMWSaved.length()!=0)
-			questsMWSaved = questsMWSaved.substring(0,questsMWSaved.length()-1);
 
 		Managers.getStatisticManager().setStatistic(this, getClass());
 	}
