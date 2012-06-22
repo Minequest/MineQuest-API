@@ -12,6 +12,7 @@ import com.alta189.simplesave.Table;
 import com.theminequest.MineQuest.API.Managers;
 import com.theminequest.MineQuest.API.BukkitEvents.QuestGivenEvent;
 import com.theminequest.MineQuest.API.Quest.Quest;
+import com.theminequest.MineQuest.API.Quest.QuestSnapshot;
 import com.theminequest.MineQuest.API.Tracker.StatisticManager.Statistic;
 
 @Table("minequest_Quests")
@@ -27,11 +28,12 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 	private String questsCompleted;
 	
 	@Field
-	private ArrayList<Quest> questsMWSaved;
+	private ArrayList<QuestSnapshot> questsMWSaved;
 	
 	// NON-PERSISTENT DATA
 	private List<String> givenQuests;
 	private List<String> completedQuests;
+	private List<Quest> questsRegenerated;
 	
 	public String[] getGivenQuests(){
 		setup();
@@ -77,15 +79,15 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 	
 	public void saveMainWorldQuest(Quest quest){
 		setup();
-		if (questsMWSaved.contains(quest))
-			questsMWSaved.remove(quest);
-		questsMWSaved.add(quest);
+		if (questsRegenerated.contains(quest))
+			questsRegenerated.remove(quest);
+		questsRegenerated.add(quest);
 		save();
 	}
 	
 	public void removeMainWorldQuest(Quest quest){
 		setup();
-		questsMWSaved.remove(quest);
+		questsRegenerated.remove(quest);
 		save();
 	}
 	
@@ -95,11 +97,17 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 		if (questsCompleted==null)
 			questsCompleted = "";
 		if (questsMWSaved==null)
-			questsMWSaved = new ArrayList<Quest>();
+			questsMWSaved = new ArrayList<QuestSnapshot>();
 		if (givenQuests==null)
 			givenQuests = new ArrayList<String>(Arrays.asList(questsGiven.split("/")));
 		if (completedQuests==null)
 			completedQuests = new ArrayList<String>(Arrays.asList(questsCompleted.split("/")));
+		if (questsRegenerated==null){
+			questsRegenerated = new ArrayList<Quest>();
+			for (QuestSnapshot s : questsMWSaved){
+				questsRegenerated.add(s.recreateQuest());
+			}
+		}
 	}
 	
 	private void save(){		
@@ -116,6 +124,11 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 		}
 		if (questsCompleted.length()!=0)
 			questsCompleted = questsCompleted.substring(0,questsCompleted.length()-1);
+		
+		questsMWSaved.clear();
+		for (Quest q : questsRegenerated){
+			questsMWSaved.add(q.createSnapshot());
+		}
 
 		Managers.getStatisticManager().setStatistic(this, getClass());
 	}

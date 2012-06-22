@@ -19,5 +19,6 @@ public interface Quest extends Comparable<Quest>, Serializable {
 	boolean startTask(int taskID);
 	void onTaskCompletion(TaskCompleteEvent e);
 	String getQuestOwner();
+	QuestSnapshot createSnapshot();
 
 }
