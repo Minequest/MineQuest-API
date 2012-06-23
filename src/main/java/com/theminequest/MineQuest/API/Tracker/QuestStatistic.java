@@ -47,7 +47,7 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 	
 	public Quest[] getMainWorldQuests(){
 		setup();
-		return questsMWSaved.toArray(new Quest[questsMWSaved.size()]);
+		return questsRegenerated.toArray(new Quest[questsRegenerated.size()]);
 	}
 	
 	public void addGivenQuest(String questName){
