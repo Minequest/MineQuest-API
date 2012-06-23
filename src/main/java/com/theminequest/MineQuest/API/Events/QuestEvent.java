@@ -24,6 +24,7 @@ import java.io.Serializable;
 import org.bukkit.Bukkit;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -180,7 +181,7 @@ public abstract class QuestEvent implements Serializable {
 	 * @param e
 	 * @return true if entity damage meets condition for an event
 	 */
-	public boolean entityDamageByEntityCondition(EntityDamageByEntityEvent e){
+	public boolean entityDamageCondition(EntityDamageEvent e){
 		return false;
 	}
 
@@ -220,9 +221,9 @@ public abstract class QuestEvent implements Serializable {
 		}
 	}
 
-	public final synchronized void onEntityDamageByEntity(EntityDamageByEntityEvent e){
+	public final synchronized void onEntityDamage(EntityDamageEvent e){
 		if (complete==null){
-			if (entityDamageByEntityCondition(e)){
+			if (entityDamageCondition(e)){
 				complete(action());
 			}
 		}

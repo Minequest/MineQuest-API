@@ -5,6 +5,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -60,7 +61,7 @@ public interface EventManager extends Listener {
 	void onBlockBreak(BlockBreakEvent e);
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	void onEntityDamageByEntityEvent(EntityDamageByEntityEvent e);
+	void onEntityDamageEvent(EntityDamageEvent e);
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	void onEntityDeathEvent(EntityDeathEvent e);
