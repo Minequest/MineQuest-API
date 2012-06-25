@@ -36,6 +36,8 @@ public class TargetDetails implements Serializable {
 			this.type = TargetType.TARGETTEREDIT;
 		else if (type.equals("randomtarget"))
 			this.type = TargetType.RANDOMTARGET;
+		if (info.length > 1)
+			this.details = details.substring(details.indexOf(':') + 1);
 	}
 	
 	public TargetType getType(){
