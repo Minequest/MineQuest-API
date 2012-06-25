@@ -91,7 +91,7 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 		save();
 	}
 	
-	private void setup(){
+	public void setup(){
 		if (questsGiven==null)
 			questsGiven = "";
 		if (questsCompleted==null)
@@ -110,7 +110,7 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 		}
 	}
 	
-	private void save(){		
+	public void save(){		
 		questsGiven = "";
 		for (String s : givenQuests){
 			questsGiven += s + "/";

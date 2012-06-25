@@ -14,18 +14,49 @@ import com.theminequest.MineQuest.API.Target.TargetDetails;
 public abstract class TargetQuestEvent extends DelayedQuestEvent {
 
 	public TargetQuestEvent() {}
+	
+	private boolean targeted;
 
 	@Override
 	public long getDelay() {
 		return 0;
 	}
+
+	@Override
+	public final void parseDetails(String[] details) {
+		targeted = false;
+		if (details.length!=0){
+			if (details[0].equalsIgnoreCase("T"))
+				targeted = true;
+		}
+		additionalDetails(shrinkArray(details));
+	}
 	
+	private String[] shrinkArray(String[] array){
+		if (array.length<=1)
+			return new String[0];
+		String[] toreturn = new String[array.length-1];
+		for (int i=1; i<array.length; i++)
+			toreturn[i-1] = array[i];
+		return toreturn;
+	}
+	
+	/**
+	 * Parse details for this targeted event.<br>
+	 * This would normally be done in {@link #parseDetails(String[])},
+	 * but must be overriden in TargetQuestEvent to define {@link #enableTargets()}.
+	 * @param details
+	 */
+	public abstract void additionalDetails(String[] details);
+
 	/**
 	 * Some events are dual normal/targeted events.
 	 * Figure out if getTargets() should check.
 	 * @return true if event is targeted
 	 */
-	public abstract boolean enableTargets();
+	public boolean enableTargets(){
+		return targeted;
+	}
 	
 	/**
 	 * Retrieve the target ID.
