@@ -78,7 +78,7 @@ public abstract class QuestEvent implements Serializable {
 	 * @return Respective status, or <code>null</code> if it has
 	 * not been declared yet.
 	 */
-	public final CompleteStatus isComplete(){
+	public final synchronized CompleteStatus isComplete(){
 		return complete;
 	}
 
@@ -131,10 +131,13 @@ public abstract class QuestEvent implements Serializable {
 	 * Notify that the event has been completed with the status given.
 	 * @param actionresult Status to pass in.
 	 */
-	public final void complete(CompleteStatus c){
+	public final synchronized void complete(CompleteStatus c){
 		if (complete==null){
 			Managers.getEventManager().deregisterEventListener(this);
-			complete = c;
+			if (c!=null)
+				complete = c;
+			else
+				complete = CompleteStatus.IGNORE;
 			cleanUpEvent();
 			if (quest!=null){
 				if (c!=CompleteStatus.CANCELED && c!=CompleteStatus.IGNORE){
