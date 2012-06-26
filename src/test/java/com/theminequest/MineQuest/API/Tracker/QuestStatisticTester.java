@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,10 +22,13 @@ import com.theminequest.MineQuest.API.Utils.PropertiesFile;
 public class QuestStatisticTester {
 	
 	private StatisticManager statisticManager;
+	private File f;
 
 	@Before
 	public void setUp() throws Exception {
 		statisticManager = new Statistics();
+		f = File.createTempFile("tmpdb_", ".h2.db");
+		f.deleteOnExit();
 	}
 
 	@Test
@@ -32,20 +36,18 @@ public class QuestStatisticTester {
 		statisticManager.registerStatistic(QuestStatistic.class);
 	}
 	
+	private static enum Mode{
+		MySQL, SQlite, H2;
+	}
 	
-	
-	public static class Statistics implements StatisticManager {
-
-		private enum Mode{
-			MySQL, SQlite, H2;
-		}
+	public class Statistics implements StatisticManager {
+		
 		private Mode databasetype;
 		private Database backend;
 		
 		public Statistics() throws ConnectionException, IOException{
 			Managers.log("[SQL] Loading and connecting to SQL...");
 			databasetype = Mode.H2;
-			File f = File.createTempFile("tmpdb_", ".h2.db");
 			backend = DatabaseFactory.createNewDatabase(new H2Configuration().setDatabase(f.getAbsolutePath().substring(0, f.getAbsolutePath().length()-7)));
 		}
 
@@ -83,6 +85,14 @@ public class QuestStatisticTester {
 			} catch (TableRegistrationException e) {
 				throw new RuntimeException(e);
 			}
+		}
+
+
+		@Override
+		public <T extends Statistic> List<T> getStatisticList(
+				Class<? extends Statistic> tableClazz) {
+			// TODO Auto-generated method stub
+			return null;
 		}
 		
 	}

@@ -1,5 +1,7 @@
 package com.theminequest.MineQuest.API.Tracker;
 
+import java.util.List;
+
 import com.alta189.simplesave.Database;
 import com.alta189.simplesave.Field;
 import com.alta189.simplesave.Id;
@@ -31,7 +33,7 @@ public interface StatisticManager {
 	
 	/**
 	 * Retrieve the specified statistic
-	 * @param <T> Type to return as (Must implement {@link Statistic}).
+	 * @param <T> Type to return as (Must extend {@link Statistic}).
 	 * @param playerName Player Name to search for
 	 * @param tableClazz table in which to search for (represented by class)
 	 * @return Player statistic in database (or if not found, a new one)
@@ -44,6 +46,13 @@ public interface StatisticManager {
 	 * @param tableClazz Class that represents this statistic
 	 */
 	<T extends Statistic> void setStatistic(T statistic, Class<? extends Statistic> tableClazz);
+	
+	/**
+	 * Get a list of statistics in the database
+	 * @param tableClazz Table to look in
+	 * @return array of statistics
+	 */
+	<T extends Statistic> List<T> getStatisticList(Class<? extends Statistic> tableClazz);
 	
 	/**
 	 * Register a statistic for use with the manager

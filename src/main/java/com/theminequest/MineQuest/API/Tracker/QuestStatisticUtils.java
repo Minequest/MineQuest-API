@@ -56,7 +56,7 @@ public class QuestStatisticUtils {
 		UNKNOWN;
 	}
 	
-	public static String[] getQuests(Player player, Status status){
+	public synchronized static String[] getQuests(Player player, Status status){
 		QuestStatistic s = Managers.getStatisticManager().getStatistic(player.getName(), QuestStatistic.class);
 		switch(status){
 		case GIVEN:
@@ -74,7 +74,7 @@ public class QuestStatisticUtils {
 		}
 	}
 	
-	public static Quest getMainWorldQuest(Player player, String questName){
+	public synchronized static Quest getMainWorldQuest(Player player, String questName){
 		QuestStatistic s = Managers.getStatisticManager().getStatistic(player.getName(), QuestStatistic.class);
 		for (Quest q : s.getMainWorldQuests()){
 			if (q.getDetails().getProperty(QuestDetails.QUEST_NAME).equals(questName))
@@ -83,7 +83,7 @@ public class QuestStatisticUtils {
 		throw new NoSuchElementException("No such quest!");
 	}
 	
-	public static Status hasQuest(Player player, String questName){
+	public synchronized static Status hasQuest(Player player, String questName){
 		QuestStatistic s = Managers.getStatisticManager().getStatistic(player.getName(), QuestStatistic.class);
 		for (String g : s.getGivenQuests()){
 			if (questName.equals(g))
@@ -100,7 +100,7 @@ public class QuestStatisticUtils {
 		return Status.UNKNOWN;
 	}
 	
-	public static void giveQuest(Player player, String questName) throws QSException{
+	public synchronized static void giveQuest(Player player, String questName) throws QSException{
 		QuestStatistic s = Managers.getStatisticManager().getStatistic(player.getName(), QuestStatistic.class);
 		Status qS = hasQuest(player,questName);
 		if (qS==Status.GIVEN || qS==Status.INPROGRESS)
@@ -117,7 +117,7 @@ public class QuestStatisticUtils {
 		}
 	}
 	
-	public static void degiveQuest(Player player, String questName) throws QSException{
+	public synchronized static void degiveQuest(Player player, String questName) throws QSException{
 		QuestStatistic s = Managers.getStatisticManager().getStatistic(player.getName(), QuestStatistic.class);
 		Status qS = hasQuest(player,questName);
 		if (qS!=Status.GIVEN)
@@ -125,7 +125,7 @@ public class QuestStatisticUtils {
 		s.removeGivenQuest(questName);
 	}
 	
-	public static void completeQuest(Player player, String questName) throws QSException{
+	public synchronized static void completeQuest(Player player, String questName) throws QSException{
 		QuestStatistic s = Managers.getStatisticManager().getStatistic(player.getName(), QuestStatistic.class);
 		Status qS = hasQuest(player,questName);
 		switch(qS){
