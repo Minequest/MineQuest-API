@@ -145,7 +145,7 @@ public class QuestStatisticUtils {
 					if (q.isFinished()==null)
 						throw new QSException("Quest not finished!");
 					q.cleanupQuest();
-					s.removeMainWorldQuest(q);
+					s.removeMainWorldQuest(questName);
 					i=mwq.length;
 				}
 			}
