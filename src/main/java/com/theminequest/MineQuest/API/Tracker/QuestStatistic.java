@@ -2,7 +2,10 @@ package com.theminequest.MineQuest.API.Tracker;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 
@@ -12,6 +15,7 @@ import com.alta189.simplesave.Table;
 import com.theminequest.MineQuest.API.Managers;
 import com.theminequest.MineQuest.API.BukkitEvents.QuestGivenEvent;
 import com.theminequest.MineQuest.API.Quest.Quest;
+import com.theminequest.MineQuest.API.Quest.QuestDetails;
 import com.theminequest.MineQuest.API.Quest.QuestSnapshot;
 import com.theminequest.MineQuest.API.Tracker.StatisticManager.Statistic;
 
@@ -33,7 +37,7 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 	// NON-PERSISTENT DATA
 	private List<String> givenQuests;
 	private List<String> completedQuests;
-	private List<Quest> questsRegenerated;
+	private Map<String, Quest> questsRegenerated;
 	
 	public String[] getGivenQuests(){
 		setup();
@@ -47,7 +51,7 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 	
 	public Quest[] getMainWorldQuests(){
 		setup();
-		return questsRegenerated.toArray(new Quest[questsRegenerated.size()]);
+		return questsRegenerated.values().toArray(new Quest[questsRegenerated.size()]);
 	}
 	
 	public void addGivenQuest(String questName){
@@ -79,15 +83,13 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 	
 	public void saveMainWorldQuest(Quest quest){
 		setup();
-		if (questsRegenerated.contains(quest))
-			questsRegenerated.remove(quest);
-		questsRegenerated.add(quest);
+		questsRegenerated.put((String) quest.getDetails().getProperty(QuestDetails.QUEST_NAME), quest);
 		save();
 	}
 	
-	public void removeMainWorldQuest(Quest quest){
+	public void removeMainWorldQuest(String questName){
 		setup();
-		questsRegenerated.remove(quest);
+		questsRegenerated.remove(questName);
 		save();
 	}
 	
@@ -103,9 +105,11 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 		if (completedQuests==null)
 			completedQuests = new ArrayList<String>(Arrays.asList(questsCompleted.split("/")));
 		if (questsRegenerated==null){
-			questsRegenerated = new ArrayList<Quest>();
+			questsRegenerated = new LinkedHashMap<String, Quest>();
 			for (QuestSnapshot s : questsMWSaved){
-				questsRegenerated.add(s.recreateQuest());
+				Quest q = s.recreateQuest();
+				questsRegenerated.put((String) q.getDetails().getProperty(QuestDetails.QUEST_NAME), q);
+				q.startQuest();
 			}
 		}
 	}
@@ -126,7 +130,7 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 			questsCompleted = questsCompleted.substring(0,questsCompleted.length()-1);
 		
 		questsMWSaved.clear();
-		for (Quest q : questsRegenerated){
+		for (Quest q : questsRegenerated.values()){
 			questsMWSaved.add(q.createSnapshot());
 		}
 
