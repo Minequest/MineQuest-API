@@ -1,8 +1,10 @@
 package com.theminequest.MineQuest.API.Quest;
 
+import java.io.Serializable;
+
 import org.bukkit.entity.Player;
 
-public interface QuestRequirement {
+public interface QuestRequirement extends Serializable {
 	
 	/**
 	 * Type of requirement.
@@ -20,9 +22,9 @@ public interface QuestRequirement {
 		PLAYER,
 		/**
 		 * Must have specific item.<br>
-		 * Details: comma-seperated list of items<br>
-		 * Example: 64_1,64_5.3 would require 64 of STONE and
-		 * 64 of WOODEN_PLANKS with data id 3.
+		 * Details: item, quantity, and data value<br>
+		 * Example: 64:5:3 would require 64 of WOODEN_PLANKS
+		 * with data id 3, while 64:1:0 would require 64 of STONE.
 		 */
 		ITEM,
 		/**
@@ -54,10 +56,15 @@ public interface QuestRequirement {
 		 */
 		PERMISSION,
 		/**
-		 * Must be certain level<br>
+		 * Must be below certain level<br>
 		 * Details: level
 		 */
-		LEVEL,
+		BELOWLEVEL,
+		/**
+		 * Must be above ceratin level<br>
+		 * Details: level
+		 */
+		ABOVELEVEL,
 		/**
 		 * Must fulfill (or fail) certain quests (x) number of times<br>
 		 * Details: Success or failure followed by quest name and number of times,
