@@ -2,7 +2,6 @@ package com.theminequest.MineQuest.API.Tracker;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +36,7 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 	// NON-PERSISTENT DATA
 	private transient List<String> givenQuests;
 	private transient List<String> completedQuests;
-	private transient Map<String, Quest> questsRegenerated;
+	private transient Map<String, QuestSnapshot> mwQuestsRegenerated;
 	
 	public String[] getGivenQuests(){
 		setup();
@@ -49,9 +48,9 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 		return completedQuests.toArray(new String[completedQuests.size()]);
 	}
 	
-	public Quest[] getMainWorldQuests(){
+	public QuestSnapshot[] getMainWorldQuests(){
 		setup();
-		return questsRegenerated.values().toArray(new Quest[questsRegenerated.size()]);
+		return mwQuestsRegenerated.values().toArray(new QuestSnapshot[mwQuestsRegenerated.size()]);
 	}
 	
 	public void addGivenQuest(String questName){
@@ -83,13 +82,13 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 	
 	public void saveMainWorldQuest(Quest quest){
 		setup();
-		questsRegenerated.put((String) quest.getDetails().getProperty(QuestDetails.QUEST_NAME), quest);
+		mwQuestsRegenerated.put((String) quest.getDetails().getProperty(QuestDetails.QUEST_NAME), quest.createSnapshot());
 		save();
 	}
 	
 	public void removeMainWorldQuest(String questName){
 		setup();
-		questsRegenerated.remove(questName);
+		mwQuestsRegenerated.remove(questName);
 		save();
 	}
 	
@@ -104,11 +103,10 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 			givenQuests = new ArrayList<String>(Arrays.asList(questsGiven.split("/")));
 		if (completedQuests==null)
 			completedQuests = new ArrayList<String>(Arrays.asList(questsCompleted.split("/")));
-		if (questsRegenerated==null){
-			questsRegenerated = new LinkedHashMap<String, Quest>();
+		if (mwQuestsRegenerated==null){
+			mwQuestsRegenerated = new LinkedHashMap<String, QuestSnapshot>();
 			for (QuestSnapshot s : questsMWSaved){
-				Quest q = s.recreateQuest();
-				questsRegenerated.put((String) q.getDetails().getProperty(QuestDetails.QUEST_NAME), q);
+				mwQuestsRegenerated.put((String) s.getDetails().getProperty(QuestDetails.QUEST_NAME), s);
 			}
 		}
 	}
@@ -129,9 +127,7 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 			questsCompleted = questsCompleted.substring(0,questsCompleted.length()-1);
 		
 		questsMWSaved.clear();
-		for (Quest q : questsRegenerated.values()){
-			questsMWSaved.add(q.createSnapshot());
-		}
+		questsMWSaved.addAll(mwQuestsRegenerated.values());
 
 		Managers.getStatisticManager().setStatistic(this, getClass());
 	}

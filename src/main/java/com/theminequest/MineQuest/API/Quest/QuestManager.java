@@ -1,5 +1,6 @@
 package com.theminequest.MineQuest.API.Quest;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDamageEvent;
@@ -19,6 +20,9 @@ public interface QuestManager extends Listener {
 	QuestDetails getDetails(String name);
 	Quest getQuest(long currentquest);
 	Quest startQuest(QuestDetails d, String ownerName);
+	Quest[] getMainWorldQuests(Player player);
+	Quest getMainWorldQuest(Player player, String questName);
+	void removeMainWorldQuest(Player player, String questName);
 	
 	@EventHandler
 	void taskCompletion(TaskCompleteEvent e);

@@ -9,6 +9,7 @@ import com.theminequest.MineQuest.API.CompleteStatus;
 import com.theminequest.MineQuest.API.Managers;
 import com.theminequest.MineQuest.API.Quest.Quest;
 import com.theminequest.MineQuest.API.Quest.QuestDetails;
+import com.theminequest.MineQuest.API.Quest.QuestSnapshot;
 
 public class QuestStatisticUtils {
 	
@@ -65,7 +66,7 @@ public class QuestStatisticUtils {
 		case COMPLETED:
 			return s.getCompletedQuests();
 		case INPROGRESS:
-			Quest[] q = s.getMainWorldQuests();
+			QuestSnapshot[] q = s.getMainWorldQuests();
 			String[] a = new String[q.length];
 			for (int i=0; i<q.length; i++)
 				a[i] = q[i].getDetails().getProperty(QuestDetails.QUEST_NAME);
@@ -73,15 +74,6 @@ public class QuestStatisticUtils {
 		default:
 			throw new IllegalArgumentException("Cannot be unknown!");
 		}
-	}
-	
-	public synchronized static Quest getMainWorldQuest(Player player, String questName){
-		QuestStatistic s = Managers.getStatisticManager().getStatistic(player.getName(), QuestStatistic.class);
-		for (Quest q : s.getMainWorldQuests()){
-			if (q.getDetails().getProperty(QuestDetails.QUEST_NAME).equals(questName))
-				return q;
-		}
-		throw new NoSuchElementException("No such quest!");
 	}
 	
 	public synchronized static Status hasQuest(Player player, String questName){
@@ -94,7 +86,7 @@ public class QuestStatisticUtils {
 			if (questName.equals(c))
 				return Status.COMPLETED;
 		}
-		for (Quest q : s.getMainWorldQuests()){
+		for (QuestSnapshot q : s.getMainWorldQuests()){
 			if (questName.equals(q.getDetails().getProperty(QuestDetails.QUEST_NAME)))
 				return Status.INPROGRESS;
 		}
@@ -126,10 +118,11 @@ public class QuestStatisticUtils {
 			s.removeGivenQuest(questName);
 			break;
 		case INPROGRESS:
-			Quest q = getMainWorldQuest(player,questName);
+			Quest q = Managers.getQuestManager().getMainWorldQuest(player,questName);
 			q.finishQuest(CompleteStatus.CANCELED);
 			q.cleanupQuest();
 			s.removeMainWorldQuest(questName);
+			Managers.getQuestManager().removeMainWorldQuest(player, questName);
 			break;
 		default:
 			throw new QSException("Player doesn't have this quest!");
@@ -149,17 +142,12 @@ public class QuestStatisticUtils {
 			s.addCompletedQuest(questName);
 			return;
 		case INPROGRESS:
-			Quest[] mwq = s.getMainWorldQuests();
-			for (int i=0; i<mwq.length; i++){
-				Quest q = mwq[i];
-				if (q.getDetails().getProperty(QuestDetails.QUEST_NAME).equals(questName)){
-					if (q.isFinished()==null)
-						throw new QSException("Quest not finished!");
-					q.cleanupQuest();
-					s.removeMainWorldQuest(questName);
-					i=mwq.length;
-				}
-			}
+			Quest q = Managers.getQuestManager().getMainWorldQuest(player, questName);
+			if (q.isFinished()==null)
+				throw new QSException("Quest not finished!");
+			q.cleanupQuest();
+			s.removeMainWorldQuest(questName);
+			Managers.getQuestManager().removeMainWorldQuest(player, questName);
 			return;
 		default:
 			break;
