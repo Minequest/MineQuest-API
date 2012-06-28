@@ -35,9 +35,9 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 	private ArrayList<QuestSnapshot> questsMWSaved;
 	
 	// NON-PERSISTENT DATA
-	private List<String> givenQuests;
-	private List<String> completedQuests;
-	private Map<String, Quest> questsRegenerated;
+	private transient List<String> givenQuests;
+	private transient List<String> completedQuests;
+	private transient Map<String, Quest> questsRegenerated;
 	
 	public String[] getGivenQuests(){
 		setup();
