@@ -109,7 +109,6 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 			for (QuestSnapshot s : questsMWSaved){
 				Quest q = s.recreateQuest();
 				questsRegenerated.put((String) q.getDetails().getProperty(QuestDetails.QUEST_NAME), q);
-				q.startQuest();
 			}
 		}
 	}
