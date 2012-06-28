@@ -33,9 +33,8 @@ import com.theminequest.MineQuest.API.Managers;
 import com.theminequest.MineQuest.API.BukkitEvents.EventCompleteEvent;
 import com.theminequest.MineQuest.API.Quest.Quest;
 
-public abstract class QuestEvent implements Serializable {
+public abstract class QuestEvent {
 
-	private static final long serialVersionUID = 5703576630785488346L;
 	private Quest quest;
 	private int eventid;
 	private volatile CompleteStatus complete;

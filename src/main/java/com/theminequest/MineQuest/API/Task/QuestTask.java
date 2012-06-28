@@ -7,7 +7,7 @@ import com.theminequest.MineQuest.API.CompleteStatus;
 import com.theminequest.MineQuest.API.Events.QuestEvent;
 import com.theminequest.MineQuest.API.Quest.Quest;
 
-public interface QuestTask extends Serializable {
+public interface QuestTask {
 
 	void start();
 	void cancelTask();
