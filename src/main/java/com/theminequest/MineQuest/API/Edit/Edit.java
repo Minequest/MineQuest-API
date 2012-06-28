@@ -39,7 +39,7 @@ public abstract class Edit implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -5510249479621079410L;
-	private Quest quest;
+	private transient Quest quest;
 	private int editid;
 	private int taskid;
 	
