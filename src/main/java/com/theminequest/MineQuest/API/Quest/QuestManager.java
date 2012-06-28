@@ -1,6 +1,8 @@
 package com.theminequest.MineQuest.API.Quest;
 
 import org.bukkit.entity.Player;
+import java.util.List;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDamageEvent;
@@ -18,6 +20,7 @@ public interface QuestManager extends Listener {
 	void reloadQuests();
 	void reloadQuest(String name);
 	QuestDetails getDetails(String name);
+	List<String> getListOfDetails();
 	Quest getQuest(long currentquest);
 	Quest startQuest(QuestDetails d, String ownerName);
 	Quest[] getMainWorldQuests(Player player);
