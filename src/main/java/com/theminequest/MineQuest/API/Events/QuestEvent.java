@@ -67,7 +67,11 @@ public abstract class QuestEvent {
 	public final synchronized void check(){
 		if (complete==null){
 			if (conditions()){
-				complete(action());
+				Bukkit.getScheduler().scheduleSyncDelayedTask(Bukkit.getPluginManager().getPlugin("MineQuest"), new Runnable(){
+					public void run() {
+						complete(action());
+					}
+				});
 			}
 		}
 	}
