@@ -19,11 +19,8 @@
  **/
 package com.theminequest.MineQuest.API.Events;
 
-import java.io.Serializable;
-
 import org.bukkit.Bukkit;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -38,6 +35,7 @@ public abstract class QuestEvent {
 	private Quest quest;
 	private int eventid;
 	private volatile CompleteStatus complete;
+	private volatile boolean completeOrPending;
 	
 	public QuestEvent() {}
 	
@@ -52,6 +50,7 @@ public abstract class QuestEvent {
 		this.quest = quest;
 		this.eventid = eventid;
 		this.complete = null;
+		this.completeOrPending = false;
 		parseDetails(details.split(":"));
 	}
 
@@ -65,8 +64,11 @@ public abstract class QuestEvent {
 	}
 
 	public final synchronized void check(){
+		if (completeOrPending)
+			return;
 		if (complete==null){
 			if (conditions()){
+				completeOrPending = true;
 				Bukkit.getScheduler().scheduleSyncDelayedTask(Bukkit.getPluginManager().getPlugin("MineQuest"), new Runnable(){
 					public void run() {
 						complete(action());
