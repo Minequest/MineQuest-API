@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import com.theminequest.MineQuest.API.CompleteStatus;
 import com.theminequest.MineQuest.API.Managers;
 import com.theminequest.MineQuest.API.Quest.Quest;
 import com.theminequest.MineQuest.API.Quest.QuestDetails;
@@ -120,9 +121,19 @@ public class QuestStatisticUtils {
 	public synchronized static void degiveQuest(Player player, String questName) throws QSException{
 		QuestStatistic s = Managers.getStatisticManager().getStatistic(player.getName(), QuestStatistic.class);
 		Status qS = hasQuest(player,questName);
-		if (qS!=Status.GIVEN)
+		switch(qS){
+		case GIVEN:
+			s.removeGivenQuest(questName);
+			break;
+		case INPROGRESS:
+			Quest q = getMainWorldQuest(player,questName);
+			q.finishQuest(CompleteStatus.CANCELED);
+			q.cleanupQuest();
+			s.removeMainWorldQuest(questName);
+			break;
+		default:
 			throw new QSException("Player doesn't have this quest!");
-		s.removeGivenQuest(questName);
+		}
 	}
 	
 	public synchronized static void completeQuest(Player player, String questName) throws QSException{
@@ -136,7 +147,7 @@ public class QuestStatisticUtils {
 				player.sendMessage(ChatColor.GRAY + "Since you were given this quest, you will get credit for this as well.");
 			s.removeGivenQuest(questName);
 			s.addCompletedQuest(questName);
-			break;
+			return;
 		case INPROGRESS:
 			Quest[] mwq = s.getMainWorldQuests();
 			for (int i=0; i<mwq.length; i++){
@@ -149,9 +160,6 @@ public class QuestStatisticUtils {
 					i=mwq.length;
 				}
 			}
-			break;
-		case UNKNOWN:
-			player.sendMessage(ChatColor.GRAY + "Since you were not given this quest, you do not get credit. :|");
 			return;
 		default:
 			break;
