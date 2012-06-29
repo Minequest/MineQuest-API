@@ -5,7 +5,16 @@ import org.bukkit.entity.EntityType;
 public class MobUtils {
 	
 	public static EntityType getEntityType(String s){
-		return EntityType.fromName(s.toUpperCase());
+		if (s==null)
+			return null;
+		
+		EntityType ret = EntityType.fromName(s);
+		if (ret == null) {
+			try {
+				ret = EntityType.valueOf(s.toUpperCase());
+			} catch (IllegalArgumentException e) {}
+		}
+		return ret;
 	}
 
 }
