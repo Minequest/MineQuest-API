@@ -1,7 +1,6 @@
 package com.theminequest.MineQuest.API.Tracker;
 
-import java.util.NoSuchElementException;
-
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -58,8 +57,8 @@ public class QuestStatisticUtils {
 		UNKNOWN;
 	}
 	
-	public synchronized static String[] getQuests(Player player, Status status){
-		QuestStatistic s = Managers.getStatisticManager().getStatistic(player.getName(), QuestStatistic.class);
+	public synchronized static String[] getQuests(String playerName, Status status){
+		QuestStatistic s = Managers.getStatisticManager().getStatistic(playerName, QuestStatistic.class);
 		switch(status){
 		case GIVEN:
 			return s.getGivenQuests();
@@ -76,8 +75,8 @@ public class QuestStatisticUtils {
 		}
 	}
 	
-	public synchronized static Status hasQuest(Player player, String questName){
-		QuestStatistic s = Managers.getStatisticManager().getStatistic(player.getName(), QuestStatistic.class);
+	public synchronized static Status hasQuest(String playerName, String questName){
+		QuestStatistic s = Managers.getStatisticManager().getStatistic(playerName, QuestStatistic.class);
 		for (String g : s.getGivenQuests()){
 			if (questName.equals(g))
 				return Status.GIVEN;
@@ -93,9 +92,9 @@ public class QuestStatisticUtils {
 		return Status.UNKNOWN;
 	}
 	
-	public synchronized static void giveQuest(Player player, String questName) throws QSException{
-		QuestStatistic s = Managers.getStatisticManager().getStatistic(player.getName(), QuestStatistic.class);
-		Status qS = hasQuest(player,questName);
+	public synchronized static void giveQuest(String playerName, String questName) throws QSException{
+		QuestStatistic s = Managers.getStatisticManager().getStatistic(playerName, QuestStatistic.class);
+		Status qS = hasQuest(playerName,questName);
 		if (qS==Status.GIVEN || qS==Status.INPROGRESS)
 			throw new QSException("Player already has this quest!");
 		QuestDetails d = Managers.getQuestManager().getDetails(questName);
@@ -104,50 +103,52 @@ public class QuestStatisticUtils {
 		if (d.getProperty(QuestDetails.QUEST_LOADWORLD))
 			s.addGivenQuest(questName);
 		else {
-			Quest q = Managers.getQuestManager().startQuest(d, player.getName());
+			Quest q = Managers.getQuestManager().startQuest(d,playerName);
 			q.startQuest();
 			s.saveMainWorldQuest(q);
 		}
 	}
 	
-	public synchronized static void degiveQuest(Player player, String questName) throws QSException{
-		QuestStatistic s = Managers.getStatisticManager().getStatistic(player.getName(), QuestStatistic.class);
-		Status qS = hasQuest(player,questName);
+	public synchronized static void degiveQuest(String playerName, String questName) throws QSException{
+		QuestStatistic s = Managers.getStatisticManager().getStatistic(playerName, QuestStatistic.class);
+		Status qS = hasQuest(playerName,questName);
 		switch(qS){
 		case GIVEN:
 			s.removeGivenQuest(questName);
 			break;
 		case INPROGRESS:
-			Quest q = Managers.getQuestManager().getMainWorldQuest(player,questName);
+			Quest q = Managers.getQuestManager().getMainWorldQuest(playerName,questName);
 			q.finishQuest(CompleteStatus.CANCELED);
 			q.cleanupQuest();
 			s.removeMainWorldQuest(questName);
-			Managers.getQuestManager().removeMainWorldQuest(player, questName);
+			Managers.getQuestManager().removeMainWorldQuest(playerName, questName);
 			break;
 		default:
 			throw new QSException("Player doesn't have this quest!");
 		}
 	}
 	
-	public synchronized static void completeQuest(Player player, String questName) throws QSException{
-		QuestStatistic s = Managers.getStatisticManager().getStatistic(player.getName(), QuestStatistic.class);
-		Status qS = hasQuest(player,questName);
+	public synchronized static void completeQuest(String playerName, String questName) throws QSException{
+		QuestStatistic s = Managers.getStatisticManager().getStatistic(playerName, QuestStatistic.class);
+		Status qS = hasQuest(playerName,questName);
+		Player player = Bukkit.getPlayer(playerName);
 		switch(qS){
 		case COMPLETED:
 			throw new QSException("Player already completed this quest!");
 		case GIVEN:
-			if (!Managers.getQuestGroupManager().get(player).getQuest().getQuestOwner().equalsIgnoreCase(player.getName()))
-				player.sendMessage(ChatColor.GRAY + "Since you were given this quest, you will get credit for this as well.");
+			if (!Managers.getQuestGroupManager().get(player).getQuest().getQuestOwner().equalsIgnoreCase(playerName))
+				if (player!=null)
+					player.sendMessage(ChatColor.GRAY + "Since you were given this quest, you will get credit for this as well.");
 			s.removeGivenQuest(questName);
 			s.addCompletedQuest(questName);
 			return;
 		case INPROGRESS:
-			Quest q = Managers.getQuestManager().getMainWorldQuest(player, questName);
+			Quest q = Managers.getQuestManager().getMainWorldQuest(playerName, questName);
 			if (q.isFinished()==null)
 				throw new QSException("Quest not finished!");
 			q.cleanupQuest();
 			s.removeMainWorldQuest(questName);
-			Managers.getQuestManager().removeMainWorldQuest(player, questName);
+			Managers.getQuestManager().removeMainWorldQuest(playerName, questName);
 			return;
 		default:
 			break;

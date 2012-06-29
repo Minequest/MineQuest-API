@@ -24,8 +24,8 @@ public interface QuestManager extends Listener {
 	Quest getQuest(long currentquest);
 	Quest startQuest(QuestDetails d, String ownerName);
 	Quest[] getMainWorldQuests(Player player);
-	Quest getMainWorldQuest(Player player, String questName);
-	void removeMainWorldQuest(Player player, String questName);
+	Quest getMainWorldQuest(String playerName, String questName);
+	void removeMainWorldQuest(String playerName, String questName);
 	
 	@EventHandler
 	void taskCompletion(TaskCompleteEvent e);
