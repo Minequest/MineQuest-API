@@ -23,6 +23,11 @@
 			<name>Robert Xu</name>
 			<email>robxu9@gmail.com</email>
 		</developer>
+		<developer>
+			<id>phrstbrn</id>
+			<name>Zak Ford</name>
+			<email></email>
+		</developer>
 	</developers>
 
 	<dependencies>
