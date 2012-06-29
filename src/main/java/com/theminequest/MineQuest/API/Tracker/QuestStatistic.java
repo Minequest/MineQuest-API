@@ -2,6 +2,7 @@ package com.theminequest.MineQuest.API.Tracker;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,7 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 	
 	// NON-PERSISTENT DATA
 	private transient List<String> givenQuests;
-	private transient List<String> completedQuests;
+	private transient Map<String, Long> completedQuests;
 	private transient Map<String, QuestSnapshot> mwQuestsRegenerated;
 	
 	public String[] getGivenQuests(){
@@ -43,9 +44,9 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 		return givenQuests.toArray(new String[givenQuests.size()]);
 	}
 	
-	public String[] getCompletedQuests(){
+	public Map<String,Long> getCompletedQuests(){
 		setup();
-		return completedQuests.toArray(new String[completedQuests.size()]);
+		return Collections.unmodifiableMap(completedQuests);
 	}
 	
 	public QuestSnapshot[] getMainWorldQuests(){
@@ -69,8 +70,8 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 	
 	public void addCompletedQuest(String questName){
 		setup();
-		if (!completedQuests.contains(questName))
-			completedQuests.add(questName);
+		if (!completedQuests.containsKey(questName))
+			completedQuests.put(questName, System.currentTimeMillis());
 		save();
 	}
 	
@@ -101,8 +102,17 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 			questsMWSaved = new ArrayList<QuestSnapshot>();
 		if (givenQuests==null)
 			givenQuests = new ArrayList<String>(Arrays.asList(questsGiven.split("/")));
-		if (completedQuests==null)
-			completedQuests = new ArrayList<String>(Arrays.asList(questsCompleted.split("/")));
+		if (completedQuests==null){
+			completedQuests = new LinkedHashMap<String,Long>();
+			for (String s : questsCompleted.split("/SPLIT/")){
+				String[] details = s.split("/INSIDE/");
+				try {
+					completedQuests.put(details[0], Long.parseLong(details[1]));
+				} catch (NumberFormatException e) {
+					completedQuests.put(details[0], System.currentTimeMillis());
+				}
+			}
+		}
 		if (mwQuestsRegenerated==null){
 			mwQuestsRegenerated = new LinkedHashMap<String, QuestSnapshot>();
 			for (QuestSnapshot s : questsMWSaved){
@@ -120,11 +130,11 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 			questsGiven = questsGiven.substring(0,questsGiven.length()-1);
 
 		questsCompleted = "";
-		for (String s : completedQuests){
-			questsCompleted += s + "/";
+		for (String s : completedQuests.keySet()){
+			questsCompleted += s + "/INSIDE/" + completedQuests.get(s) + "/SPLIT/";
 		}
 		if (questsCompleted.length()!=0)
-			questsCompleted = questsCompleted.substring(0,questsCompleted.length()-1);
+			questsCompleted = questsCompleted.substring(0,questsCompleted.lastIndexOf("/SPLIT/"));
 		
 		questsMWSaved.clear();
 		questsMWSaved.addAll(mwQuestsRegenerated.values());

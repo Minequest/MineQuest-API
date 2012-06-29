@@ -1,5 +1,9 @@
 package com.theminequest.MineQuest.API.Tracker;
 
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -11,7 +15,7 @@ import com.theminequest.MineQuest.API.Quest.QuestDetails;
 import com.theminequest.MineQuest.API.Quest.QuestSnapshot;
 
 public class QuestStatisticUtils {
-	
+
 	public static class QSException extends Exception {
 
 		/**
@@ -34,10 +38,10 @@ public class QuestStatisticUtils {
 		public QSException(Throwable arg0) {
 			super(arg0);
 		}
-		
-		
+
+
 	}
-	
+
 	public static enum Status {
 		/**
 		 * Given Quests (Instanced)
@@ -56,14 +60,14 @@ public class QuestStatisticUtils {
 		 */
 		UNKNOWN;
 	}
-	
+
 	public synchronized static String[] getQuests(String playerName, Status status){
 		QuestStatistic s = Managers.getStatisticManager().getStatistic(playerName, QuestStatistic.class);
 		switch(status){
 		case GIVEN:
 			return s.getGivenQuests();
 		case COMPLETED:
-			return s.getCompletedQuests();
+			return s.getCompletedQuests().keySet().toArray(new String[s.getCompletedQuests().keySet().size()]);
 		case INPROGRESS:
 			QuestSnapshot[] q = s.getMainWorldQuests();
 			String[] a = new String[q.length];
@@ -75,13 +79,23 @@ public class QuestStatisticUtils {
 		}
 	}
 	
+	public synchronized static Map<String,Date> getCompletedDetails(String playerName){
+		QuestStatistic s = Managers.getStatisticManager().getStatistic(playerName, QuestStatistic.class);
+		Map<String,Long> details = s.getCompletedQuests();
+		Map<String,Date> toreturn = new LinkedHashMap<String,Date>();
+		for (String key : details.keySet()){
+			toreturn.put(key, new Date(details.get(key)));
+		}
+		return toreturn;
+	}
+
 	public synchronized static Status hasQuest(String playerName, String questName){
 		QuestStatistic s = Managers.getStatisticManager().getStatistic(playerName, QuestStatistic.class);
 		for (String g : s.getGivenQuests()){
 			if (questName.equals(g))
 				return Status.GIVEN;
 		}
-		for (String c : s.getCompletedQuests()){
+		for (String c : s.getCompletedQuests().keySet()){
 			if (questName.equals(c))
 				return Status.COMPLETED;
 		}
@@ -91,7 +105,7 @@ public class QuestStatisticUtils {
 		}
 		return Status.UNKNOWN;
 	}
-	
+
 	public synchronized static void giveQuest(String playerName, String questName) throws QSException{
 		QuestStatistic s = Managers.getStatisticManager().getStatistic(playerName, QuestStatistic.class);
 		Status qS = hasQuest(playerName,questName);
@@ -108,7 +122,7 @@ public class QuestStatisticUtils {
 			s.saveMainWorldQuest(q);
 		}
 	}
-	
+
 	public synchronized static void degiveQuest(String playerName, String questName) throws QSException{
 		QuestStatistic s = Managers.getStatisticManager().getStatistic(playerName, QuestStatistic.class);
 		Status qS = hasQuest(playerName,questName);
@@ -127,7 +141,7 @@ public class QuestStatisticUtils {
 			throw new QSException("Player doesn't have this quest!");
 		}
 	}
-	
+
 	public synchronized static void completeQuest(String playerName, String questName) throws QSException{
 		QuestStatistic s = Managers.getStatisticManager().getStatistic(playerName, QuestStatistic.class);
 		Status qS = hasQuest(playerName,questName);
@@ -136,8 +150,8 @@ public class QuestStatisticUtils {
 		case COMPLETED:
 			throw new QSException("Player already completed this quest!");
 		case GIVEN:
-			if (!Managers.getQuestGroupManager().get(player).getQuest().getQuestOwner().equalsIgnoreCase(playerName))
-				if (player!=null)
+			if (player!=null)
+				if (!Managers.getQuestGroupManager().get(player).getQuest().getQuestOwner().equalsIgnoreCase(playerName))
 					player.sendMessage(ChatColor.GRAY + "Since you were given this quest, you will get credit for this as well.");
 			s.removeGivenQuest(questName);
 			s.addCompletedQuest(questName);
