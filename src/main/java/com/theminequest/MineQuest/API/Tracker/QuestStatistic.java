@@ -104,11 +104,11 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 			givenQuests = new ArrayList<String>(Arrays.asList(questsGiven.split("/")));
 		if (completedQuests==null){
 			completedQuests = new LinkedHashMap<String,Long>();
-			for (String s : questsCompleted.split("/SPLIT/")){
-				String[] details = s.split("/INSIDE/");
-				try {
+			for (String s : questsCompleted.split("/")){
+				String[] details = s.split("/:#:/");
+				if (details.length > 1) {
 					completedQuests.put(details[0], Long.parseLong(details[1]));
-				} catch (NumberFormatException e) {
+				} else if (details.length == 1) {
 					completedQuests.put(details[0], System.currentTimeMillis());
 				}
 			}
@@ -130,11 +130,11 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 			questsGiven = questsGiven.substring(0,questsGiven.length()-1);
 
 		questsCompleted = "";
-		for (String s : completedQuests.keySet()){
-			questsCompleted += s + "/INSIDE/" + completedQuests.get(s) + "/SPLIT/";
+		for (Map.Entry<String, Long> e : completedQuests.entrySet()){
+			questsCompleted += e.getKey() + ":#:" + e.getValue() + "/";
 		}
 		if (questsCompleted.length()!=0)
-			questsCompleted = questsCompleted.substring(0,questsCompleted.lastIndexOf("/SPLIT/"));
+			questsCompleted = questsCompleted.substring(0,questsCompleted.length()-1);
 		
 		questsMWSaved.clear();
 		questsMWSaved.addAll(mwQuestsRegenerated.values());
