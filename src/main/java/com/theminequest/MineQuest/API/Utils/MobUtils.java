@@ -14,6 +14,11 @@ public class MobUtils {
 				ret = EntityType.valueOf(s.toUpperCase());
 			} catch (IllegalArgumentException e) {}
 		}
+		if (ret == null) {
+			try {
+				ret = EntityType.fromId(Integer.parseInt(s));
+			} catch (NumberFormatException e) {}
+		}
 		return ret;
 	}
 
