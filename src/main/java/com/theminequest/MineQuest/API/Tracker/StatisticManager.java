@@ -63,7 +63,7 @@ public interface StatisticManager {
 	/**
 	 * Represents a statistic of a player.
 	 */
-	public static class Statistic {
+	public static abstract class Statistic {
 		
 		@Field
 		private String playerName;
@@ -75,6 +75,8 @@ public interface StatisticManager {
 		public void setPlayerName(String playerName){
 			this.playerName = playerName;
 		}
+		
+		public abstract void setup();
 		
 	}
 	

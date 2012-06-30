@@ -40,22 +40,18 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 	private transient Map<String, QuestSnapshot> mwQuestsRegenerated;
 	
 	public String[] getGivenQuests(){
-		setup();
 		return givenQuests.toArray(new String[givenQuests.size()]);
 	}
 	
 	public Map<String,Long> getCompletedQuests(){
-		setup();
 		return Collections.unmodifiableMap(completedQuests);
 	}
 	
 	public QuestSnapshot[] getMainWorldQuests(){
-		setup();
 		return mwQuestsRegenerated.values().toArray(new QuestSnapshot[mwQuestsRegenerated.size()]);
 	}
 	
 	public void addGivenQuest(String questName){
-		setup();
 		givenQuests.add(questName);
 		save();
 		QuestGivenEvent e = new QuestGivenEvent(questName,Bukkit.getPlayer(getPlayerName()));
@@ -63,36 +59,32 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 	}
 	
 	public void removeGivenQuest(String questName){
-		setup();
 		givenQuests.remove(questName);
 		save();
 	}
 	
 	public void addCompletedQuest(String questName){
-		setup();
 		if (!completedQuests.containsKey(questName))
 			completedQuests.put(questName, System.currentTimeMillis());
 		save();
 	}
 	
 	public void removeCompletedQuest(String questName){
-		setup();
 		completedQuests.remove(questName);
 		save();
 	}
 	
 	public void saveMainWorldQuest(Quest quest){
-		setup();
 		mwQuestsRegenerated.put((String) quest.getDetails().getProperty(QuestDetails.QUEST_NAME), quest.createSnapshot());
 		save();
 	}
 	
 	public void removeMainWorldQuest(String questName){
-		setup();
 		mwQuestsRegenerated.remove(questName);
 		save();
 	}
 	
+	@Override
 	public void setup(){
 		if (questsGiven==null)
 			questsGiven = "";
