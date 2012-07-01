@@ -28,6 +28,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import com.theminequest.MineQuest.API.CompleteStatus;
 import com.theminequest.MineQuest.API.Managers;
 import com.theminequest.MineQuest.API.BukkitEvents.EventCompleteEvent;
+import com.theminequest.MineQuest.API.BukkitEvents.EventStartEvent;
 import com.theminequest.MineQuest.API.Quest.Quest;
 
 public abstract class QuestEvent {
@@ -61,6 +62,8 @@ public abstract class QuestEvent {
 	public final void fireEvent(){
 		Managers.getEventManager().registerEventListener(this);
 		setUpEvent();
+		EventStartEvent event = new EventStartEvent(this);
+		Bukkit.getPluginManager().callEvent(event);
 	}
 
 	public final synchronized void check(){
