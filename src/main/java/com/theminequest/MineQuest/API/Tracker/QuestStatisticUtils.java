@@ -68,7 +68,7 @@ public class QuestStatisticUtils {
 	}
 
 	public synchronized static void giveQuest(String playerName, String questName) throws QSException{
-		List<LogStatistic> s = Managers.getStatisticManager().getStatistics(playerName, QuestStatistic.class);
+		List<LogStatistic> s = Managers.getStatisticManager().getStatistics(playerName, LogStatistic.class);
 		LogStatus qS = hasQuest(playerName,questName);
 		if (qS==LogStatus.GIVEN || qS==LogStatus.ACTIVE)
 			throw new QSException("Player already has this quest!");
@@ -104,7 +104,7 @@ public class QuestStatisticUtils {
 	}
 
 	public synchronized static void dropQuest(String playerName, String questName) throws QSException{
-		List<LogStatistic> s = Managers.getStatisticManager().getStatistics(playerName, QuestStatistic.class);
+		List<LogStatistic> s = Managers.getStatisticManager().getStatistics(playerName,LogStatistic.class);
 		LogStatus qS = hasQuest(playerName,questName);
 		if (qS==LogStatus.GIVEN){
 			LogStatistic log = s.get(s.indexOf(questName));
@@ -127,7 +127,7 @@ public class QuestStatisticUtils {
 	}
 
 	public synchronized static void completeQuest(String playerName, String questName) throws QSException{
-		List<LogStatistic> s = Managers.getStatisticManager().getStatistics(playerName, QuestStatistic.class);
+		List<LogStatistic> s = Managers.getStatisticManager().getStatistics(playerName, LogStatistic.class);
 		LogStatus qS = hasQuest(playerName,questName);
 		Player player = Bukkit.getPlayer(playerName);
 		if (qS == LogStatus.COMPLETED){
