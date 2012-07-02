@@ -159,5 +159,17 @@ public class QuestStatisticUtils {
 			Managers.getStatisticManager().removeStatistic(snapshot, SnapshotStatistic.class);
 		}
 	}
+	
+	public synchronized static void checkpointQuest(Quest quest) {
+		String playerName = quest.getQuestOwner();
+		String questName = quest.getDetails().getProperty(QuestDetails.QUEST_NAME);
+		List<SnapshotStatistic> snapshots = Managers.getStatisticManager().getStatistics(playerName, SnapshotStatistic.class);
+		int index = snapshots.indexOf(questName);
+		if (index==-1)
+			return;
+		SnapshotStatistic snapshot = snapshots.get(index);
+		snapshot.setSnapshot(quest.createSnapshot());
+		Managers.getStatisticManager().saveStatistic(snapshot, SnapshotStatistic.class);
+	}
 
 }
