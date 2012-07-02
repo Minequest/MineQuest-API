@@ -131,7 +131,7 @@ public class QuestStatistic extends Statistic implements Comparable<QuestStatist
 		questsMWSaved.clear();
 		questsMWSaved.addAll(mwQuestsRegenerated.values());
 
-		Managers.getStatisticManager().setStatistic(this, getClass());
+		Managers.getStatisticManager().saveStatistic(this, getClass());
 	}
 
 	@Override

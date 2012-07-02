@@ -14,7 +14,7 @@ import com.alta189.simplesave.exceptions.ConnectionException;
  * and other such information.
  * 
  * @since 2.0.0
- * @version 2.0.0
+ * @version 2.0.1
  */
 public interface StatisticManager {
 		
@@ -32,20 +32,35 @@ public interface StatisticManager {
 	void connect(boolean connect) throws ConnectionException;
 	
 	/**
-	 * Retrieve the specified statistic
+	 * Retrieve statistics associated with the player
 	 * @param <T> Type to return as (Must extend {@link Statistic}).
 	 * @param playerName Player Name to search for
 	 * @param tableClazz table in which to search for (represented by class)
-	 * @return Player statistic in database (or if not found, a new one)
+	 * @return Player statistic in database (if not found, returns <code>null</code>)
 	 */
-	<T extends Statistic> T getStatistic(String playerName, Class<? extends Statistic> tableClazz);
+	<T extends Statistic> List<T> getStatistics(String playerName, Class<? extends Statistic> tableClazz);
+	
+	/**
+	 * Create a new statistic for the specified player for the specified table
+	 * @param playerName Player to associate with
+	 * @param tableClazz Table to insert into
+	 * @return New Player Statistic (<i>WARNING: make sure to initialize instance variables</i>)
+	 */
+	<T extends Statistic> T createStatistic(String playerName, Class<? extends Statistic> tableClazz);
 	
 	/**
 	 * Save the statistic into the database
 	 * @param statistic Statistic to save
 	 * @param tableClazz Class that represents this statistic
 	 */
-	<T extends Statistic> void setStatistic(T statistic, Class<? extends Statistic> tableClazz);
+	<T extends Statistic> void saveStatistic(T statistic, Class<? extends Statistic> tableClazz);
+	
+	/**
+	 * Remove the statistic from the database
+	 * @param statistic Statistic to remove
+	 * @param tableClazz Class that represents this statistic
+	 */
+	<T extends Statistic> void removeStatistic(T statistic, Class<? extends Statistic> tableClazz);
 	
 	/**
 	 * Get a list of statistics in the database
