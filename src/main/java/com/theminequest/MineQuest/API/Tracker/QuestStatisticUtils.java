@@ -107,6 +107,7 @@ public class QuestStatisticUtils {
 			Quest q = Managers.getQuestManager().getMainWorldQuest(playerName,questName);
 			q.finishQuest(CompleteStatus.CANCELED);
 			q.cleanupQuest();
+			Managers.getQuestManager().removeMainWorldQuest(playerName, questName);
 			Managers.getQuestStatisticManager().removeStatistic(stat, LogStatistic.class);
 			SnapshotStatistic snapshot = Managers.getQuestStatisticManager().getQuestStatistic(playerName, questName, SnapshotStatistic.class);
 			if (snapshot == null)
