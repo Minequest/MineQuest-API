@@ -38,17 +38,6 @@ public interface StatisticManager {
 	 */
 	<T extends Statistic> List<T> getAllStatistics(String playerName, Class<? extends Statistic> tableClazz);
 	
-	
-	/**
-	 * Retrieve statistics associated with the player
-	 * @param <T> Type to return as (Must extend {@link Statistic}).
-	 * @param playerName Player Name to search for
-	 * @param questName Quest name tto search for
-	 * @param tableClazz table in which to search for (represented by class)
-	 * @return Player statistic in database (if not found, returns <code>null</code>)
-	 */
-	<T extends QuestStatistic> T getQuestStatistic(String playerName, String questName, Class<? extends QuestStatistic> tableClazz);
-	
 	/**
 	 * Create a new statistic for the specified player for the specified table
 	 * @param playerName Player to associate with

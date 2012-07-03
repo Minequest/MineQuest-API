@@ -46,7 +46,7 @@ public class QuestStatisticUtils {
 	public synchronized static Map<String,Date> getQuests(String playerName, LogStatus status){
 		if (status==LogStatus.UNKNOWN)
 			throw new IllegalArgumentException("UNKNOWN is not a legal status!");
-		List<LogStatistic> s = Managers.getStatisticManager().getAllStatistics(playerName, LogStatistic.class);
+		List<LogStatistic> s = Managers.getQuestStatisticManager().getAllStatistics(playerName, LogStatistic.class);
 		Map<String,Date> toreturn = new HashMap<String,Date>();
 		for (LogStatistic l : s){
 			if (l.getStatus()==status)
@@ -56,14 +56,14 @@ public class QuestStatisticUtils {
 	}
 
 	public synchronized static LogStatus hasQuest(String playerName, String questName){
-		LogStatistic s = Managers.getStatisticManager().getQuestStatistic(playerName, questName, LogStatistic.class);
+		LogStatistic s = Managers.getQuestStatisticManager().getQuestStatistic(playerName, questName, LogStatistic.class);
 		if (s == null)
 			return LogStatus.UNKNOWN;
 		return s.getStatus();
 	}
 
 	public synchronized static void giveQuest(String playerName, String questName) throws QSException{
-		LogStatistic stat = Managers.getStatisticManager().getQuestStatistic(playerName, questName, LogStatistic.class);
+		LogStatistic stat = Managers.getQuestStatisticManager().getQuestStatistic(playerName, questName, LogStatistic.class);
 		if (stat != null) {
 			LogStatus qS = stat.getStatus();
 			if (qS==LogStatus.GIVEN || qS==LogStatus.ACTIVE)
@@ -74,12 +74,11 @@ public class QuestStatisticUtils {
 			throw new QSException("No such quest available on system!");
 		if (d.getProperty(QuestDetails.QUEST_LOADWORLD)){
 			if (stat == null) {
-				stat = Managers.getStatisticManager().createStatistic(playerName, LogStatistic.class);
-				stat.setQuestName(questName);
+				stat = Managers.getQuestStatisticManager().createStatistic(playerName, questName, LogStatistic.class);
 				stat.setStatus(LogStatus.GIVEN);
 			}
 			stat.setTimestamp(System.currentTimeMillis());
-			Managers.getStatisticManager().saveStatistic(stat, LogStatistic.class);
+			Managers.getQuestStatisticManager().saveStatistic(stat, LogStatistic.class);
 		} else {
 			Quest q = Managers.getQuestManager().startQuest(d,playerName);
 			// FIXME - if q.startQuest() is not invoked, make sure to set last active task
@@ -87,41 +86,39 @@ public class QuestStatisticUtils {
 			if (Bukkit.getPlayer(playerName)!=null)
 				q.startQuest();
 			if (stat == null) {
-				stat = Managers.getStatisticManager().createStatistic(playerName, LogStatistic.class);
-				stat.setQuestName(questName);
+				stat = Managers.getQuestStatisticManager().createStatistic(playerName, questName, LogStatistic.class);
 				stat.setStatus(LogStatus.ACTIVE);
 			}
 			stat.setTimestamp(System.currentTimeMillis());
-			SnapshotStatistic newsnapshot = Managers.getStatisticManager().createStatistic(playerName, SnapshotStatistic.class);
-			stat.setQuestName(questName);
+			SnapshotStatistic newsnapshot = Managers.getQuestStatisticManager().createStatistic(playerName, questName, SnapshotStatistic.class);
 			newsnapshot.setSnapshot(q.createSnapshot());
-			Managers.getStatisticManager().saveStatistic(stat, LogStatistic.class);
-			Managers.getStatisticManager().saveStatistic(newsnapshot, SnapshotStatistic.class);
+			Managers.getQuestStatisticManager().saveStatistic(stat, LogStatistic.class);
+			Managers.getQuestStatisticManager().saveStatistic(newsnapshot, SnapshotStatistic.class);
 		}
 	}
 
 	public synchronized static void dropQuest(String playerName, String questName) throws QSException{
-		LogStatistic stat = Managers.getStatisticManager().getQuestStatistic(playerName, questName, LogStatistic.class);
+		LogStatistic stat = Managers.getQuestStatisticManager().getQuestStatistic(playerName, questName, LogStatistic.class);
 		if (stat == null) {
 			throw new QSException("Player doesn't have quest!");
 		} else if (stat.getStatus()==LogStatus.GIVEN){
-			Managers.getStatisticManager().removeStatistic(stat, LogStatistic.class);
+			Managers.getQuestStatisticManager().removeStatistic(stat, LogStatistic.class);
 		} else if (stat.getStatus()==LogStatus.ACTIVE) {
 			Quest q = Managers.getQuestManager().getMainWorldQuest(playerName,questName);
 			q.finishQuest(CompleteStatus.CANCELED);
 			q.cleanupQuest();
-			Managers.getStatisticManager().removeStatistic(stat, LogStatistic.class);
-			SnapshotStatistic snapshot = Managers.getStatisticManager().getQuestStatistic(playerName, questName, SnapshotStatistic.class);
+			Managers.getQuestStatisticManager().removeStatistic(stat, LogStatistic.class);
+			SnapshotStatistic snapshot = Managers.getQuestStatisticManager().getQuestStatistic(playerName, questName, SnapshotStatistic.class);
 			if (snapshot == null)
 				return;
-			Managers.getStatisticManager().removeStatistic(snapshot, SnapshotStatistic.class);
+			Managers.getQuestStatisticManager().removeStatistic(snapshot, SnapshotStatistic.class);
 		} else {
 			throw new QSException("Player doesn't have quest!");
 		}
 	}
 
 	public synchronized static void completeQuest(String playerName, String questName) throws QSException{
-		LogStatistic stat = Managers.getStatisticManager().getQuestStatistic(playerName, questName, LogStatistic.class);
+		LogStatistic stat = Managers.getQuestStatisticManager().getQuestStatistic(playerName, questName, LogStatistic.class);
 		if (stat == null)
 			return;
 		Player player = Bukkit.getPlayer(playerName);
@@ -134,7 +131,7 @@ public class QuestStatisticUtils {
 			}
 			stat.setStatus(LogStatus.COMPLETED);
 			stat.setTimestamp(System.currentTimeMillis());
-			Managers.getStatisticManager().saveStatistic(stat, LogStatistic.class);
+			Managers.getQuestStatisticManager().saveStatistic(stat, LogStatistic.class);
 		} else if (stat.getStatus() == LogStatus.ACTIVE){
 			Quest q = Managers.getQuestManager().getMainWorldQuest(playerName, questName);
 			if (q.isFinished()==null)
@@ -143,22 +140,22 @@ public class QuestStatisticUtils {
 			Managers.getQuestManager().removeMainWorldQuest(playerName, questName);
 			stat.setStatus(LogStatus.COMPLETED);
 			stat.setTimestamp(System.currentTimeMillis());
-			Managers.getStatisticManager().saveStatistic(stat, LogStatistic.class);
-			SnapshotStatistic snapshot = Managers.getStatisticManager().getQuestStatistic(playerName, questName, SnapshotStatistic.class);
+			Managers.getQuestStatisticManager().saveStatistic(stat, LogStatistic.class);
+			SnapshotStatistic snapshot = Managers.getQuestStatisticManager().getQuestStatistic(playerName, questName, SnapshotStatistic.class);
 			if (snapshot == null)
 				return;
-			Managers.getStatisticManager().removeStatistic(snapshot, SnapshotStatistic.class);
+			Managers.getQuestStatisticManager().removeStatistic(snapshot, SnapshotStatistic.class);
 		}
 	}
 	
 	public synchronized static void checkpointQuest(Quest quest) {
 		String playerName = quest.getQuestOwner();
 		String questName = quest.getDetails().getProperty(QuestDetails.QUEST_NAME);
-		SnapshotStatistic snapshot = Managers.getStatisticManager().getQuestStatistic(playerName, questName, SnapshotStatistic.class);
+		SnapshotStatistic snapshot = Managers.getQuestStatisticManager().getQuestStatistic(playerName, questName, SnapshotStatistic.class);
 		if (snapshot == null)
 			return;
 		snapshot.setSnapshot(quest.createSnapshot());
-		Managers.getStatisticManager().saveStatistic(snapshot, SnapshotStatistic.class);
+		Managers.getQuestStatisticManager().saveStatistic(snapshot, SnapshotStatistic.class);
 	}
 
 }
