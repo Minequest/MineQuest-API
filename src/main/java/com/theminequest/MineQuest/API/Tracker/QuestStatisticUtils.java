@@ -75,8 +75,8 @@ public class QuestStatisticUtils {
 		if (d.getProperty(QuestDetails.QUEST_LOADWORLD)){
 			if (stat == null) {
 				stat = Managers.getQuestStatisticManager().createStatistic(playerName, questName, LogStatistic.class);
-				stat.setStatus(LogStatus.GIVEN);
 			}
+			stat.setStatus(LogStatus.GIVEN);
 			stat.setTimestamp(System.currentTimeMillis());
 			Managers.getQuestStatisticManager().saveStatistic(stat, LogStatistic.class);
 		} else {
@@ -87,8 +87,8 @@ public class QuestStatisticUtils {
 				q.startQuest();
 			if (stat == null) {
 				stat = Managers.getQuestStatisticManager().createStatistic(playerName, questName, LogStatistic.class);
-				stat.setStatus(LogStatus.ACTIVE);
 			}
+			stat.setStatus(LogStatus.ACTIVE);
 			stat.setTimestamp(System.currentTimeMillis());
 			SnapshotStatistic newsnapshot = Managers.getQuestStatisticManager().createStatistic(playerName, questName, SnapshotStatistic.class);
 			newsnapshot.setSnapshot(q.createSnapshot());

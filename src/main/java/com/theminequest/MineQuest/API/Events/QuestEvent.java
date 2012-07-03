@@ -147,6 +147,8 @@ public abstract class QuestEvent {
 			else
 				complete = CompleteStatus.IGNORE;
 			cleanUpEvent();
+			EventCompleteEvent event = new EventCompleteEvent(this,c);
+			Bukkit.getPluginManager().callEvent(event);
 			if (quest!=null) {
 				if (c == CompleteStatus.FAILURE) {
 					for (QuestEvent e : quest.getActiveTask().getEvents()) {
@@ -160,13 +162,12 @@ public abstract class QuestEvent {
 							if (e.isComplete() == null)
 								e.complete(CompleteStatus.CANCELED);
 						}
-						quest.getActiveTask().cancelTask();
-						quest.startTask(switchTask());
+						quest.getActiveTask().completeTask();
+						if (!quest.startTask(switchTask()))
+							quest.finishQuest(CompleteStatus.FAILURE);
 					}
 				}
 			}
-			EventCompleteEvent e = new EventCompleteEvent(this,c);
-			Bukkit.getPluginManager().callEvent(e);
 		}
 	}
 
