@@ -78,9 +78,7 @@ public class LogStatistic extends Statistic {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof String){
-			return questName.equals(obj);
-		} else if (obj instanceof LogStatistic) {
+		if (obj instanceof LogStatistic) {
 			LogStatistic s = (LogStatistic) obj;
 			if (questName.equals(s.questName) && status==s.status && timestamp==s.timestamp)
 				return true;

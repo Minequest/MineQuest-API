@@ -60,7 +60,7 @@ public class QuestStatisticUtils {
 
 	public synchronized static LogStatus hasQuest(String playerName, String questName){
 		List<LogStatistic> s = Managers.getStatisticManager().getStatistics(playerName, LogStatistic.class);
-		int indexof = s.indexOf(questName);
+		int indexof = locateLog(s,questName);
 		if (indexof==-1)
 			return LogStatus.UNKNOWN;
 		LogStatistic ls = s.get(indexof);
@@ -73,7 +73,7 @@ public class QuestStatisticUtils {
 		if (qS==LogStatus.GIVEN || qS==LogStatus.ACTIVE)
 			throw new QSException("Player already has this quest!");
 		else if (qS==LogStatus.COMPLETED) {
-			LogStatistic log = s.get(s.indexOf(questName));
+			LogStatistic log = s.get(locateLog(s,questName));
 			Managers.getStatisticManager().removeStatistic(log, LogStatistic.class);
 		}
 		QuestDetails d = Managers.getQuestManager().getDetails(questName);
@@ -107,16 +107,16 @@ public class QuestStatisticUtils {
 		List<LogStatistic> s = Managers.getStatisticManager().getStatistics(playerName,LogStatistic.class);
 		LogStatus qS = hasQuest(playerName,questName);
 		if (qS==LogStatus.GIVEN){
-			LogStatistic log = s.get(s.indexOf(questName));
+			LogStatistic log = s.get(locateLog(s,questName));
 			Managers.getStatisticManager().removeStatistic(log, LogStatistic.class);
 		} else if (qS==LogStatus.ACTIVE) {
 			Quest q = Managers.getQuestManager().getMainWorldQuest(playerName,questName);
 			q.finishQuest(CompleteStatus.CANCELED);
 			q.cleanupQuest();
-			LogStatistic log = s.get(s.indexOf(questName));
+			LogStatistic log = s.get(locateLog(s,questName));
 			Managers.getStatisticManager().removeStatistic(log, LogStatistic.class);
 			List<SnapshotStatistic> snapshots = Managers.getStatisticManager().getStatistics(playerName, SnapshotStatistic.class);
-			int index = snapshots.indexOf(questName);
+			int index = locateSnapshot(snapshots,questName);
 			if (index==-1)
 				return;
 			SnapshotStatistic snapshot = snapshots.get(index);
@@ -137,7 +137,7 @@ public class QuestStatisticUtils {
 				if (!Managers.getQuestGroupManager().get(player).getQuest().getQuestOwner().equalsIgnoreCase(playerName))
 					player.sendMessage(ChatColor.GRAY + "Since you were given this quest, you will get credit for this as well.");
 			}
-			LogStatistic log = s.get(s.indexOf(questName));
+			LogStatistic log = s.get(locateLog(s,questName));
 			log.setStatus(LogStatus.COMPLETED);
 			log.setTimestamp(System.currentTimeMillis());
 			Managers.getStatisticManager().saveStatistic(log, LogStatistic.class);
@@ -147,12 +147,12 @@ public class QuestStatisticUtils {
 				throw new QSException("Quest not finished!");
 			q.cleanupQuest();
 			Managers.getQuestManager().removeMainWorldQuest(playerName, questName);
-			LogStatistic log = s.get(s.indexOf(questName));
+			LogStatistic log = s.get(locateLog(s,questName));
 			log.setStatus(LogStatus.COMPLETED);
 			log.setTimestamp(System.currentTimeMillis());
 			Managers.getStatisticManager().saveStatistic(log, LogStatistic.class);
 			List<SnapshotStatistic> snapshots = Managers.getStatisticManager().getStatistics(playerName, SnapshotStatistic.class);
-			int index = snapshots.indexOf(questName);
+			int index = locateSnapshot(snapshots,questName);
 			if (index==-1)
 				return;
 			SnapshotStatistic snapshot = snapshots.get(index);
@@ -164,12 +164,30 @@ public class QuestStatisticUtils {
 		String playerName = quest.getQuestOwner();
 		String questName = quest.getDetails().getProperty(QuestDetails.QUEST_NAME);
 		List<SnapshotStatistic> snapshots = Managers.getStatisticManager().getStatistics(playerName, SnapshotStatistic.class);
-		int index = snapshots.indexOf(questName);
+		int index = locateSnapshot(snapshots,questName);
 		if (index==-1)
 			return;
 		SnapshotStatistic snapshot = snapshots.get(index);
 		snapshot.setSnapshot(quest.createSnapshot());
 		Managers.getStatisticManager().saveStatistic(snapshot, SnapshotStatistic.class);
+	}
+	
+	private synchronized static int locateLog(List<LogStatistic> logs, String questName){
+		for (int i=0; i<logs.size(); i++){
+			LogStatistic s = logs.get(i);
+			if (s.getQuestName().equals(questName))
+				return i;
+		}
+		return -1;
+	}
+	
+	private synchronized static int locateSnapshot(List<SnapshotStatistic> logs, String questName){
+		for (int i=0; i<logs.size(); i++){
+			SnapshotStatistic s = logs.get(i);
+			if (s.getQuestName().equals(questName))
+				return i;
+		}
+		return -1;
 	}
 
 }

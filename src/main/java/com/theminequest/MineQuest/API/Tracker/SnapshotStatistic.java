@@ -39,9 +39,7 @@ public class SnapshotStatistic extends Statistic {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof String) {
-			return questName.equals(obj);
-		} else if (obj instanceof SnapshotStatistic) {
+		if (obj instanceof SnapshotStatistic) {
 			SnapshotStatistic s = (SnapshotStatistic) obj;
 			if (questName.equals(s.questName) && snapshot.equals(s.snapshot))
 				return true;
