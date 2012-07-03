@@ -1,6 +1,5 @@
 package com.theminequest.MineQuest.API.Task;
 
-import java.io.Serializable;
 import java.util.Collection;
 
 import com.theminequest.MineQuest.API.CompleteStatus;
@@ -11,7 +10,7 @@ public interface QuestTask {
 
 	void start();
 	void cancelTask();
-	void finishEvent(QuestEvent questEvent, CompleteStatus completeStatus);
+	void completeTask();
 	CompleteStatus isComplete();
 	Quest getQuest();
 	int getTaskID();

@@ -147,10 +147,22 @@ public abstract class QuestEvent {
 			else
 				complete = CompleteStatus.IGNORE;
 			cleanUpEvent();
-			if (quest!=null){
-				if (c!=CompleteStatus.CANCELED && c!=CompleteStatus.IGNORE){
-					if (switchTask()!=null)
+			if (quest!=null) {
+				if (c == CompleteStatus.FAILURE) {
+					for (QuestEvent e : quest.getActiveTask().getEvents()) {
+						if (e.isComplete() == null)
+							e.complete(CompleteStatus.CANCELED);
+					}
+					quest.cleanupQuest();
+				} else if (c != CompleteStatus.CANCELED && c != CompleteStatus.IGNORE){
+					if (switchTask()!=null) {
+						for (QuestEvent e : quest.getActiveTask().getEvents()) {
+							if (e.isComplete() == null)
+								e.complete(CompleteStatus.CANCELED);
+						}
+						quest.getActiveTask().cancelTask();
 						quest.startTask(switchTask());
+					}
 				}
 			}
 			EventCompleteEvent e = new EventCompleteEvent(this,c);

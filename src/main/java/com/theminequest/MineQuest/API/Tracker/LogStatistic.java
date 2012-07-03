@@ -25,18 +25,7 @@ public class LogStatistic extends Statistic {
 	private int status;
 	
 	@Field
-	private String questName;
-	
-	@Field
 	private long timestamp;
-	
-	public String getQuestName(){
-		return questName;
-	}
-	
-	public void setQuestName(String questName){
-		this.questName = questName;
-	}
 	
 	public LogStatus getStatus(){
 		if (status==0)
@@ -80,7 +69,7 @@ public class LogStatistic extends Statistic {
 	public boolean equals(Object obj) {
 		if (obj instanceof LogStatistic) {
 			LogStatistic s = (LogStatistic) obj;
-			if (questName.equals(s.questName) && status==s.status && timestamp==s.timestamp)
+			if (getQuestName().equals(s.getQuestName()) && status==s.status && timestamp==s.timestamp)
 				return true;
 		}
 		return false;

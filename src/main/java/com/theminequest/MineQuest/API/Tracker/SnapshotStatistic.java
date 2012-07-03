@@ -13,18 +13,7 @@ public class SnapshotStatistic extends Statistic {
 	private long snapshotid;
 	
 	@Field
-	private String questName;
-	
-	@Field
 	private QuestSnapshot snapshot;
-	
-	public String getQuestName() {
-		return questName;
-	}
-
-	public void setQuestName(String questName) {
-		this.questName = questName;
-	}
 
 	public QuestSnapshot getSnapshot() {
 		return snapshot;
@@ -41,7 +30,7 @@ public class SnapshotStatistic extends Statistic {
 	public boolean equals(Object obj) {
 		if (obj instanceof SnapshotStatistic) {
 			SnapshotStatistic s = (SnapshotStatistic) obj;
-			if (questName.equals(s.questName) && snapshot.equals(s.snapshot))
+			if (getQuestName().equals(s.getQuestName()) && snapshot.equals(s.snapshot))
 				return true;
 		}
 		return false;
