@@ -3,10 +3,9 @@ package com.theminequest.MineQuest.API.Tracker;
 import com.alta189.simplesave.Field;
 import com.alta189.simplesave.Id;
 import com.alta189.simplesave.Table;
-import com.theminequest.MineQuest.API.Tracker.StatisticManager.Statistic;
 
 @Table("mq_logs")
-public class LogStatistic extends Statistic {
+public class LogStatistic extends QuestStatistic {
 	
 	@Id
 	private long logid;

@@ -4,10 +4,9 @@ import com.alta189.simplesave.Field;
 import com.alta189.simplesave.Id;
 import com.alta189.simplesave.Table;
 import com.theminequest.MineQuest.API.Quest.QuestSnapshot;
-import com.theminequest.MineQuest.API.Tracker.StatisticManager.Statistic;
 
 @Table("mq_snapshots")
-public class SnapshotStatistic extends Statistic {
+public class SnapshotStatistic extends QuestStatistic {
 	
 	@Id
 	private long snapshotid;

@@ -3,7 +3,6 @@ package com.theminequest.MineQuest.API.Tracker;
 import java.util.List;
 
 import com.alta189.simplesave.Database;
-import com.alta189.simplesave.Field;
 import com.alta189.simplesave.exceptions.ConnectionException;
 
 /**
@@ -48,7 +47,7 @@ public interface StatisticManager {
 	 * @param tableClazz table in which to search for (represented by class)
 	 * @return Player statistic in database (if not found, returns <code>null</code>)
 	 */
-	<T extends Statistic> T getStatistic(String playerName, String questName, Class<? extends Statistic> tableClazz);
+	<T extends QuestStatistic> T getQuestStatistic(String playerName, String questName, Class<? extends QuestStatistic> tableClazz);
 	
 	/**
 	 * Create a new statistic for the specified player for the specified table
@@ -56,7 +55,7 @@ public interface StatisticManager {
 	 * @param tableClazz Table to insert into
 	 * @return New Player Statistic (<i>WARNING: make sure to initialize instance variables</i>)
 	 */
-	<T extends Statistic> T createStatistic(String playerName, String questName, Class<? extends Statistic> tableClazz);
+	<T extends Statistic> T createStatistic(String playerName, Class<? extends Statistic> tableClazz);
 	
 	/**
 	 * Save the statistic into the database
@@ -84,36 +83,5 @@ public interface StatisticManager {
 	 * @param tableClazz class to register
 	 */
 	void registerStatistic(Class<? extends Statistic> tableClazz);
-	
-	/**
-	 * Represents a statistic of a player.
-	 */
-	public static abstract class Statistic {
-		
-		@Field
-		private String playerName;
-		
-		@Field
-		private String questName;
-		
-		public String getPlayerName(){
-			return playerName;
-		}
-		
-		public void setPlayerName(String playerName){
-			this.playerName = playerName;
-		}
-		
-		public String getQuestName(){
-			return questName;
-		}
-		
-		public void setQuestName(String questName){
-			this.questName = questName;
-		}
-		
-		public abstract void setup();
-		
-	}
 	
 }
