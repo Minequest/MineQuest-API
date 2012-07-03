@@ -8,6 +8,11 @@ public class MobUtils {
 		if (s==null)
 			return null;
 		
+		for (EntityType type : EntityType.values()){
+			if (type.name().equalsIgnoreCase(s.trim()) || type.name().replaceAll("_", "").equalsIgnoreCase(s.trim().replaceAll("_", "")))
+				return type;
+		}
+		
 		EntityType ret = EntityType.fromName(s);
 		if (ret == null) {
 			try {
