@@ -72,7 +72,7 @@ public abstract class QuestEvent {
 		if (complete==null){
 			if (conditions()){
 				completeOrPending = true;
-				Bukkit.getScheduler().scheduleSyncDelayedTask(Bukkit.getPluginManager().getPlugin("MineQuest"), new Runnable(){
+				Bukkit.getScheduler().scheduleSyncDelayedTask(Managers.getActivePlugin(), new Runnable(){
 					public void run() {
 						complete(action());
 					}
