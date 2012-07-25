@@ -87,9 +87,9 @@ public interface QuestRequirement extends Serializable {
 		 * Must fulfill (or fail) certain quests (x) number of times<br>
 		 * Details: Success or failure followed by quest name and number of times,
 		 * comma-seperated.<br>
-		 * Example: S,successfulquest,1 would require that quest
-		 * 'successfulquest' be completed at least one time, while F,failedquest,0
-		 * requires that 'failedquest' never be failed.
+		 * Example: S,successfulquest would require that quest
+		 * 'successfulquest' be completed successfully, while F,failedquest
+		 * requires that 'failedquest' be failed.
 		 */
 		PREREQ,
 		/**
