@@ -28,7 +28,7 @@ public class TargetDetails implements Serializable {
 	private static final long serialVersionUID = 7523749925764167755L;
 
 	public enum TargetType implements Serializable {
-		AREATARGET,AREATARGETQUESTER,TEAMTARGET,TARGETTER,TARGETTEREDIT,RANDOMTARGET;
+		AREATARGET,AREATARGETQUESTER,TEAMTARGET,TARGETTER,TARGETTEREDIT,RANDOMTARGET,LEADER;
 	}
 	
 	private TargetType type;
@@ -54,6 +54,8 @@ public class TargetDetails implements Serializable {
 			this.type = TargetType.TARGETTEREDIT;
 		else if (type.equals("randomtarget"))
 			this.type = TargetType.RANDOMTARGET;
+		else if (type.equals("leader"))
+			this.type = TargetType.LEADER;
 		if (info.length > 1)
 			this.details = details.substring(details.indexOf(':') + 1);
 	}
