@@ -34,6 +34,7 @@ public class LogStatistic extends QuestStatistic {
 	 * <li>0 - GIVEN</li>
 	 * <li>1 - ACTIVE</li>
 	 * <li>2 - COMPLETED</li>
+	 * <li>3 - FAILED</li>
 	 * </ul>
 	 * Which corresponds directly to its equivalent
 	 * {@link LogStatus}, excluding the constant UNKNOWN.
@@ -51,6 +52,8 @@ public class LogStatistic extends QuestStatistic {
 			return LogStatus.ACTIVE;
 		else if (status==2)
 			return LogStatus.COMPLETED;
+		else if (status==3)
+			return LogStatus.FAILED;
 		else
 			return LogStatus.UNKNOWN;
 	}
@@ -65,6 +68,9 @@ public class LogStatistic extends QuestStatistic {
 			return;
 		case COMPLETED:
 			this.status = 2;
+			return;
+		case FAILED:
+			this.status = 3;
 			return;
 		case UNKNOWN:
 			throw new IllegalArgumentException("Status cannot be unknown!");
