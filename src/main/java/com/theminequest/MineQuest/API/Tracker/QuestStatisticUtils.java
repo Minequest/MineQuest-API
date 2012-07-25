@@ -135,6 +135,39 @@ public class QuestStatisticUtils {
 			throw new QSException("Player doesn't have quest!");
 		}
 	}
+	
+	public synchronized static void failQuest(String playerName, String questName) throws QSException {
+		LogStatistic stat = Managers.getQuestStatisticManager().getQuestStatistic(playerName, questName, LogStatistic.class);
+		if (stat == null)
+			return;
+		Player player = Bukkit.getPlayer(playerName);
+		if (stat.getStatus() == LogStatus.COMPLETED){
+			throw new QSException("Player already completed this quest!");
+		} else if (stat.getStatus() == LogStatus.GIVEN){
+			if (player!=null){
+				if (!Managers.getQuestGroupManager().get(player).getQuest().getQuestOwner().equalsIgnoreCase(playerName))
+					player.sendMessage(ChatColor.GRAY + "Since this quest was failed, the system will ignore your participation.");
+				else {
+					stat.setStatus(LogStatus.FAILED);
+					stat.setTimestamp(System.currentTimeMillis());
+					Managers.getQuestStatisticManager().saveStatistic(stat, LogStatistic.class);
+				}
+			}
+		} else if (stat.getStatus() == LogStatus.ACTIVE){
+			Quest q = Managers.getQuestManager().getMainWorldQuest(playerName, questName);
+			if (q.isFinished()==null)
+				throw new QSException("Quest not finished!");
+			q.cleanupQuest();
+			Managers.getQuestManager().removeMainWorldQuest(playerName, questName);
+			stat.setStatus(LogStatus.FAILED);
+			stat.setTimestamp(System.currentTimeMillis());
+			Managers.getQuestStatisticManager().saveStatistic(stat, LogStatistic.class);
+			SnapshotStatistic snapshot = Managers.getQuestStatisticManager().getQuestStatistic(playerName, questName, SnapshotStatistic.class);
+			if (snapshot == null)
+				return;
+			Managers.getQuestStatisticManager().removeStatistic(snapshot, SnapshotStatistic.class);
+		}
+	}
 
 	public synchronized static void completeQuest(String playerName, String questName) throws QSException{
 		LogStatistic stat = Managers.getQuestStatisticManager().getQuestStatistic(playerName, questName, LogStatistic.class);
