@@ -75,6 +75,13 @@ public interface QuestDetails extends Serializable, Comparable<QuestDetails> {
 	 */
 	static final String QUEST_COMPLETE = "mq.complete";
 	/**
+	 * The property that contains the failed message.<br>
+	 * If none is explicitly specified it uses the default
+	 * specified by localization and user-defined configuration.<br>
+	 * Returns a {@link java.lang.String}.
+	 */
+	static final String QUEST_FAIL = "mq.fail";
+	/**
 	 * The property that contains the tasks this quest has.<br>
 	 * Returns a {@link java.util.LinkedHashMap} containing
 	 * keys of {@link java.lang.Integer} and values of
