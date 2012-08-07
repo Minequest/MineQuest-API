@@ -20,7 +20,6 @@ package com.theminequest.MineQuest.API.Quest;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,8 +30,6 @@ import java.util.Scanner;
 import java.util.logging.Level;
 
 import com.theminequest.MineQuest.API.Managers;
-import com.theminequest.MineQuest.API.Edit.Edit;
-import com.theminequest.MineQuest.API.Target.TargetDetails;
 
 public class QuestParser {
 	
@@ -78,7 +75,7 @@ public class QuestParser {
 	
 	public void parseDefinition(QuestDetails questDetails) throws FileNotFoundException{
 		File f = questDetails.getProperty(QuestDetails.QUEST_FILE);
-		Scanner filereader = new Scanner(f);
+		Scanner filereader = new Scanner(f,"UTF-8");
 		while (filereader.hasNextLine()) {
 			String nextline = filereader.nextLine();
 			ArrayList<String> ar = new ArrayList<String>();
