@@ -53,7 +53,7 @@ public class QuestParser {
 		void parseDetails(QuestDetails q, List<String> line);
 		
 	}
-
+	
 	private Map<String,Class<? extends QHandler>> methods = Collections.synchronizedMap(new LinkedHashMap<String,Class<? extends QHandler>>());
 	
 	/**
@@ -75,37 +75,43 @@ public class QuestParser {
 	
 	public void parseDefinition(QuestDetails questDetails) throws FileNotFoundException{
 		File f = questDetails.getProperty(QuestDetails.QUEST_FILE);
-		Scanner filereader = new Scanner(f,"UTF-8");
-		while (filereader.hasNextLine()) {
-			String nextline = filereader.nextLine();
-			ArrayList<String> ar = new ArrayList<String>();
-			for (String s : nextline.split(":"))
-				ar.add(s);
-			String type = ar.get(0).toLowerCase();
-			Class<? extends QHandler> c = methods.get(type);
-			if (c==null)
-				continue;
-			Method m;
-			try {
-				m = c.getMethod("parseDetails", QuestDetails.class, List.class);
-			} catch (SecurityException e1) {
-				e1.printStackTrace();
-				continue;
-			} catch (NoSuchMethodException e1) {
-				e1.printStackTrace();
-				continue;
+		Scanner filereader = null;
+		try {
+			filereader = new Scanner(f,"UTF-8");
+			while (filereader.hasNextLine()) {
+				String nextline = filereader.nextLine();
+				ArrayList<String> ar = new ArrayList<String>();
+				for (String s : nextline.split(":"))
+					ar.add(s);
+				String type = ar.get(0).toLowerCase();
+				Class<? extends QHandler> c = methods.get(type);
+				if (c==null)
+					continue;
+				Method m;
+				try {
+					m = c.getMethod("parseDetails", QuestDetails.class, List.class);
+				} catch (SecurityException e1) {
+					e1.printStackTrace();
+					continue;
+				} catch (NoSuchMethodException e1) {
+					e1.printStackTrace();
+					continue;
+				}
+				/*
+				 * We don't need the type in the array we pass,
+				 * so we remove it.
+				 */
+				ar.remove(0);
+				try {
+					m.invoke(c.newInstance(), questDetails, ar);
+				} catch (Exception e1){
+					e1.printStackTrace();
+					Managers.log(Level.WARNING, "[Parser] Unable to launch parser " + c.getName() +"...");
+				}
 			}
-			/*
-			 * We don't need the type in the array we pass,
-			 * so we remove it.
-			 */
-			ar.remove(0);
-			try {
-				m.invoke(c.newInstance(), questDetails, ar);
-			} catch (Exception e1){
-				e1.printStackTrace();
-				Managers.log(Level.WARNING, "[Parser] Unable to launch parser " + c.getName() +"...");
-			}
+		} finally {
+			if (filereader!=null)
+				filereader.close();
 		}
 	}
 	

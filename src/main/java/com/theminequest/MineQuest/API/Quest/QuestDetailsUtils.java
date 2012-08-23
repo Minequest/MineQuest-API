@@ -46,23 +46,44 @@ public class QuestDetailsUtils {
 	 * while copying it.
 	 * @param d Details to copy
 	 * @return completely independent copy of the object
-	 * @throws IOException if object could not be copied
 	 */
-	public static QuestDetails getCopy(QuestDetails d) throws IOException{
+	public static QuestDetails getCopy(QuestDetails d) {
 		FastByteArrayOutputStream bos = new FastByteArrayOutputStream();
-		ObjectOutputStream os = new ObjectOutputStream(bos);
-		os.writeObject(d);
-		os.flush();
-		os.close();
-		
-		ObjectInputStream is = new ObjectInputStream(bos.getInputStream());
-		QuestDetails q;
+		ObjectOutputStream os = null;
 		try {
+			os = new ObjectOutputStream(bos);
+			os.writeObject(d);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (os != null) {
+				try {
+					os.close();
+				} catch (IOException e) {
+					// memory leak!
+					throw new RuntimeException(e);
+				}
+			}
+		}
+		
+		ObjectInputStream is = null;
+		QuestDetails q = null;
+		try {
+			is = new ObjectInputStream(bos.getInputStream());
 			q = (QuestDetails) is.readObject();
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		} finally {
-			is.close();
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					// memory leak!
+					throw new RuntimeException(e);
+				}
+			}
 		}
 		return q;
 	}
@@ -94,5 +115,5 @@ public class QuestDetailsUtils {
 		}
 		return true;
 	}
-
+	
 }
