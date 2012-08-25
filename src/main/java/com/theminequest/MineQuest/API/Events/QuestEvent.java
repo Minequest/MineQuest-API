@@ -174,7 +174,7 @@ public abstract class QuestEvent {
 							e.complete(CompleteStatus.CANCELED);
 					}
 					quest.cleanupQuest();
-				} else if (c != CompleteStatus.CANCELED && c != CompleteStatus.IGNORE){
+				} else if (c == CompleteStatus.SUCCESS || c == CompleteStatus.WARNING){
 					if (switchTask()!=null) {
 						for (QuestEvent e : quest.getActiveTask().getEvents()) {
 							if (e.isComplete() == null)
@@ -182,7 +182,7 @@ public abstract class QuestEvent {
 						}
 						quest.getActiveTask().completeTask();
 						if (!quest.startTask(switchTask()))
-							quest.finishQuest(CompleteStatus.FAILURE);
+							quest.finishQuest(CompleteStatus.ERROR);
 					}
 				}
 			}

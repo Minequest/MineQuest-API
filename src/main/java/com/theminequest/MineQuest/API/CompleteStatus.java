@@ -41,6 +41,6 @@ import java.io.Serializable;
 
 public enum CompleteStatus implements Serializable {
 
-	SUCCESS,WARNING,FAILURE,IGNORE,CANCELED;
+	SUCCESS,WARNING,FAILURE,IGNORE,CANCELED,ERROR;
 	
 }
