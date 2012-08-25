@@ -96,7 +96,11 @@ public class QuestDetailsUtils {
 	public static String getOverviewString(QuestDetails d) {
 		String tr = "";
 		tr+=ChatUtils.formatHeader((String) d.getProperty(QuestDetails.QUEST_DISPLAYNAME))+"\n";
-		tr+=ChatUtils.chatify((String) d.getProperty(QuestDetails.QUEST_DESCRIPTION))+"\n";
+		String[] split = (String[]) ((String) d.getProperty(QuestDetails.QUEST_DESCRIPTION)).split("\n");
+		for (int i = 0; i < split.length; i++) {
+			String s = split[i];
+			tr += ChatUtils.chatify(s) + "\n";
+		}
 		return tr;
 	}
 	
