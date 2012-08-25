@@ -35,16 +35,16 @@ import com.theminequest.MineQuest.API.Utils.ChatUtils;
 public class QuestUtils {
 	
 	public static String getStatusString(Quest q){
-		String tr = QuestDetailsUtils.getOverviewString(q.getDetails()) + "\n";
+		String tr = QuestDetailsUtils.getOverviewString(q.getDetails()) + QuestDetailsUtils.CODE_NEWLINE_CHAR;
 		if (q.getActiveTask()!=null){
-			tr += ChatUtils.formatHeader("Current Tasks") + "\n";
+			tr += ChatUtils.formatHeader("Current Tasks") + QuestDetailsUtils.CODE_NEWLINE_CHAR;
 			for (QuestEvent e : q.getActiveTask().getEvents()){
 				if (e instanceof UserQuestEvent){
 					String description = ((UserQuestEvent)e).getDescription();
 					if (e.isComplete()==null)
-						tr += ChatColor.GREEN + "- " + description + "\n";
+						tr += ChatColor.GREEN + "- " + description + QuestDetailsUtils.CODE_NEWLINE_CHAR;
 					else
-						tr += ChatColor.GRAY + "- " + description + "\n";
+						tr += ChatColor.GRAY + "- " + description + QuestDetailsUtils.CODE_NEWLINE_CHAR;
 				}
 			}
 		}

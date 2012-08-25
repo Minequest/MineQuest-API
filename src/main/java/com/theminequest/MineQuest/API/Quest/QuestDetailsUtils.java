@@ -21,7 +21,6 @@ package com.theminequest.MineQuest.API.Quest;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.bukkit.entity.Player;
@@ -30,6 +29,9 @@ import com.theminequest.MineQuest.API.Utils.ChatUtils;
 import com.theminequest.MineQuest.API.Utils.FastByteArrayOutputStream;
 
 public class QuestDetailsUtils {
+	
+	public static final String DESC_NEWLINE_CHAR = "|";
+	public static final String CODE_NEWLINE_CHAR = "\n";
 	
 	/**
 	 * Get a deep copy of this QuestDetails object. This allows
@@ -96,11 +98,11 @@ public class QuestDetailsUtils {
 	 */
 	public static String getOverviewString(QuestDetails d) {
 		String tr = "";
-		tr+=ChatUtils.formatHeader((String) d.getProperty(QuestDetails.QUEST_DISPLAYNAME))+"\n";
+		tr+=ChatUtils.formatHeader((String) d.getProperty(QuestDetails.QUEST_DISPLAYNAME))+CODE_NEWLINE_CHAR;
 		String description = d.getProperty(QuestDetails.QUEST_DESCRIPTION);
-		String[] split = description.split("\\n");
+		String[] split = description.split(DESC_NEWLINE_CHAR);
 		for (String s : split)
-			tr += ChatUtils.chatify(s) + "\n";
+			tr += ChatUtils.chatify(s) + CODE_NEWLINE_CHAR;
 		return tr;
 	}
 	
