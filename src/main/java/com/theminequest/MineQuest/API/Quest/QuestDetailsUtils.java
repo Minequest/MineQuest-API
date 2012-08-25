@@ -21,6 +21,7 @@ package com.theminequest.MineQuest.API.Quest;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.bukkit.entity.Player;
@@ -96,11 +97,10 @@ public class QuestDetailsUtils {
 	public static String getOverviewString(QuestDetails d) {
 		String tr = "";
 		tr+=ChatUtils.formatHeader((String) d.getProperty(QuestDetails.QUEST_DISPLAYNAME))+"\n";
-		String[] split = (String[]) ((String) d.getProperty(QuestDetails.QUEST_DESCRIPTION)).split("\n");
-		for (int i = 0; i < split.length; i++) {
-			String s = split[i];
+		String description = d.getProperty(QuestDetails.QUEST_DESCRIPTION);
+		String[] split = description.split("\\n");
+		for (String s : split)
 			tr += ChatUtils.chatify(s) + "\n";
-		}
 		return tr;
 	}
 	
