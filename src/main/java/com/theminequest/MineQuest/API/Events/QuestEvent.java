@@ -37,6 +37,10 @@
  **/
 package com.theminequest.MineQuest.API.Events;
 
+import static com.theminequest.MineQuest.API.Quest.QuestDetails.QUEST_NAME;
+
+import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -181,8 +185,10 @@ public abstract class QuestEvent {
 								e.complete(CompleteStatus.CANCELED);
 						}
 						quest.getActiveTask().completeTask();
-						if (!quest.startTask(switchTask()))
+						if (!quest.startTask(switchTask())) {
+							Managers.log(Level.SEVERE, "Starting task " + switchTask() + " for " + getQuest().getDetails().getProperty(QUEST_NAME) + "/" + getQuest().getQuestOwner() + " failed!");
 							quest.finishQuest(CompleteStatus.ERROR);
+						}
 					}
 				}
 			}
