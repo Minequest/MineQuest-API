@@ -18,8 +18,12 @@
  */
 package com.theminequest.MineQuest.API.Quest;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -74,10 +78,10 @@ public class QuestParser {
 	}
 	
 	public void parseDefinition(QuestDetails questDetails) throws FileNotFoundException{
-		File f = questDetails.getProperty(QuestDetails.QUEST_FILE);
+		FileInputStream f = new FileInputStream((File)questDetails.getProperty(QuestDetails.QUEST_FILE));
 		Scanner filereader = null;
 		try {
-			filereader = new Scanner(f,"UTF-8");
+			filereader = new Scanner(new BufferedReader(new InputStreamReader(f,"UTF-8")));
 			while (filereader.hasNextLine()) {
 				String nextline = filereader.nextLine();
 				ArrayList<String> ar = new ArrayList<String>();
@@ -109,6 +113,8 @@ public class QuestParser {
 					Managers.log(Level.WARNING, "[Parser] Unable to launch parser " + c.getName() +"...");
 				}
 			}
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
 		} finally {
 			if (filereader!=null)
 				filereader.close();

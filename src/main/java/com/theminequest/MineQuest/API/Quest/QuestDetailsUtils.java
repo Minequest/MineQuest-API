@@ -30,8 +30,8 @@ import com.theminequest.MineQuest.API.Utils.FastByteArrayOutputStream;
 
 public class QuestDetailsUtils {
 	
-	public static final String DESC_NEWLINE_CHAR = "|";
-	public static final String CODE_NEWLINE_CHAR = "\n";
+	public static final String DESC_NEWLINE_SEQ = "<br>";
+	public static final String CODE_NEWLINE_SEQ = "<br>";
 	
 	/**
 	 * Get a deep copy of this QuestDetails object. This allows
@@ -98,11 +98,11 @@ public class QuestDetailsUtils {
 	 */
 	public static String getOverviewString(QuestDetails d) {
 		String tr = "";
-		tr+=ChatUtils.formatHeader((String) d.getProperty(QuestDetails.QUEST_DISPLAYNAME))+CODE_NEWLINE_CHAR;
+		tr+=ChatUtils.formatHeader((String) d.getProperty(QuestDetails.QUEST_DISPLAYNAME))+CODE_NEWLINE_SEQ;
 		String description = d.getProperty(QuestDetails.QUEST_DESCRIPTION);
-		String[] split = description.split(DESC_NEWLINE_CHAR);
+		String[] split = description.split(DESC_NEWLINE_SEQ);
 		for (String s : split)
-			tr += ChatUtils.chatify(s) + CODE_NEWLINE_CHAR;
+			tr += ChatUtils.chatify(s) + CODE_NEWLINE_SEQ;
 		return tr;
 	}
 	
