@@ -54,7 +54,7 @@ import com.theminequest.MineQuest.API.BukkitEvents.EventStartEvent;
 import com.theminequest.MineQuest.API.Quest.Quest;
 
 public abstract class QuestEvent {
-
+	
 	private Quest quest;
 	private int eventid;
 	private volatile CompleteStatus complete;
@@ -76,7 +76,7 @@ public abstract class QuestEvent {
 		this.completeOrPending = false;
 		parseDetails(details.split(":"));
 	}
-
+	
 	/**
 	 * Tasks call fireEvent(). Then they wait for all events to
 	 * complete, then fire off more stuff.
@@ -87,7 +87,7 @@ public abstract class QuestEvent {
 		EventStartEvent event = new EventStartEvent(this);
 		Bukkit.getPluginManager().callEvent(event);
 	}
-
+	
 	public final synchronized void check(){
 		if (completeOrPending)
 			return;
@@ -102,7 +102,7 @@ public abstract class QuestEvent {
 			}
 		}
 	}
-
+	
 	/**
 	 * Returns the status of this event.
 	 * @return Respective status, or <code>null</code> if it has
@@ -111,19 +111,19 @@ public abstract class QuestEvent {
 	public final synchronized CompleteStatus isComplete(){
 		return complete;
 	}
-
+	
 	/**
 	 * Parse the details given (: separated)
 	 * @param details Parameters given
 	 */
 	public abstract void parseDetails(String[] details);
-
+	
 	/**
 	 * Conditions for this event to be performed (and therefore complete)
 	 * @return true if all conditions are met for this event to complete
 	 */
 	public abstract boolean conditions();
-
+	
 	/**
 	 * Perform the event (and complete it, returning true if successful,
 	 * false if not, and null to ignore it completely. Remember that failing
@@ -131,15 +131,15 @@ public abstract class QuestEvent {
 	 * @return the event action result
 	 */
 	public abstract CompleteStatus action();
-
+	
 	public final Quest getQuest(){
 		return quest;
 	}
-
+	
 	public final int getEventId(){
 		return eventid;
 	}
-
+	
 	/**
 	 * Optional event implementation: After the event is fired,
 	 * do anything else to set it up?
@@ -147,16 +147,16 @@ public abstract class QuestEvent {
 	public void setUpEvent(){
 		
 	}
-
+	
 	/**
 	 * Optional event implementation: After the event has executed successfully,
 	 * you have the option of cleaning up your event. (For example,
 	 * kill entities that you are tracking, stop a process, etc...)
 	 */
 	public void cleanUpEvent(){
-
+		
 	}
-
+	
 	/**
 	 * Notify that the event has been completed with the status given.
 	 * @param actionresult Status to pass in.
@@ -180,21 +180,23 @@ public abstract class QuestEvent {
 					quest.cleanupQuest();
 				} else if (c == CompleteStatus.SUCCESS || c == CompleteStatus.WARNING){
 					if (switchTask()!=null) {
-						for (QuestEvent e : quest.getActiveTask().getEvents()) {
-							if (e.isComplete() == null)
-								e.complete(CompleteStatus.CANCELED);
-						}
-						quest.getActiveTask().completeTask();
-						if (!quest.startTask(switchTask())) {
-							Managers.log(Level.SEVERE, "Starting task " + switchTask() + " for " + getQuest().getDetails().getProperty(QUEST_NAME) + "/" + getQuest().getQuestOwner() + " failed!");
-							quest.finishQuest(CompleteStatus.ERROR);
+						if (switchTask()!=-2) {
+							for (QuestEvent e : quest.getActiveTask().getEvents()) {
+								if (e.isComplete() == null)
+									e.complete(CompleteStatus.CANCELED);
+							}
+							quest.getActiveTask().completeTask();
+							if (!quest.startTask(switchTask())) {
+								Managers.log(Level.SEVERE, "Starting task " + switchTask() + " for " + getQuest().getDetails().getProperty(QUEST_NAME) + "/" + getQuest().getQuestOwner() + " failed!");
+								quest.finishQuest(CompleteStatus.ERROR);
+							}
 						}
 					}
 				}
 			}
 		}
 	}
-
+	
 	/**
 	 * Some events want to switch to a new task when it completes.
 	 * For instance, {@link com.theminequest.MQCoreEvents.TaskEvent}
@@ -212,7 +214,7 @@ public abstract class QuestEvent {
 	 * @return Task Number to switch Quest to, or NULL to not switch.
 	 */
 	public abstract Integer switchTask();
-
+	
 	/**
 	 * Optional method that QEvents can override if they want;
 	 * by default, doesn't do anything.
@@ -222,7 +224,7 @@ public abstract class QuestEvent {
 	public boolean blockBreakCondition(BlockBreakEvent e){
 		return false;
 	}
-
+	
 	/**
 	 * Optional method that QEvents can override if they want;
 	 * by default, doesn't do anything.
@@ -232,7 +234,7 @@ public abstract class QuestEvent {
 	public boolean entityDamageCondition(EntityDamageEvent e){
 		return false;
 	}
-
+	
 	/**
 	 * Optional method that QEvents can override if they want;
 	 * by default, doesn't do anything.
@@ -260,7 +262,7 @@ public abstract class QuestEvent {
 			}
 		}
 	}
-
+	
 	public final synchronized void onBlockBreak(BlockBreakEvent e){
 		if (complete==null){
 			if (blockBreakCondition(e)){
@@ -268,7 +270,7 @@ public abstract class QuestEvent {
 			}
 		}
 	}
-
+	
 	public final synchronized void onEntityDamage(EntityDamageEvent e){
 		if (complete==null){
 			if (entityDamageCondition(e)){
@@ -276,7 +278,7 @@ public abstract class QuestEvent {
 			}
 		}
 	}
-
+	
 	public final synchronized void onEntityDeath(EntityDeathEvent e){
 		if (complete==null){
 			if (entityDeathCondition(e)){
@@ -284,5 +286,5 @@ public abstract class QuestEvent {
 			}
 		}
 	}
-
+	
 }
