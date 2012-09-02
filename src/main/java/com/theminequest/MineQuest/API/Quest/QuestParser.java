@@ -18,11 +18,8 @@
  */
 package com.theminequest.MineQuest.API.Quest;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -33,13 +30,9 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
 
-import org.apache.commons.lang3.text.translate.UnicodeEscaper;
-
 import com.theminequest.MineQuest.API.Managers;
 
 public class QuestParser {
-	
-	private static final UnicodeEscaper UNIESCAPE = new UnicodeEscaper();
 	
 	/**
 	 * Indicate that this class can handle Quest file details.
@@ -82,13 +75,12 @@ public class QuestParser {
 	}
 	
 	public void parseDefinition(QuestDetails questDetails) throws FileNotFoundException{
-		FileInputStream f = new FileInputStream((File)questDetails.getProperty(QuestDetails.QUEST_FILE));
+		File f = (File)questDetails.getProperty(QuestDetails.QUEST_FILE);
 		Scanner filereader = null;
 		try {
-			filereader = new Scanner(new BufferedReader(new InputStreamReader(f,"UTF-8")));
+			filereader = new Scanner(f);
 			while (filereader.hasNextLine()) {
-				String nextline = filereader.nextLine();
-				nextline = UNIESCAPE.translate(nextline);
+				String nextline = new String(filereader.nextLine().getBytes("UTF-8"),"UTF-8");
 				ArrayList<String> ar = new ArrayList<String>();
 				for (String s : nextline.split(":"))
 					ar.add(s);
