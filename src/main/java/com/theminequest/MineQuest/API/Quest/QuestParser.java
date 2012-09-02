@@ -33,9 +33,13 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
 
+import org.apache.commons.lang3.text.translate.UnicodeEscaper;
+
 import com.theminequest.MineQuest.API.Managers;
 
 public class QuestParser {
+	
+	private static final UnicodeEscaper UNIESCAPE = new UnicodeEscaper();
 	
 	/**
 	 * Indicate that this class can handle Quest file details.
@@ -84,6 +88,7 @@ public class QuestParser {
 			filereader = new Scanner(new BufferedReader(new InputStreamReader(f,"UTF-8")));
 			while (filereader.hasNextLine()) {
 				String nextline = filereader.nextLine();
+				nextline = UNIESCAPE.translate(nextline);
 				ArrayList<String> ar = new ArrayList<String>();
 				for (String s : nextline.split(":"))
 					ar.add(s);
