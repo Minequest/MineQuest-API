@@ -81,6 +81,8 @@ public class QuestParser {
 			filereader = new Scanner(f);
 			while (filereader.hasNextLine()) {
 				String nextline = new String(filereader.nextLine().getBytes("UTF-8"),"UTF-8");
+				if (nextline.startsWith("#")) // ignore and continue
+					continue;
 				ArrayList<String> ar = new ArrayList<String>();
 				for (String s : nextline.split(":"))
 					ar.add(s);
