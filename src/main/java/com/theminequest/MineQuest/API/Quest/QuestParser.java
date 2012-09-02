@@ -25,6 +25,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -83,7 +84,7 @@ public class QuestParser {
 				String nextline = new String(filereader.nextLine().getBytes("UTF-8"),"UTF-8");
 				if (nextline.startsWith("#")) // ignore and continue
 					continue;
-				ArrayList<String> ar = new ArrayList<String>();
+				LinkedList<String> ar = new LinkedList<String>();
 				for (String s : nextline.split(":"))
 					ar.add(s);
 				String type = ar.get(0).toLowerCase();
