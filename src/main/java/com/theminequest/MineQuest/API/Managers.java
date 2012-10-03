@@ -28,6 +28,7 @@ import com.theminequest.MineQuest.API.Events.EventManager;
 import com.theminequest.MineQuest.API.Group.GroupManager;
 import com.theminequest.MineQuest.API.Group.QuestGroupManager;
 import com.theminequest.MineQuest.API.Quest.QuestManager;
+import com.theminequest.MineQuest.API.Requirements.RequirementManager;
 import com.theminequest.MineQuest.API.Target.TargetManager;
 import com.theminequest.MineQuest.API.Tracker.QuestStatisticManager;
 import com.theminequest.MineQuest.API.Tracker.StatisticManager;
@@ -44,6 +45,7 @@ public class Managers {
 	private static QuestManager questManager = null;
 	private static StatisticManager statisticManager = null;
 	private static QuestStatisticManager qStatisticManager = null;
+	private static RequirementManager requirementManager = null;
 	private static TargetManager targetManager = null;
 	private static UtilManager utilManager = null;
 	
@@ -95,6 +97,12 @@ public class Managers {
 	}
 	public static void setQuestStatisticManager(QuestStatisticManager qStatisticManager) {
 		Managers.qStatisticManager = qStatisticManager;
+	}
+	public static RequirementManager getRequirementManager() {
+		return requirementManager;
+	}
+	public static void setRequirementManager(RequirementManager requirementManager) {
+		Managers.requirementManager = requirementManager;
 	}
 	public static TargetManager getTargetManager() {
 		return targetManager;

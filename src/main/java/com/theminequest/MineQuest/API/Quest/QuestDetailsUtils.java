@@ -22,9 +22,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.entity.Player;
 
+import com.theminequest.MineQuest.API.Requirements.QuestRequirement;
 import com.theminequest.MineQuest.API.Utils.ChatUtils;
 import com.theminequest.MineQuest.API.Utils.FastByteArrayOutputStream;
 
@@ -107,19 +109,60 @@ public class QuestDetailsUtils {
 	}
 	
 	/**
-	 * Check to see if a player meets the requirements for this
-	 * quest to be made available to the player.
-	 * @param d Quest to retrieve requirements from
-	 * @param p Player to check (Leader usually)
+	 * Examines if the initial requirements are met for this player to get this quest.
+	 * @param details Quest to check on
+	 * @param player Player to check
 	 * @return true if requirements are met
 	 */
-	public static boolean requirementsMet(QuestDetails d, Player p){
-		List<QuestRequirement> requirements = d.getProperty(QuestDetails.QUEST_REQUIREMENTS);
-		for (QuestRequirement q : requirements){
-			if (!q.isSatisfied(p))
-				return false;
+	public static boolean getRequirementsMet(QuestDetails details, Player player) {
+		Map<Integer,QuestRequirement> reqs = details.getProperty(QuestDetails.QUEST_REQUIREMENTDETAILS);
+		List<Integer> getreqs = details.getProperty(QuestDetails.QUEST_GETREQUIREMENTS);
+		
+		for (Integer i : getreqs) {
+			if (reqs.containsKey(i)) {
+				if (!reqs.get(i).isSatisfied(player))
+					return false;
+			}
 		}
+		
 		return true;
+	}
+	
+	/**
+	 * Examines if the starting requirements are met for this player to start this quest.<br>
+	 * This only works for instanced quests; e.g. non-instanced quests will return true.
+	 * @param details Quest to check on
+	 * @param player Player to check
+	 * @return true if requirements are met
+	 */
+	public static boolean startRequirementsMet(QuestDetails details, Player player) {
+		Boolean isInstanced = details.getProperty(QuestDetails.QUEST_LOADWORLD);
+		if (!isInstanced)
+			return true;
+		Map<Integer,QuestRequirement> reqs = details.getProperty(QuestDetails.QUEST_REQUIREMENTDETAILS);
+		List<Integer> getreqs = details.getProperty(QuestDetails.QUEST_STARTREQUIREMENTS);
+		
+		for (Integer i : getreqs) {
+			if (reqs.containsKey(i)) {
+				if (!reqs.get(i).isSatisfied(player))
+					return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * Examines if the specified requirement is met for this player.
+	 * @param details Quest to check on
+	 * @param player Player to check
+	 * @return true if requirements are met
+	 */
+	public static boolean requirementMet(QuestDetails details, int id, Player player) {
+		Map<Integer,QuestRequirement> reqs = details.getProperty(QuestDetails.QUEST_REQUIREMENTDETAILS);
+		if (!reqs.containsKey(id))
+			return false;
+		return reqs.get(id).isSatisfied(player);
 	}
 	
 }

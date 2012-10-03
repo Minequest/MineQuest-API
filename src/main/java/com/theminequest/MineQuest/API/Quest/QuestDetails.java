@@ -152,12 +152,25 @@ public interface QuestDetails extends Serializable, Comparable<QuestDetails> {
 	static final String QUEST_NETHERWORLD = "mq.netherworld";
 	/**
 	 * The property that represents what requirements this quest
-	 * has, and what the leader must fulfill before starting the
-	 * quest.<br>
-	 * Returns a {@link java.util.List} of
-	 * {@link com.theminequest.MineQuest.API.Quest.QuestRequirement}s.
+	 * contains.<br> Returns a {@link java.util.LinkedHashMap}
+	 * containing keys of {@link java.lang.Integer} and values of
+	 * {@link com.theminequest.MineQuest.API.Requirements.QuestRequirement}.
 	 */
-	static final String QUEST_REQUIREMENTS = "mq.requirements";
+	static final String QUEST_REQUIREMENTDETAILS = "mq.requirementdetails";
+	/**
+	 * The property that represents what requirements should be checked
+	 * upon receiving the quest.<br> Returns a {@link java.util.List} of
+	 * {@link Integer}s.
+	 */
+	static final String QUEST_GETREQUIREMENTS = "mq.getrequirements";
+	/**
+	 * The property that represents what requirements should be checked
+	 * upon starting the quest.<br>This does <b>NOT</b> apply to non-instanced
+	 * quests, as they start immediately upon getting.<br>
+	 * Returns a {@link java.util.List} of {@link Integer}s.
+	 */
+	static final String QUEST_STARTREQUIREMENTS = "mq.startrequirements";
+	
 	
 	/**
 	 * Retrieve the property associated with the key.
