@@ -89,17 +89,16 @@ public class QuestParser {
 	public static @interface QHInfo {
 		
 		/**
-		 * Get the name of this handler that will be used with the parser.
-		 * @return Name of the handler
+		 * Get the name of this handler that will be used with the parser.<br>
+		 * For user-friendliness.
+		 * @return Name of the handler, e.g. "Acceptance Text"
 		 */
 		String name();
 		
 		/**
 		 * Returns the descriptive function of this handler.<br>
-		 * If there is a colon in the description, the text before
-		 * the colon will be used as a user-friendly name, while
-		 * the text after the colon will be used as a summary of the handler.
-		 * @return Description of the Handler, e.g. "Acceptance Text"
+		 * Used as a summary of the handler.
+		 * @return Description of the Handler, e.g. "Sets the acceptance text"
 		 */
 		String description();
 		
