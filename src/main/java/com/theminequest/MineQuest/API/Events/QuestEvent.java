@@ -173,25 +173,18 @@ public abstract class QuestEvent {
 			Bukkit.getPluginManager().callEvent(event);
 			if (quest!=null) {
 				if (c == CompleteStatus.FAILURE) {
-					for (QuestEvent e : quest.getActiveTask().getEvents()) {
-						if (e.isComplete() == null)
-							e.complete(CompleteStatus.CANCELED);
-					}
-					quest.cleanupQuest();
+					quest.getActiveTask().completeTask(CompleteStatus.FAILURE);
 				} else if (c == CompleteStatus.SUCCESS || c == CompleteStatus.WARNING){
 					if (switchTask()!=null) {
 						if (switchTask()!=-2) {
-							for (QuestEvent e : quest.getActiveTask().getEvents()) {
-								if (e.isComplete() == null)
-									e.complete(CompleteStatus.CANCELED);
-							}
-							quest.getActiveTask().completeTask();
+							quest.getActiveTask().cancelTask();
 							if (!quest.startTask(switchTask())) {
 								Managers.log(Level.SEVERE, "Starting task " + switchTask() + " for " + getQuest().getDetails().getProperty(QUEST_NAME) + "/" + getQuest().getQuestOwner() + " failed!");
 								quest.finishQuest(CompleteStatus.ERROR);
 							}
 						}
-					}
+					} else
+						quest.getActiveTask().checkTasks();
 				}
 			}
 		}

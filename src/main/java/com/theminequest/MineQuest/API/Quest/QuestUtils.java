@@ -20,6 +20,7 @@ package com.theminequest.MineQuest.API.Quest;
 
 import static com.theminequest.MineQuest.API.Quest.QuestDetails.*;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -75,6 +76,20 @@ public class QuestUtils {
 	public static TargetDetails getTargetDetails(Quest q, int targetID){
 		Map<Integer,TargetDetails> targets = q.getDetails().getProperty(QUEST_TARGETS);
 		return targets.get(targetID);
+	}
+
+	public static int getNextTask(Quest quest) {
+		int currentid = quest.getActiveTask().getTaskID();
+		int next = currentid;
+		LinkedHashMap<Integer,String[]> tasks = quest.getDetails().getProperty(QUEST_TASKS);
+		for (Integer i : tasks.keySet()) {
+			if (i > next)
+				next = currentid;
+		}
+		if (next != currentid)
+			return next;
+		else
+			return -1;
 	}
 
 }

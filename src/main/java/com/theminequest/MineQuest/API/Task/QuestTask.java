@@ -28,10 +28,11 @@ public interface QuestTask {
 
 	void start();
 	void cancelTask();
-	void completeTask();
+	void completeTask(CompleteStatus status);
 	CompleteStatus isComplete();
 	Quest getQuest();
 	int getTaskID();
 	Collection<QuestEvent> getEvents();
+	void checkTasks();
 
 }
