@@ -32,6 +32,7 @@ import com.theminequest.MineQuest.API.Events.QuestEvent;
 import com.theminequest.MineQuest.API.Events.UserQuestEvent;
 import com.theminequest.MineQuest.API.Target.TargetDetails;
 import com.theminequest.MineQuest.API.Utils.ChatUtils;
+import com.theminequest.MineQuest.API.Utils.SetUtils;
 
 public class QuestUtils {
 	
@@ -80,16 +81,12 @@ public class QuestUtils {
 
 	public static int getNextTask(Quest quest) {
 		int currentid = quest.getActiveTask().getTaskID();
-		int next = currentid;
 		LinkedHashMap<Integer,String[]> tasks = quest.getDetails().getProperty(QUEST_TASKS);
-		for (Integer i : tasks.keySet()) {
-			if (i > next)
-				next = currentid;
+		for (Integer i : SetUtils.getSortedKeys(tasks.keySet())) {
+			if (i > currentid)
+				return i;
 		}
-		if (next != currentid)
-			return next;
-		else
-			return -1;
+		return -1;
 	}
 
 }
