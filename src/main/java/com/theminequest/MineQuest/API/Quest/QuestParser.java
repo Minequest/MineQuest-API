@@ -19,7 +19,9 @@
 package com.theminequest.MineQuest.API.Quest;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -34,6 +36,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
+
+import org.mozilla.universalchardet.UniversalDetector;
 
 import com.theminequest.MineQuest.API.Managers;
 
@@ -104,7 +108,13 @@ public class QuestParser {
 		
 	}
 	
-	private Map<String,Class<? extends QHandler>> methods = Collections.synchronizedMap(new LinkedHashMap<String,Class<? extends QHandler>>());
+	private Map<String,Class<? extends QHandler>> methods;
+	private UniversalDetector encodingDetector;
+	
+	public QuestParser() {
+		methods = Collections.synchronizedMap(new LinkedHashMap<String,Class<? extends QHandler>>());
+		encodingDetector = new UniversalDetector(null);
+	}
 	
 	/**
 	 * Register a QHandler for use in parsing Quests.
@@ -123,13 +133,35 @@ public class QuestParser {
 		methods.remove(name.toLowerCase());
 	}
 	
-	public void parseDefinition(QuestDetails questDetails) throws FileNotFoundException{
-		File f = (File)questDetails.getProperty(QuestDetails.QUEST_FILE);
-		Scanner filereader = null;
+	public void parseDefinition(QuestDetails questDetails) throws IOException {
+		File questFile = (File)questDetails.getProperty(QuestDetails.QUEST_FILE);
+		
+		// detect encoding
+		FileInputStream encodingStreamDetect = null;
+		String encoding = null;
 		try {
-			filereader = new Scanner(f);
-			while (filereader.hasNextLine()) {
-				String nextline = new String(filereader.nextLine().getBytes("UTF-8"),"UTF-8");
+			encodingStreamDetect = new FileInputStream(questFile);
+			encodingDetector.reset();
+			byte[] detectorBuffer = new byte[4096];
+			int nread;
+			while ((nread = encodingStreamDetect.read(detectorBuffer)) > 0 && !encodingDetector.isDone()) {
+				encodingDetector.handleData(detectorBuffer, 0, nread);
+			}
+			encodingDetector.dataEnd();
+			encoding = encodingDetector.getDetectedCharset();
+		} finally {
+			if (encodingStreamDetect != null)
+				encodingStreamDetect.close();
+		}
+		
+		Scanner fileReader = null;
+		try {
+			if (encoding == null)
+				fileReader = new Scanner(questFile);
+			else
+				fileReader = new Scanner(questFile,encoding);
+			while (fileReader.hasNextLine()) {
+				String nextline = new String(fileReader.nextLine().getBytes("UTF-8"),"UTF-8");
 				if (nextline.startsWith("#")) // ignore and continue
 					continue;
 				LinkedList<String> ar = new LinkedList<String>();
@@ -164,8 +196,8 @@ public class QuestParser {
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
 		} finally {
-			if (filereader!=null)
-				filereader.close();
+			if (fileReader != null)
+				fileReader.close();
 		}
 	}
 	
