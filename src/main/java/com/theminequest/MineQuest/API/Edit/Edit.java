@@ -60,6 +60,7 @@ public abstract class Edit implements Serializable {
 	private transient Quest quest;
 	private int editid;
 	private int taskid;
+	private Player lastEditor = null;
 	
 	public Edit(int eid, int tid, String d){
 		quest = null;
@@ -100,17 +101,26 @@ public abstract class Edit implements Serializable {
 	
 	public void onBlockPlace(BlockPlaceEvent e){
 		if (allowEdit(e.getBlock(), e.getItemInHand(), e.getPlayer())){
+			lastEditor = e.getPlayer();
 			e.setCancelled(false);
+			
+			// I'm pretty sure this goes here - jmonk
+			getQuest().startTask(taskid);
 		}
-		getQuest().startTask(taskid);
 	}
 	
 	public void onBlockDamage(BlockDamageEvent e){
 		if (allowEdit(e.getBlock(), e.getItemInHand(), e.getPlayer())){
+			lastEditor = e.getPlayer();
 			e.setCancelled(false);
-		}
-		getQuest().startTask(taskid);
-	}
 
+			// I'm pretty sure this goes here - jmonk
+			getQuest().startTask(taskid);
+		}
+	}
+	
+	public Player getLastEditor() {
+		return lastEditor;
+	}
 
 }

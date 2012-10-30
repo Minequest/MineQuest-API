@@ -63,8 +63,9 @@ public class EditManager implements Listener {
 		e.setCancelled(true);
 		for (Edit ed : edits){
 			ed.onBlockPlace(e);
-			if (!e.isCancelled())
-				return;
+			// Removing this so all edits can track players for targetters
+//			if (!e.isCancelled())
+//				return;
 		}
 	}
 	
@@ -78,8 +79,9 @@ public class EditManager implements Listener {
 		e.setCancelled(true);
 		for (Edit ed : edits){
 			ed.onBlockDamage(e);
-			if (!e.isCancelled())
-				return;
+			// Removing this so all edits can track players for targetters
+//			if (!e.isCancelled())
+//				return;
 		}
 	}
 }
