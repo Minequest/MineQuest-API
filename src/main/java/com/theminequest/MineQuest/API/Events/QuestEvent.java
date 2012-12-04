@@ -95,6 +95,9 @@ public abstract class QuestEvent {
 			return;
 		
 		synchronized (complete) {
+			if (completeOrPending)
+				return;
+			
 			if (complete == null) {
 				if (conditions()) {
 					completeOrPending = true;
