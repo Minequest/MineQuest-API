@@ -59,6 +59,7 @@ public abstract class QuestEvent {
 	private int eventid;
 	private volatile CompleteStatus complete;
 	private volatile boolean completeOrPending;
+	private final Object completeLock = new Object();
 	
 	public QuestEvent() {}
 	
@@ -94,7 +95,7 @@ public abstract class QuestEvent {
 		if (complete != null)
 			return;
 		
-		synchronized (complete) {
+		synchronized (completeLock) {
 			if (completeOrPending)
 				return;
 			
@@ -177,7 +178,7 @@ public abstract class QuestEvent {
 			return;
 		
 		boolean completed = false;
-		synchronized (complete) {
+		synchronized (completeLock) {
 			if (complete == null) {
 				completed = true;
 				
