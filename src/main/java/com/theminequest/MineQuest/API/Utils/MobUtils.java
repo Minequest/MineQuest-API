@@ -40,7 +40,7 @@ public class MobUtils {
 			} catch (NumberFormatException e) {}
 		}
 		
-		return ret.isAlive() ? ret : null;
+		return ret != null && ret.isAlive() ? ret : null;
 	}
 
 }
