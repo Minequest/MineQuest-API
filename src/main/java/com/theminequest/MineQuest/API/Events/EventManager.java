@@ -18,11 +18,12 @@
  */
 package com.theminequest.MineQuest.API.Events;
 
+import java.util.Collection;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -66,7 +67,7 @@ public interface EventManager extends Listener {
 	QuestEvent constructEvent(String eventname, Quest quest,
 			int eventid, String details);
 	
-	void registerEventListener(QuestEvent e);
+	void registerEventListeners(Collection<QuestEvent> events);
 
 	void deregisterEventListener(QuestEvent e);
 

@@ -69,7 +69,7 @@ public abstract class QuestEvent {
 	 * @param eventid Event ID
 	 * @param details Details for the event to parse
 	 */
-	public void setupProperties(Quest quest, int eventid, String details){
+	public void setupProperties(Quest quest, int eventid, String details) {
 		this.quest = quest;
 		this.eventid = eventid;
 		this.complete = null;
@@ -81,25 +81,33 @@ public abstract class QuestEvent {
 	 * Tasks call fireEvent(). Then they wait for all events to
 	 * complete, then fire off more stuff.
 	 */
-	public final void fireEvent(){
-		Managers.getEventManager().registerEventListener(this);
+	public final void fireEvent() {
 		setUpEvent();
 		EventStartEvent event = new EventStartEvent(this);
 		Bukkit.getPluginManager().callEvent(event);
 	}
 	
-	public final synchronized void check(){
+	public final void check() {
 		if (completeOrPending)
 			return;
-		if (complete==null){
-			if (conditions()){
-				completeOrPending = true;
-				Bukkit.getScheduler().scheduleSyncDelayedTask(Managers.getActivePlugin(), new Runnable(){
-					public void run() {
-						complete(action());
-					}
-				});
+		
+		if (complete != null)
+			return;
+		
+		synchronized (complete) {
+			if (complete == null) {
+				if (conditions()) {
+					completeOrPending = true;
+				}
 			}
+		}
+		
+		if (completeOrPending) {
+			Bukkit.getScheduler().scheduleSyncDelayedTask(Managers.getActivePlugin(), new Runnable() {
+				public void run() {
+					complete(action());
+				}
+			});
 		}
 	}
 	
@@ -161,31 +169,42 @@ public abstract class QuestEvent {
 	 * Notify that the event has been completed with the status given.
 	 * @param actionresult Status to pass in.
 	 */
-	public final synchronized void complete(CompleteStatus c){
-		if (complete==null){
+	public final void complete(CompleteStatus c) {
+		if (complete != null)
+			return;
+		
+		boolean completed = false;
+		synchronized (complete) {
+			if (complete == null) {
+				completed = true;
+				
+				if (c != null) {
+					complete = c;
+				} else {
+					complete = CompleteStatus.IGNORE;
+				}
+			}
+		}
+		
+		if (completed) {
 			Managers.getEventManager().deregisterEventListener(this);
-			if (c!=null)
-				complete = c;
-			else
-				complete = CompleteStatus.IGNORE;
 			cleanUpEvent();
 			EventCompleteEvent event = new EventCompleteEvent(this,c);
 			Bukkit.getPluginManager().callEvent(event);
-			if (quest!=null) {
-				if (c == CompleteStatus.FAILURE) {
-					quest.getActiveTask().completeTask(CompleteStatus.FAILURE);
-				} else if (c == CompleteStatus.SUCCESS || c == CompleteStatus.WARNING){
-					if (switchTask()!=null) {
-						if (switchTask()!=-2) {
-							quest.getActiveTask().cancelTask();
-							if (!quest.startTask(switchTask())) {
-								Managers.log(Level.SEVERE, "Starting task " + switchTask() + " for " + getQuest().getDetails().getProperty(QUEST_NAME) + "/" + getQuest().getQuestOwner() + " failed!");
-								quest.finishQuest(CompleteStatus.ERROR);
-							}
+			
+			if (c == CompleteStatus.FAILURE) {
+				quest.getActiveTask().completeTask(CompleteStatus.FAILURE);
+			} else if (c == CompleteStatus.SUCCESS || c == CompleteStatus.WARNING){
+				if (switchTask()!=null) {
+					if (switchTask()!=-2) {
+						quest.getActiveTask().cancelTask();
+						if (!quest.startTask(switchTask())) {
+							Managers.log(Level.SEVERE, "Starting task " + switchTask() + " for " + getQuest().getDetails().getProperty(QUEST_NAME) + "/" + getQuest().getQuestOwner() + " failed!");
+							quest.finishQuest(CompleteStatus.ERROR);
 						}
-					} else
-						quest.getActiveTask().checkTasks();
-				}
+					}
+				} else
+					quest.getActiveTask().checkTasks();
 			}
 		}
 	}
@@ -214,7 +233,7 @@ public abstract class QuestEvent {
 	 * @param e
 	 * @return true if breaking block meets condition for event
 	 */
-	public boolean blockBreakCondition(BlockBreakEvent e){
+	public boolean blockBreakCondition(BlockBreakEvent e) {
 		return false;
 	}
 	
@@ -224,7 +243,7 @@ public abstract class QuestEvent {
 	 * @param e
 	 * @return true if entity damage meets condition for an event
 	 */
-	public boolean entityDamageCondition(EntityDamageEvent e){
+	public boolean entityDamageCondition(EntityDamageEvent e) {
 		return false;
 	}
 	
@@ -234,7 +253,7 @@ public abstract class QuestEvent {
 	 * @param e
 	 * @return true if entity death meets condition for an event
 	 */
-	public boolean entityDeathCondition(EntityDeathEvent e){
+	public boolean entityDeathCondition(EntityDeathEvent e) {
 		return false;
 	}
 	
@@ -244,37 +263,37 @@ public abstract class QuestEvent {
 	 * @param e
 	 * @return true if player interact meets condition for an event
 	 */
-	public boolean playerInteractCondition(PlayerInteractEvent e){
+	public boolean playerInteractCondition(PlayerInteractEvent e) {
 		return false;
 	}
 	
-	public final synchronized void onPlayerInteract(PlayerInteractEvent e){
-		if (complete==null){
-			if (playerInteractCondition(e)){
+	public final void onPlayerInteract(PlayerInteractEvent e) {
+		if (complete == null) {
+			if (playerInteractCondition(e)) {
 				complete(action());
 			}
 		}
 	}
 	
-	public final synchronized void onBlockBreak(BlockBreakEvent e){
-		if (complete==null){
-			if (blockBreakCondition(e)){
+	public final void onBlockBreak(BlockBreakEvent e) {
+		if (complete == null) {
+			if (blockBreakCondition(e)) {
 				complete(action());
 			}
 		}
 	}
 	
-	public final synchronized void onEntityDamage(EntityDamageEvent e){
-		if (complete==null){
-			if (entityDamageCondition(e)){
+	public final void onEntityDamage(EntityDamageEvent e) {
+		if (complete == null) {
+			if (entityDamageCondition(e)) {
 				complete(action());
 			}
 		}
 	}
 	
-	public final synchronized void onEntityDeath(EntityDeathEvent e){
-		if (complete==null){
-			if (entityDeathCondition(e)){
+	public final void onEntityDeath(EntityDeathEvent e) {
+		if (complete == null) {
+			if (entityDeathCondition(e)) {
 				complete(action());
 			}
 		}
