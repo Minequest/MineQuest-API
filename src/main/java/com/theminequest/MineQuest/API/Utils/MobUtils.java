@@ -26,10 +26,7 @@ public class MobUtils {
 		if (s==null)
 			return null;
 		
-		for (EntityType type : EntityType.values()){
-			if (type.name().equalsIgnoreCase(s.trim()) || type.name().replaceAll("_", "").equalsIgnoreCase(s.trim().replaceAll("_", "")))
-				return type;
-		}
+		s = s.trim();
 		
 		EntityType ret = EntityType.fromName(s);
 		if (ret == null) {
@@ -42,7 +39,8 @@ public class MobUtils {
 				ret = EntityType.fromId(Integer.parseInt(s));
 			} catch (NumberFormatException e) {}
 		}
-		return ret;
+		
+		return ret.isAlive() ? ret : null;
 	}
 
 }
