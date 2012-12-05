@@ -45,11 +45,9 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.mozilla</groupId>
-			<artifactId>universalchardet</artifactId>
-			<version>1.0.3-SNAPSHOT</version>
-			<type>jar</type>
-			<scope>compile</scope>
+			<groupId>com.googlecode.juniversalchardet</groupId>
+			<artifactId>juniversalchardet</artifactId>
+			<version>1.0.3</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -84,10 +82,6 @@
 		<repository>
 			<id>spout-repo</id>
 			<url>http://repo.spout.org/</url>
-		</repository>
-		<repository>
-			<id>alta189-repo</id>
-			<url>http://repo.alta189.com/</url>
 		</repository>
 	</repositories>
 
