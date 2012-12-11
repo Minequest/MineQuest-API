@@ -183,10 +183,12 @@ public interface QuestDetails extends Serializable, Comparable<QuestDetails> {
 	public <E> E getProperty(String key);
 	/**
 	 * Set the property associated with the key.
+	 * @param <E> returned type
 	 * @param key Key to set
 	 * @param property Property to set
+	 * @return Associated Property (if one was there previously).
 	 */
-	public void setProperty(String key, Serializable property);
+	public <E> E setProperty(String key, Serializable property);
 	/**
 	 * Check if this contains a property.
 	 * @param key Key to check
