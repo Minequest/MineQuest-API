@@ -1,44 +1,34 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>MineQuest-2-API by Minequest</title>
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/respond.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
     <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <!--[if lt IE 8]>
-    <link rel="stylesheet" href="stylesheets/ie.css">
-    <![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
+    <title>MineQuest-2-API by Minequest</title>
   </head>
+
   <body>
-      <div id="header">
-        <nav>
-          <li class="fork"><a href="https://github.com/Minequest/Minequest-2-API">View On GitHub</a></li>
-          <li class="downloads"><a href="https://github.com/Minequest/Minequest-2-API/zipball/master">ZIP</a></li>
-          <li class="downloads"><a href="https://github.com/Minequest/Minequest-2-API/tarball/master">TAR</a></li>
-          <li class="title">DOWNLOADS</li>
-        </nav>
-      </div><!-- end header -->
+    <header>
+      <div class="inner">
+        <h1>MineQuest-2-API</h1>
+        <h2>A Quick Overview</h2>
+        <a href="https://github.com/Minequest/Minequest-2-API" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
 
-    <div class="wrapper">
-
-      <section>
-        <div id="title">
-          <h1>MineQuest-2-API</h1>
-          <p>A Quick Overview</p>
-          <hr>
-          <span class="credits left">Project maintained by <a href="https://github.com/Minequest">Minequest</a></span>
-          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
-        </div>
-
-        <h1>Overview</h1>
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>Overview</h1>
 
 <p>This site was created to help developers look up information and integrate MineQuest into their plugins through the use of this API. If you're looking to also integrate with our RPG and NPC plugins, you should check out their APIs and overview pages respectively.</p>
 
@@ -57,15 +47,15 @@
 
 <pre><code>&lt;repositories&gt;
    &lt;repository&gt;
-      &lt;id&gt;alta189-nexus&lt;/id&gt;
-      &lt;url&gt;http://repo.alta189.com/&lt;/url&gt;
+      &lt;id&gt;jci-lincom&lt;/id&gt;
+      &lt;url&gt;http://jci.lincomlinux.org/plugin/repository/everything/&lt;/url&gt;
    &lt;/repository&gt;
 &lt;/repositories&gt;
 </code></pre>
 
 <h2>Accessing Information</h2>
 
-<p>All accessible information should be done through the managers provided. See the <a href="http://ci.alta189.com/job/MineQuest-API/javadoc/com/theminequest/MineQuest/API/Managers.html">Managers</a> class for more information on how to access these managers.</p>
+<p>All accessible information should be done through the managers provided. See the <a href="http://jci.lincomlinux.org/job/MineQuest-API/javadoc/com/theminequest/MineQuest/API/Managers.html">Managers</a> class for more information on how to access these managers.</p>
 
 <h2>Listening to System Events</h2>
 
@@ -84,7 +74,7 @@
 <li>MineQuest, with its EventManager, takes that event, initializes it, and keeps track of it.</li>
 <li>
 <em>In addition</em>, to have your event display an objective to the user, you may implement UserQuestEvent.</li>
-</ul><p>You can find the source for <a href="http://ci.alta189.com/job/MineQuest-API/javadoc/com/theminequest/MineQuest/API/Events/package-summary.html">these events</a> in the Javadoc.</p>
+</ul><p>You can find the source for <a href="http://jci.lincomlinux.org/job/MineQuest-API/javadoc/com/theminequest/MineQuest/API/Events/package-summary.html">these events</a> in the Javadoc.</p>
 
 <p>After you have created your QuestEvent, you should register it. The <strong>EventManager</strong> class should help
 you register your new event with MineQuest so that it becomes functional. Give your event a name and register it and the class you've just created that implements QuestEvent! (Hint: EventManager's addEvent() method)</p>
@@ -98,10 +88,25 @@ you register your new event with MineQuest so that it becomes functional. Give y
 <p>The QuestDetails class describes the quest from start to finish, including every single minute detail. It is simply a LinkedHashMap database of String keys and <strong>Serializable</strong> objects. Simply see the Javadocs to learn on how to access the properties.</p>
 
 <p>Now register it with the quest parsing system! You should go to the QuestManager, and register it, giving your parser a name (to identify it while parsing), and a new instance of the class you've just created that implements QuestParser.QHandler!</p>
-      </section>
+        </section>
 
+        <aside id="sidebar">
+          <a href="https://github.com/Minequest/Minequest-2-API/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/Minequest/Minequest-2-API/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/Minequest/Minequest-2-API"></a> is maintained by <a href="https://github.com/Minequest">Minequest</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
-    
+
+  
   </body>
 </html>
