@@ -1,6 +1,6 @@
 /*
- * This file is part of MineQuest-API, version 2, Specifications for the MineQuest system.
- * MineQuest-API, version 2 is licensed under GNU Lesser General Public License v3.
+ * This file is part of MineQuest-API, version 3, Specifications for the MineQuest system.
+ * MineQuest-API, version 3 is licensed under GNU Lesser General Public License v3.
  * Copyright (C) 2012 The MineQuest Team
  *
  * This program is free software: you can redistribute it and/or modify
