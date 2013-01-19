@@ -67,8 +67,8 @@ public interface EventManager {
 
 	void checkAllEvents();
 
-	boolean onPlayerInteract(MQPlayer player, MQBlock block);
+	void onPlayerInteract(MQPlayer player, MQBlock block);
 
-	boolean onBlockBreak(MQPlayer player, MQBlock block);
+	void onBlockBreak(MQPlayer player, MQBlock block);
 
 }
