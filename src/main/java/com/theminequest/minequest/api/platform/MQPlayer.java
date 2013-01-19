@@ -26,6 +26,7 @@ public interface MQPlayer {
 	String getDisplayName();
 	String getName();
 	void kick(String message);
+	boolean isOnline();
 	InetAddress getAddress();
 	void sendMessage(String message);
 	void setDisplayName(String name);
