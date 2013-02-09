@@ -211,5 +211,11 @@ public interface QuestDetails extends Serializable, Comparable<QuestDetails> {
 	 * @return Property removed
 	 */
 	public <E> E removeProperty(String key);
+	/**
+	 * Generate a quest from this quest detail.
+	 * @param questOwner Owner of this quest.
+	 * @return the generated quest.
+	 */
+	public Quest generateQuest(String questOwner);
 
 }
