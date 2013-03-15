@@ -18,6 +18,7 @@
  */
 package com.theminequest.minequest.api;
 
+import java.io.File;
 import java.util.Set;
 
 import com.theminequest.minequest.api.platform.ChatColor;
@@ -29,8 +30,12 @@ import com.theminequest.minequest.api.platform.MQInventory;
 import com.theminequest.minequest.api.platform.MQItemStack;
 import com.theminequest.minequest.api.platform.MQMaterial;
 import com.theminequest.minequest.api.platform.MQPlayer;
+import com.theminequest.minequest.api.util.PropertiesFile;
 
 public interface Platform {
+	
+	File getResourceDirectory();
+	PropertiesFile getConfigurationFile();
 	
 	ChatColor chatColor();
 	ChatStyle chatStyle();
