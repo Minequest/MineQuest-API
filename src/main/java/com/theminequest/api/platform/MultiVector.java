@@ -63,6 +63,10 @@ public class MultiVector {
 		return new MultiVector(Math.round(x), Math.round(y), Math.round(z));
 	}
 	
+	public double distance(MultiVector vector) {
+		return Math.sqrt(Math.pow(x - vector.x, 2) + Math.pow(y - vector.y, 2) + Math.pow(z - vector.z, 2));
+	}
+	
 	public double getX() {
 		return x;
 	}
