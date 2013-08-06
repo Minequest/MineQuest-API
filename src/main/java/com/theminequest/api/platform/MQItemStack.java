@@ -69,5 +69,11 @@ public class MQItemStack {
 	public void setMaterial(MQMaterial material) {
 		this.material = material;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		MQItemStack stack = (MQItemStack) obj;
+		return material.equals(stack.material) && amount == stack.amount && data == stack.data;
+	}
 	
 }

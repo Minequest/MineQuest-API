@@ -75,5 +75,11 @@ public class MultiVector {
 		return z;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		MultiVector other = (MultiVector) obj;
+		return x == other.x && y == other.y && z == other.z;
+	}
+
 	
 }

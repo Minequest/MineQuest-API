@@ -77,6 +77,12 @@ public class MQLocation extends MultiVector {
 	public MQLocation setWorld(String world) {
 		return new MQLocation(world, this);
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		MQLocation loc = (MQLocation) obj;
+		return world.equals(loc.world) && super.equals(obj);
+	}
 	
 	
 }
