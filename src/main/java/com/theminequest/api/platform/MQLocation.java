@@ -83,6 +83,11 @@ public class MQLocation extends MultiVector {
 		MQLocation loc = (MQLocation) obj;
 		return world.equals(loc.world) && super.equals(obj);
 	}
+
+	@Override
+	public int hashCode() {
+		return 31 * world.hashCode() * super.hashCode();
+	}
 	
 	
 }

@@ -53,4 +53,13 @@ public class SnapshotStatistic extends QuestStatistic {
 		return false;
 	}
 
+	@Override
+	public int hashCode() {
+		int baseHash = 881;
+		baseHash = 31 * baseHash + snapshot.hashCode();
+		baseHash = 31 * baseHash + super.getQuestName().hashCode();
+		baseHash = 31 * baseHash + super.getPlayerName().hashCode();
+		return baseHash;
+	}
+
 }

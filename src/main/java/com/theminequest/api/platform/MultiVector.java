@@ -85,5 +85,14 @@ public class MultiVector {
 		return x == other.x && y == other.y && z == other.z;
 	}
 
+	@Override
+	public int hashCode() {
+		int baseHash = 814;
+		baseHash = (int) (31 * baseHash + x);
+		baseHash = (int) (31 * baseHash + y);
+		baseHash = (int) (31 * baseHash + z);
+		return baseHash;
+	}
+
 	
 }

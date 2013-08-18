@@ -75,5 +75,14 @@ public class MQItemStack {
 		MQItemStack stack = (MQItemStack) obj;
 		return material.equals(stack.material) && amount == stack.amount && data == stack.data;
 	}
+
+	@Override
+	public int hashCode() {
+		int baseHash = 501;
+		baseHash = 31 * baseHash + material.hashCode();
+		baseHash = 31 * baseHash + amount;
+		baseHash = 31 * baseHash + data;
+		return baseHash;
+	}
 	
 }

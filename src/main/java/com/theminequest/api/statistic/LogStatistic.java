@@ -98,4 +98,14 @@ public class LogStatistic extends QuestStatistic {
 		return false;
 	}
 
+	@Override
+	public int hashCode() {
+		int baseHash = 631;
+		baseHash = 31 * baseHash + status;
+		baseHash = (int) (31 * baseHash + timestamp);
+		baseHash = 31 * baseHash + super.getQuestName().hashCode();
+		baseHash = 31 * baseHash + super.getPlayerName().hashCode();
+		return baseHash;
+	}
+
 }
