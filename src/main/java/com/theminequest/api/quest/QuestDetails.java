@@ -1,20 +1,22 @@
 /*
- * This file is part of MineQuest-API, version 3, Specifications for the MineQuest system.
- * MineQuest-API, version 3 is licensed under GNU Lesser General Public License v3.
+ * This file is part of MineQuest-API, version 3, Specifications for the
+ * MineQuest system.
+ * MineQuest-API, version 3 is licensed under GNU Lesser General Public License
+ * v3.
  * Copyright (C) 2012 The MineQuest Team
- *
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.theminequest.api.quest;
 
@@ -22,9 +24,10 @@ import java.io.Serializable;
 
 /**
  * Defines the structure of the quest.
+ * 
  * @author The MineQuest Team
  * @since 2.0.0
- * @version 2.0.0
+ * @version 3.0.0
  * @see com.theminequest.api.quest.Quest
  */
 public interface QuestDetails extends Serializable, Comparable<QuestDetails> {
@@ -34,12 +37,6 @@ public interface QuestDetails extends Serializable, Comparable<QuestDetails> {
 	 * Returns a {@link java.io.File}.
 	 */
 	static final String QUEST_FILE = "mq.file";
-	/**
-	 * The property that contains the Quest Name
-	 * (typically the filename without the ".quest")<br>
-	 * Returns a {@link java.lang.String}.
-	 */
-	static final String QUEST_NAME = "mq.name";
 	/**
 	 * The property that contains the Display Name,
 	 * a human readable version of the Quest Name.<br>
@@ -84,15 +81,15 @@ public interface QuestDetails extends Serializable, Comparable<QuestDetails> {
 	/**
 	 * The property that contains the tasks this quest has.<br>
 	 * Returns a {@link java.util.LinkedHashMap} containing
-	 * keys of {@link java.lang.Integer} and values of
-	 * {@link java.lang.String} arrays.
+	 * keys of {@link java.lang.Integer} and values of {@link java.lang.String}
+	 * arrays.
 	 */
 	static final String QUEST_TASKS = "mq.tasks";
 	/**
 	 * The property that contains the event specifications this
-	 * quest has.<br> Returns a {@link java.util.LinkedHashMap}
-	 * containing keys of {@link java.lang.Integer} and values of
-	 * {@link java.lang.String}.
+	 * quest has.<br>
+	 * Returns a {@link java.util.LinkedHashMap} containing keys of
+	 * {@link java.lang.Integer} and values of {@link java.lang.String}.
 	 */
 	static final String QUEST_EVENTS = "mq.events";
 	/**
@@ -135,62 +132,84 @@ public interface QuestDetails extends Serializable, Comparable<QuestDetails> {
 	static final String QUEST_WORLDFLAGS = "mq.worldflags";
 	/**
 	 * The property that represents what requirements this quest
-	 * contains.<br> Returns a {@link java.util.LinkedHashMap}
-	 * containing keys of {@link java.lang.Integer} and values of
+	 * contains.<br>
+	 * Returns a {@link java.util.LinkedHashMap} containing keys of
+	 * {@link java.lang.Integer} and values of
 	 * {@link com.theminequest.api.requirement.QuestRequirement}.
 	 */
 	static final String QUEST_REQUIREMENTDETAILS = "mq.requirementdetails";
 	/**
 	 * The property that represents what requirements should be checked
-	 * upon receiving the quest.<br> Returns a {@link java.util.List} of
-	 * {@link Integer}s.
+	 * upon receiving the quest.<br>
+	 * Returns a {@link java.util.List} of {@link Integer}s.
 	 */
 	static final String QUEST_GETREQUIREMENTS = "mq.getrequirements";
 	/**
 	 * The property that represents what requirements should be checked
-	 * upon starting the quest.<br>This does <b>NOT</b> apply to non-instanced
+	 * upon starting the quest.<br>
+	 * This does <b>NOT</b> apply to non-instanced
 	 * quests, as they start immediately upon getting.<br>
 	 * Returns a {@link java.util.List} of {@link Integer}s.
 	 */
 	static final String QUEST_STARTREQUIREMENTS = "mq.startrequirements";
 	
+	// ----------------------------------------------------------------------
+	
+	/**
+	 * Retrieve the <b>unique</b> name of this quest detail object.
+	 * 
+	 * @since 3.0.0
+	 * @return Name of the Quest
+	 */
+	public String getName();
 	
 	/**
 	 * Retrieve the property associated with the key.
+	 * 
 	 * @param <E> returned type
 	 * @param key Key
 	 * @return Associated Property, or <code>null</code> if there is none.
-	 * Note that <code>null</code> does not necessarily mean that there is
-	 * no such property, and that the property may actually be <code>null</code>.
+	 *         Note that <code>null</code> does not necessarily mean that there
+	 *         is
+	 *         no such property, and that the property may actually be
+	 *         <code>null</code>.
 	 */
 	public <E> E getProperty(String key);
+	
 	/**
 	 * Set the property associated with the key.
+	 * 
 	 * @param <E> returned type
 	 * @param key Key to set
 	 * @param property Property to set
 	 * @return Associated Property (if one was there previously).
 	 */
 	public <E> E setProperty(String key, Serializable property);
+	
 	/**
 	 * Check if this contains a property.
+	 * 
 	 * @param key Key to check
 	 * @return true if there is an associated property
 	 */
 	public boolean containsProperty(String key);
+	
 	/**
 	 * Remove a property
+	 * 
 	 * @param <E> returned type
 	 * @param key Key to remove
 	 * @return Property removed
 	 */
 	public <E> E removeProperty(String key);
+	
 	/**
 	 * Generate a quest from this quest detail.
+	 * 
 	 * @param questId Quest ID.
 	 * @param questOwner Owner of this quest.
 	 * @return the generated quest.
 	 */
 	public Quest generateQuest(long questId, String questOwner);
-
+	
 }

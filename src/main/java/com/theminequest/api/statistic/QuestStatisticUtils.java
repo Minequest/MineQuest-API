@@ -199,7 +199,7 @@ public class QuestStatisticUtils {
 	
 	public synchronized static void checkpointQuest(Quest quest) {
 		String playerName = quest.getQuestOwner();
-		String questName = quest.getDetails().getProperty(QuestDetails.QUEST_NAME);
+		String questName = quest.getDetails().getName();
 		SnapshotStatistic snapshot = Managers.getQuestStatisticManager().getQuestStatistic(playerName, questName, SnapshotStatistic.class);
 		if (snapshot == null)
 			return;

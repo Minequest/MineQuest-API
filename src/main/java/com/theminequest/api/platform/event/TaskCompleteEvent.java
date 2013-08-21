@@ -43,7 +43,7 @@ public class TaskCompleteEvent extends MQEvent {
 	}
 	
 	public String getQuestName() {
-		return task.getQuest().getDetails().getProperty(QuestDetails.QUEST_NAME);
+		return task.getQuest().getDetails().getName();
 	}
 	
 	public String getTaskDescription() {
