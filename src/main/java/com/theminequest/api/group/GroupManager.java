@@ -21,7 +21,7 @@ package com.theminequest.api.group;
 import java.util.List;
 
 import com.theminequest.api.ManagerException;
-import com.theminequest.api.platform.MQPlayer;
+import com.theminequest.api.platform.entity.MQPlayer;
 import com.theminequest.api.quest.Quest;
 
 public interface GroupManager {

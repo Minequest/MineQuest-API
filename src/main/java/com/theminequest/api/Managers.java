@@ -27,6 +27,7 @@ import com.theminequest.api.quest.handler.QuestHandlerManager;
 import com.theminequest.api.requirement.RequirementManager;
 import com.theminequest.api.statistic.QuestStatisticManager;
 import com.theminequest.api.statistic.StatisticManager;
+import com.theminequest.api.target.TargetManager;
 
 public class Managers {
 	
@@ -39,6 +40,7 @@ public class Managers {
 	private static StatisticManager statisticManager = null;
 	private static QuestStatisticManager questStatisticManager = null;
 	private static RequirementManager requirementManager = null;
+	private static TargetManager targetManager = null;
 	
 	public static String getVersion() {
 		return version;
@@ -104,6 +106,14 @@ public class Managers {
 		Managers.requirementManager = requirementManager;
 	}
 	
+	public static TargetManager getTargetManager() {
+		return targetManager;
+	}
+
+	public static void setTargetManager(TargetManager targetManager) {
+		Managers.targetManager = targetManager;
+	}
+
 	/**
 	 * Log using the central MineQuest logger.
 	 * (Prefixed with <code>[MineQuest]</code>; to add on component, add prefix

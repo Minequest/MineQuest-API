@@ -20,7 +20,8 @@ package com.theminequest.api.requirement;
 
 import java.io.Serializable;
 
-import com.theminequest.api.platform.MQPlayer;
+import com.theminequest.api.platform.entity.MQPlayer;
+import com.theminequest.api.quest.Quest;
 import com.theminequest.api.quest.QuestDetails;
 
 public abstract class QuestRequirement implements Serializable {
@@ -28,18 +29,12 @@ public abstract class QuestRequirement implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -4622785636175059480L;
+	private static final long serialVersionUID = 7519350908440458829L;
 	private int reqID;
-	private QuestDetails details;
 	
-	public final void setupProperties(int reqID, QuestDetails details, String properties) {
+	public final void setupProperties(int reqID, String[] properties) {
 		this.reqID = reqID;
-		this.details = details;
-		parseDetails(properties.split(":"));
-	}
-	
-	public final QuestDetails getDetails() {
-		return details;
+		parseDetails(properties);
 	}
 	
 	public final int getID() {
@@ -57,6 +52,7 @@ public abstract class QuestRequirement implements Serializable {
 	 * @param player Player to check
 	 * @return true if requirement is satisfied
 	 */
-	public abstract boolean isSatisfied(MQPlayer player);
+	public abstract boolean isSatisfied(QuestDetails details, MQPlayer player);
+
 	
 }

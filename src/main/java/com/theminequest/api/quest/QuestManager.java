@@ -20,7 +20,7 @@ package com.theminequest.api.quest;
 
 import java.util.Set;
 
-import com.theminequest.api.platform.MQPlayer;
+import com.theminequest.api.platform.entity.MQPlayer;
 
 public interface QuestManager {
 	

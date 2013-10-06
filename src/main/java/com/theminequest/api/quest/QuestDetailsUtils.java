@@ -24,7 +24,7 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Map;
 
-import com.theminequest.api.platform.MQPlayer;
+import com.theminequest.api.platform.entity.MQPlayer;
 import com.theminequest.api.requirement.QuestRequirement;
 import com.theminequest.api.util.ChatUtils;
 import com.theminequest.api.util.FastByteArrayOutputStream;
@@ -119,7 +119,7 @@ public class QuestDetailsUtils {
 		
 		for (Integer i : getreqs) {
 			if (reqs.containsKey(i)) {
-				if (!reqs.get(i).isSatisfied(player))
+				if (!reqs.get(i).isSatisfied(details, player))
 					return false;
 			}
 		}
@@ -143,7 +143,7 @@ public class QuestDetailsUtils {
 		
 		for (Integer i : getreqs) {
 			if (reqs.containsKey(i)) {
-				if (!reqs.get(i).isSatisfied(player))
+				if (!reqs.get(i).isSatisfied(details, player))
 					return false;
 			}
 		}
@@ -161,7 +161,7 @@ public class QuestDetailsUtils {
 		Map<Integer,QuestRequirement> reqs = details.getProperty(QuestDetails.QUEST_REQUIREMENTDETAILS);
 		if (!reqs.containsKey(id))
 			return false;
-		return reqs.get(id).isSatisfied(player);
+		return reqs.get(id).isSatisfied(details, player);
 	}
 	
 }

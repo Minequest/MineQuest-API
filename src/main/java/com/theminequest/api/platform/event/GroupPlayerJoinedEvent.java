@@ -21,7 +21,7 @@ package com.theminequest.api.platform.event;
 import com.theminequest.api.group.Group;
 import com.theminequest.api.platform.Cancellable;
 import com.theminequest.api.platform.MQEvent;
-import com.theminequest.api.platform.MQPlayer;
+import com.theminequest.api.platform.entity.MQPlayer;
 
 public class GroupPlayerJoinedEvent extends MQEvent implements Cancellable {
 	

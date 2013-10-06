@@ -31,7 +31,8 @@ import com.theminequest.api.platform.MQInventory;
 import com.theminequest.api.platform.MQItemStack;
 import com.theminequest.api.platform.MQLocation;
 import com.theminequest.api.platform.MQMaterial;
-import com.theminequest.api.platform.MQPlayer;
+import com.theminequest.api.platform.entity.MQEntity;
+import com.theminequest.api.platform.entity.MQPlayer;
 import com.theminequest.api.util.PropertiesFile;
 
 public interface Platform {
@@ -55,7 +56,12 @@ public interface Platform {
 	MQLocation toLocation(Object platformLocation);
 	<T> T fromLocation(MQLocation location);
 	
+	MQEntity getEntity(long entityID);
+	MQEntity toEntity(Object platformEntity);
+	<T> T fromEntity(MQEntity entity);
+	
 	MQPlayer getPlayer(String name);
+	MQPlayer toPlayer(Object platformPlayer);
 	Set<MQPlayer> getPlayers();
 	
 	Set<String> getWorlds();
@@ -79,6 +85,5 @@ public interface Platform {
 	void cancelTask(int taskID);
 	
 	void callCommand(String command);
-	MQPlayer toPlayer(Object platformPlayer);
 	
 }

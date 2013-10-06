@@ -152,6 +152,14 @@ public interface QuestDetails extends Serializable, Comparable<QuestDetails> {
 	 * Returns a {@link java.util.List} of {@link Integer}s.
 	 */
 	static final String QUEST_STARTREQUIREMENTS = "mq.startrequirements";
+	/**
+	 * The property that represents what targets are available to the quest.
+	 * <br>Returns a {@link java.util.Map} containing keys of
+	 * {@link java.lang.Integer} and values of
+	 * {@link com.theminequest.api.target.QuestTarget}s.
+	 * @since 3.0.0-Milestone2
+	 */
+	static final String QUEST_TARGET = "mq.questtargets";
 	
 	// ----------------------------------------------------------------------
 	

@@ -16,26 +16,25 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.theminequest.api.platform;
+package com.theminequest.api.platform.entity;
 
 import java.net.InetSocketAddress;
 
-public interface MQPlayer {
+import com.theminequest.api.platform.MQInventory;
+
+public interface MQPlayer extends MQDamageableEntity, MQNameableEntity {
 	
 	void chat(String message);
-	String getDisplayName();
 	String getName();
 	void kick(String message);
 	boolean isOnline();
 	InetSocketAddress getAddress();
 	void sendMessage(String... message);
-	void setDisplayName(String name);
-	MQLocation getLocation();
-	void teleport(MQLocation location);
+	
+	// bitwise properties!
+	int getProperties();
+	void setProperties(int properties);
 	
 	MQInventory getInventory();
 	
-	double getMaxHealth();
-	void setHealth(double health);
-	double getHealth();
 }
