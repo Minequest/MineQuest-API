@@ -13,23 +13,23 @@ public abstract class TargetedQuestEvent extends DelayedQuestEvent {
 	private int targetID;
 	private long delayMS;
 	
-	public void setupTarget(int targetID, long delayMS) {
+	public final void setupTarget(int targetID, long delayMS) {
 		this.targetID = targetID;
 		this.delayMS = delayMS;
 	}
 	
 	@Override
-	public long getDelay() {
+	public final long getDelay() {
 		return delayMS;
 	}
 
 	@Override
-	public boolean delayedConditions() {
+	public final boolean delayedConditions() {
 		return true;
 	}
 	
 	@Override
-	public CompleteStatus action() {
+	public final CompleteStatus action() {
 		Map<Integer, QuestTarget> targetMap = getQuest().getDetails().getProperty(QuestDetails.QUEST_TARGET);
 		if (!targetMap.containsKey(targetID))
 			throw new RuntimeException("No such target ID!");
