@@ -6,7 +6,7 @@ import java.util.Map;
 import com.theminequest.api.CompleteStatus;
 import com.theminequest.api.platform.entity.MQPlayer;
 import com.theminequest.api.quest.QuestDetails;
-import com.theminequest.api.target.QuestTarget;
+import com.theminequest.api.targeted.QuestTarget;
 
 public abstract class TargetedQuestEvent extends DelayedQuestEvent {
 	

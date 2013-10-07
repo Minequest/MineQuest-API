@@ -27,7 +27,7 @@ import com.theminequest.api.quest.handler.QuestHandlerManager;
 import com.theminequest.api.requirement.RequirementManager;
 import com.theminequest.api.statistic.QuestStatisticManager;
 import com.theminequest.api.statistic.StatisticManager;
-import com.theminequest.api.target.TargetManager;
+import com.theminequest.api.targeted.TargetManager;
 
 public class Managers {
 	
