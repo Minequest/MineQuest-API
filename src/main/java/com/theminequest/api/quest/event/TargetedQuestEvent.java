@@ -32,7 +32,7 @@ public abstract class TargetedQuestEvent extends DelayedQuestEvent {
 	public final CompleteStatus action() {
 		Map<Integer, QuestTarget> targetMap = getQuest().getDetails().getProperty(QuestDetails.QUEST_TARGET);
 		if (!targetMap.containsKey(targetID))
-			throw new RuntimeException("No such target ID!");
+			throw new RuntimeException("No such target ID " + targetID + "...");
 		QuestTarget t = targetMap.get(targetID);
 		return targetAction(t.getPlayers(getQuest()));
 	}
