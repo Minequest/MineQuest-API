@@ -9,11 +9,33 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface V1Documentation {
 	
+	/**
+	 * Return the Type. This is usually the handler name,
+	 * e.g. "Name", "Event", "Target", "Description", etc.
+	 * @return type
+	 */
 	String type();
-	String name();
-	boolean id();
+	/**
+	 * Return the ident. Most types do not have this property,
+	 * but some do, like "Event" and "Target". By specifying
+	 * an ident, they are automatically requesting an ID field.
+	 * @return Ident
+	 */
+	String ident() default "";
+	/**
+	 * Return a description.
+	 * @return Description
+	 */
 	String description();
+	/**
+	 * Specify the arguments that this type[&ident] takes.
+	 * @return Arguments that this type[&ident] takes.
+	 */
 	String[] arguments();
+	/**
+	 * Attach types to arguments.
+	 * @return Type for each argument above.
+	 */
 	DocArgType[] typeArguments();
 	
 }
