@@ -37,5 +37,9 @@ public @interface V1Documentation {
 	 * @return Type for each argument above.
 	 */
 	DocArgType[] typeArguments();
-	
+	/**
+	 * Hide this type[/ident] by default.
+	 * @return Hidden type[/ident]
+	 */
+	boolean hide() default false;
 }
