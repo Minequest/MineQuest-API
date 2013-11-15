@@ -80,7 +80,7 @@ public interface QuestDetails extends Serializable, Comparable<QuestDetails> {
 	static final String QUEST_FAIL = "mq.fail";
 	/**
 	 * The property that contains the tasks this quest has.<br>
-	 * Returns a {@link java.util.LinkedHashMap} containing
+	 * Returns a {@link java.util.Map} containing
 	 * keys of {@link java.lang.Integer} and values of {@link java.lang.String}
 	 * arrays.
 	 */
@@ -88,7 +88,7 @@ public interface QuestDetails extends Serializable, Comparable<QuestDetails> {
 	/**
 	 * The property that contains the event specifications this
 	 * quest has.<br>
-	 * Returns a {@link java.util.LinkedHashMap} containing keys of
+	 * Returns a {@link java.util.Map} containing keys of
 	 * {@link java.lang.Integer} and values of {@link java.lang.String}.
 	 */
 	static final String QUEST_EVENTS = "mq.events";
@@ -133,7 +133,7 @@ public interface QuestDetails extends Serializable, Comparable<QuestDetails> {
 	/**
 	 * The property that represents what requirements this quest
 	 * contains.<br>
-	 * Returns a {@link java.util.LinkedHashMap} containing keys of
+	 * Returns a {@link java.util.Map} containing keys of
 	 * {@link java.lang.Integer} and values of
 	 * {@link com.theminequest.api.requirement.QuestRequirement}.
 	 */

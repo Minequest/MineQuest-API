@@ -86,7 +86,7 @@ public class QuestUtils {
 	
 	public static int getNextTask(Quest quest) {
 		int currentid = quest.getActiveTask().getTaskID();
-		LinkedHashMap<Integer, String[]> tasks = quest.getDetails().getProperty(QUEST_TASKS);
+		Map<Integer, String[]> tasks = quest.getDetails().getProperty(QUEST_TASKS);
 		for (Integer i : SetUtils.getSortedKeys(tasks.keySet())) {
 			if (i > currentid)
 				return i;
