@@ -15,11 +15,11 @@ deploy:
         - script:
             name: activate settings.xml
             code: |
-                echo "<server>" > .m2/settings.xml
-                echo "<id>bintray-robxu9-MineQuest-minequest</id>" >> .m2/settings.xml
-                echo "<username>$BINTRAY_USER</username>" >> .m2/settings.xml
-                echo "<password>$BINTRAY_PASS</password>" >> .m2/settings.xml
-                echo "</server>" >> .m2/settings.xml
+                echo "<server>" > ~/.m2/settings.xml
+                echo "<id>bintray-robxu9-MineQuest-minequest</id>" >> ~/.m2/settings.xml
+                echo "<username>$BINTRAY_USER</username>" >> ~/.m2/settings.xml
+                echo "<password>$BINTRAY_PASS</password>" >> ~/.m2/settings.xml
+                echo "</server>" >> ~/.m2/settings.xml
         
         - script:
             name: deploy to bintray
