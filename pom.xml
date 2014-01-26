@@ -28,6 +28,14 @@
 			<email></email>
 		</developer>
 	</developers>
+	
+	<distributionManagement>
+		<repository>
+			<id>bintray-robxu9-MineQuest-minequest</id>
+			<name>robxu9-MineQuest-minequest</name>
+			<url>https://api.bintray.com/maven/robxu9/MineQuest/minequest</url>
+		</repository>
+	</distributionManagement>
 
 	<dependencies>
 		<dependency>
